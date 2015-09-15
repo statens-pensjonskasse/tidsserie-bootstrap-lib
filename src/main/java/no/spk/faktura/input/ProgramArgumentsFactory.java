@@ -42,13 +42,12 @@ public class ProgramArgumentsFactory<T extends Arguments> {
      * Tar en array med streng-argumenter og transformerer til en @{link ProgramArguments} representasjon av disse.
      * Metoden foretar validering og parsing av argumentene.
      * <p>
-     * <b>NB!</b>
-     * Printer ut bruk til konsoll dersom det er feil i argumentene,
-     * eller argumentene inneholder flagg som indikerer at det ønskes hjelp.
      *
      * @param args typisk hentet fra main(String... args)
      * @return ProgramArguments generert fra args, dersom de kunne opprettes. {@link Optional#empty} dersom det er valideringsfeil.
      * @see JCommander
+     * @throws InvalidParameterException dersom det er feil i ett eller flere argumenter
+     * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren ønsker hjelp
      */
     public T create(final String... args) {
         return create(true, args);
