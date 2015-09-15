@@ -6,6 +6,7 @@ import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.ParameterException;
 
 /**
+ * Validerer at angitt verdi lar seg konvertere med {@link LocalTimeConverter#convert(String)}
  * @author Snorre E. Brekke - Computas
  */
 public class LocalTimeValidator implements IParameterValidator {

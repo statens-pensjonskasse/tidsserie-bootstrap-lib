@@ -73,15 +73,15 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         final JCommander jCommander = new JCommander(arguments);
         try {
             jCommander.parse(args);
+            if (arguments.hjelp()) {
+                throw new UsageRequestedException(jCommander);
+            }
+
             if (postValider) {
                 postValidator.ifPresent(p -> p.validate(arguments));
             }
         } catch (final ParameterException exception) {
             throw new InvalidParameterException(jCommander, exception);
-        }
-
-        if (arguments.hjelp()) {
-            throw new UsageRequestedException(jCommander);
         }
         return arguments;
     }

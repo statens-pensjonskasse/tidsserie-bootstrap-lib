@@ -103,4 +103,12 @@ public class ProgramArgumentsFactoryTest {
                 (a) -> { throw new ParameterException(expectedMessage);});
         factory.create(true, "-r", "test");
     }
+
+    @Test
+    public void testPostValidationShouldNotRunWhenHelpIsRequested() throws Exception {
+        exception.expect(UsageRequestedException.class);
+        factory = new ProgramArgumentsFactory<>(TestParameters.class,
+                (a) -> { throw new ParameterException("skal ikke kastes");});
+        factory.create(true, "-h");
+    }
 }

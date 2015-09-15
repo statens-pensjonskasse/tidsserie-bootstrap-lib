@@ -1,5 +1,6 @@
 package no.spk.faktura.input;
 
+
 import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.ParameterException;
 
@@ -9,17 +10,7 @@ import com.beust.jcommander.ParameterException;
 public class DurationValidator implements IParameterValidator {
     @Override
     public void validate(String name, String value) throws ParameterException {
-        if (value.length() != 4) {
-            throwParameterException(name, value);
-        }
-        try {
-            int i = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throwParameterException(name, value);
-        }
-    }
-
-    private void throwParameterException(String name, String value) {
-        throw new ParameterException("'" + name + "': må bestå av 4 siffer på formatet HHmm (fant " + value + ").");
+        DurationUtil.convert(value)
+                .orElseThrow(() -> new ParameterException("'" + name + "': må bestå av 4 siffer på formatet HHmm (fant " + value + ")."));
     }
 }

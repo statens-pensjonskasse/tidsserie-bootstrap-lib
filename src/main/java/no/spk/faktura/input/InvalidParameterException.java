@@ -8,6 +8,8 @@ import com.beust.jcommander.ParameterException;
  * @author Snorre E. Brekke - Computas
  */
 public class InvalidParameterException extends RuntimeException {
+    private static final long serialVersionUID = -1;
+
     private final JCommander jCommander;
 
     InvalidParameterException(final JCommander jCommander, final ParameterException cause) {
