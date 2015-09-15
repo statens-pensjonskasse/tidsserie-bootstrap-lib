@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>no.spk.felles</groupId>
+        <artifactId>felles-pom</artifactId>
+        <version>100.0.2</version>
+    </parent>
+
     <groupId>no.spk.pensjon.faktura</groupId>
-    <artifactId>faktura-boostrap-lib</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>faktura-bootstrap-lib</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <description>
+        Gjenbrukbar kode som brukes for å starte en FFF-batch.
+    </description>
+
+    <scm>
+        <connection>scm:git:http://git.spk.no/scm/ff/faktura-bootstrap-lib.git</connection>
+        <developerConnection>scm:git:ssh://git@git.spk.no:7999/ff/faktura-bootstrap-lib.git</developerConnection>
+        <url>http://git.spk.no/projects/FF/repos/faktura-bootstrap-lib/browse</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>CP1252</project.build.sourceEncoding>
+    </properties>
 
     <build>
         <plugins>
@@ -19,6 +39,14 @@
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <compilerArgument>-Xlint:all</compilerArgument>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m4.3</version>
+                <configuration>
+                    <!-- see goals wiki page for configuration options -->
                 </configuration>
             </plugin>
         </plugins>
