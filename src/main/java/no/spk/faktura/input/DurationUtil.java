@@ -20,7 +20,7 @@ public final class DurationUtil {
     /**
      * Konverterer en streng på formatet HHmm til en Optional {@link Duration}.
      * @param duration streng på formated HHmm
-     * @return {@code duration} som en {@Duration}. {@link Optional#empty()} dersom {@code duration} paramteren ikke kan konverteres til en {@link Duration},
+     * @return {@code duration} som en {@link Duration}. {@link Optional#empty()} dersom {@code duration} paramteren ikke kan konverteres til en {@link Duration},
      * eller angitt verdi er negativ.
      */
     public static Optional<Duration> convert(String duration) {

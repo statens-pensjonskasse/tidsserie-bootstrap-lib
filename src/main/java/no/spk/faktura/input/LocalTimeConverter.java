@@ -7,7 +7,6 @@ import com.beust.jcommander.IStringConverter;
 /**
  * Konverterer et kommandolinjeargument til {@link LocalTime}
  * @author Snorre E. Brekke - Computas
- * @see ProgramArguments
  * @see com.beust.jcommander.JCommander
  */
 public class LocalTimeConverter implements IStringConverter<LocalTime> {

@@ -40,7 +40,8 @@ public class BatchId {
     /**
      * Konverterer en batch-streng til en ny BatchId-instans. Metoden forutsetter at {@code batchId} er på formatet <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
      *
-     * @param batchId streng på formatet <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
+     * @param prefix prefix på batchid
+     * @param batchId streng på formatet <i>prefixyyyy-MM-dd_HH-mm-ss-SS</i>.
      * @return ny BatchID-instans basert på {@code batchId}
      */
     public static BatchId fromString(String prefix, String batchId) {
