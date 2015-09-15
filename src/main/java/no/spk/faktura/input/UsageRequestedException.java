@@ -8,10 +8,10 @@ import com.beust.jcommander.JCommander;
 public class UsageRequestedException extends RuntimeException {
     private static final long serialVersionUID = -1;
 
-    private final JCommander jCommander;
+    private final String usageString;
 
-    UsageRequestedException(final JCommander jCommander) {
-        this.jCommander = jCommander;
+    UsageRequestedException(String usageString) {
+        this.usageString = usageString;
     }
 
     /**
@@ -19,8 +19,6 @@ public class UsageRequestedException extends RuntimeException {
      * @return en streng som beskriver bruk av programmet.
      */
     public String usage() {
-        final StringBuilder usage = new StringBuilder();
-        jCommander.usage(usage);
-        return usage.toString();
+        return usageString;
     }
 }

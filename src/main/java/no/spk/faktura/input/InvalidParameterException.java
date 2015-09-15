@@ -10,11 +10,11 @@ import com.beust.jcommander.ParameterException;
 public class InvalidParameterException extends RuntimeException {
     private static final long serialVersionUID = -1;
 
-    private final JCommander jCommander;
+    private final String usageString;
 
-    InvalidParameterException(final JCommander jCommander, final ParameterException cause) {
+    InvalidParameterException(String usageString, final ParameterException cause) {
         super(cause.getMessage());
-        this.jCommander = jCommander;
+        this.usageString = usageString;
     }
 
     /**
@@ -22,8 +22,6 @@ public class InvalidParameterException extends RuntimeException {
      * @return en streng som beskriver bruk av programmet.
      */
     public String usage() {
-        final StringBuilder usage = new StringBuilder();
-        jCommander.usage(usage);
-        return usage.toString();
+        return usageString;
     }
 }

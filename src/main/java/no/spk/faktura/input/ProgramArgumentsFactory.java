@@ -73,14 +73,14 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         try {
             jCommander.parse(args);
             if (arguments.hjelp()) {
-                throw new UsageRequestedException(jCommander);
+                throw new UsageRequestedException(usage(jCommander));
             }
 
             if (postValider) {
                 postValidator.ifPresent(p -> p.validate(arguments));
             }
         } catch (final ParameterException exception) {
-            throw new InvalidParameterException(jCommander, exception);
+            throw new InvalidParameterException(usage(jCommander), exception);
         }
         return arguments;
     }
@@ -91,5 +91,11 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalArgumentException(programArgumentClass.getClass() + " mangler en tilgjengelig no-args konstruktør.");
         }
+    }
+
+    public String usage(JCommander jCommander) {
+        final StringBuilder usage = new StringBuilder();
+        jCommander.usage(usage);
+        return usage.toString();
     }
 }
