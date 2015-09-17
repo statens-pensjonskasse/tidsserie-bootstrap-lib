@@ -39,7 +39,6 @@ public class TestParameters implements Arguments {
     )
     Optional<Path> password = Optional.empty();
 
-
     @Parameter(names = "-d",
             description = "Duration",
             validateWith = DurationValidator.class)
