@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParametersDelegate;
 import org.junit.Test;
 
 /**
@@ -34,5 +36,37 @@ public class ArgumentSummaryTest {
         String parameterSummary = ArgumentSummary.createParameterSummary(programArguments);
         assertThat(parameterSummary).contains("-url: url");
         assertThat(parameterSummary).contains("-pw: wherever");
+    }
+
+    @Test
+    public void testArgumentSummaryForDelegate() throws Exception {
+        RecursiveDelegates programArguments = new RecursiveDelegates();
+        String parameterSummary = ArgumentSummary.createParameterSummary(programArguments);
+        assertThat(parameterSummary).contains("-p");
+        assertThat(parameterSummary).contains("-x");
+        assertThat(parameterSummary).doesNotContain("delegate");
+    }
+
+    public static class RecursiveDelegates implements Arguments{
+        @ParametersDelegate
+        Delegate1 delegate = new Delegate1();
+
+        @Override
+        public boolean hjelp() {
+            return false;
+        }
+    }
+
+    public static class Delegate1{
+        @Parameter(names ="-p")
+        boolean param;
+
+        @ParametersDelegate
+        Delegate2 delegate = new Delegate2();
+    }
+
+    public static class Delegate2{
+        @Parameter(names ="-x")
+        boolean param;
     }
 }
