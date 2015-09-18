@@ -46,6 +46,7 @@ public final class ArgumentSummary {
      */
     public static String createParameterSummary(Object programArguments) {
         return parameterFields(programArguments)
+                .filter(f -> !f.field.getAnnotation(Parameter.class).help())
                 .map(f -> summary(f.field, f.instance))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -55,38 +56,12 @@ public final class ArgumentSummary {
 
     private static Stream<FieldInstance> parameterFields(Object parameterObject) {
         return of(parameterObject.getClass().getDeclaredFields())
-                .filter(ArgumentSummary::include)
                 .map(f -> new FieldInstance(f, parameterObject))
-                .flatMap(ArgumentSummary::flattenDelegates);
+                .flatMap(FieldInstance::stream);
     }
-
-    private static Stream<FieldInstance> flattenDelegates(FieldInstance fieldInstance) {
-        if (isParameter(fieldInstance.field)) {
-            return of(fieldInstance);
-        } else if (isParameterDelegate(fieldInstance.field)) {
-            Object delegate = getValue(fieldInstance.field, fieldInstance.instance).get();
-            return parameterFields(delegate);
-        }
-        return empty();
-    }
-
-    private static boolean include(Field field) {
-        return (isParameter(field) &&
-                !field.getAnnotation(Parameter.class).help()) ||
-                isParameterDelegate(field);
-    }
-
-    private static boolean isParameterDelegate(Field field) {
-        return field.isAnnotationPresent(ParametersDelegate.class);
-    }
-
-    private static boolean isParameter(Field field) {
-        return field.isAnnotationPresent(Parameter.class);
-    }
-
 
     private static Optional<String> summary(Field field, Object instance) {
-        Optional<?> value = getValue(field, instance);
+        Optional<?> value = transformType(getValue(field, instance));
         if (value.isPresent()) {
             Parameter annotation = field.getAnnotation(Parameter.class);
             String parameterString = annotation.names()[0] + ": ";
@@ -96,13 +71,13 @@ public final class ArgumentSummary {
         return Optional.empty();
     }
 
-    private static Optional<?> getValue(Field field, Object instance) {
+    private static Object getValue(Field field, Object instance) {
         try {
             boolean access = field.isAccessible();
             field.setAccessible(true);
             final Object fieldValue = field.get(instance);
             field.setAccessible(access);
-            return transformType(fieldValue);
+            return fieldValue;
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -122,6 +97,24 @@ public final class ArgumentSummary {
         public FieldInstance(Field field, Object instance) {
             this.field = field;
             this.instance = instance;
+        }
+
+        public Stream<FieldInstance> stream() {
+            if (isParameter(field)) {
+                return of(this);
+            } else if (isParameterDelegate(field)) {
+                Object delegate = getValue(field, instance);
+                return parameterFields(delegate);
+            }
+            return empty();
+        }
+
+        private boolean isParameterDelegate(Field field) {
+            return field.isAnnotationPresent(ParametersDelegate.class);
+        }
+
+        private boolean isParameter(Field field) {
+            return field.isAnnotationPresent(Parameter.class);
         }
     }
 }
