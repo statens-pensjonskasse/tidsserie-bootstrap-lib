@@ -72,16 +72,6 @@ public class WritablePathValidatorTest {
         validator.validate("bane", file.toPath());
     }
 
-    @Test
-    public void testStiIkkeLesbarWindowsFeiler() throws Exception {
-        assumeTrue(isWindowsOs());
-        final File file = new File("C:/System Volume Information");
-        assumeTrue(file.exists());
-        exception.expect(ParameterException.class);
-        exception.expectMessage(" er ikke lesbar for batchen");
-        validator.validate("bane", file.toPath());
-    }
-
     private boolean isWindowsOs(){
         return System.getProperty( "os.name" ).startsWith( "Windows" );
     }
