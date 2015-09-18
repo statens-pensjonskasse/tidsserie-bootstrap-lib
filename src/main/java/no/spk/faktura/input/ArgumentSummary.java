@@ -1,10 +1,12 @@
 package no.spk.faktura.input;
 
+import static java.util.stream.Stream.empty;
+import static java.util.stream.Stream.of;
+
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
@@ -43,10 +45,7 @@ public final class ArgumentSummary {
      * @return en streng som inneholder èn linje per {@link Parameter} felt
      */
     public static String createParameterSummary(Object programArguments) {
-        List<FieldInstance> fieldList = addParameterFields(programArguments, new ArrayList<>());
-
-        return fieldList.stream()
-                .filter(f -> !f.field.getAnnotation(Parameter.class).help())
+        return parameterFields(programArguments)
                 .map(f -> summary(f.field, f.instance))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -54,16 +53,37 @@ public final class ArgumentSummary {
                 .collect(Collectors.joining("\n"));
     }
 
-    private static List<FieldInstance> addParameterFields(Object parameterObject, List<FieldInstance> fieldList) {
-        for (Field field : parameterObject.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(Parameter.class)) {
-                fieldList.add(new FieldInstance(field, parameterObject));
-            } else if (field.isAnnotationPresent(ParametersDelegate.class)) {
-                addParameterFields(getValue(field, parameterObject).get(), fieldList);
-            }
-        }
-        return fieldList;
+    private static Stream<FieldInstance> parameterFields(Object parameterObject) {
+        return of(parameterObject.getClass().getDeclaredFields())
+                .filter(ArgumentSummary::include)
+                .map(f -> new FieldInstance(f, parameterObject))
+                .flatMap(ArgumentSummary::flattenDelegates);
     }
+
+    private static Stream<FieldInstance> flattenDelegates(FieldInstance fieldInstance) {
+        if (isParameter(fieldInstance.field)) {
+            return of(fieldInstance);
+        } else if (isParameterDelegate(fieldInstance.field)) {
+            Object delegate = getValue(fieldInstance.field, fieldInstance.instance).get();
+            return parameterFields(delegate);
+        }
+        return empty();
+    }
+
+    private static boolean include(Field field) {
+        return (isParameter(field) &&
+                !field.getAnnotation(Parameter.class).help()) ||
+                isParameterDelegate(field);
+    }
+
+    private static boolean isParameterDelegate(Field field) {
+        return field.isAnnotationPresent(ParametersDelegate.class);
+    }
+
+    private static boolean isParameter(Field field) {
+        return field.isAnnotationPresent(Parameter.class);
+    }
+
 
     private static Optional<String> summary(Field field, Object instance) {
         Optional<?> value = getValue(field, instance);

@@ -9,7 +9,8 @@ import com.beust.jcommander.ParameterException;
 public class WritablePathValidator implements IValueValidator<Path> {
     @Override
     public void validate(final String name, final Path value) throws ParameterException {
-        if (!Files.exists(value)) {
+        //Files.exists(value) viser seg å returnerer false i noen tilfeller  der file.exists returnerer true.
+        if (!value.toFile().exists()) {
             throw new ParameterException(
                     "Katalogen "
                             + value
