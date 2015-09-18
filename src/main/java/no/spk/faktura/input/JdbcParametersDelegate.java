@@ -11,20 +11,19 @@ import com.beust.jcommander.ParametersDelegate;
  * Kompositt-klasse som kan brukes ved implementering av  {@link Arguments} til bruk
  * i {@link ProgramArgumentsFactory}.
  * Annoter kompositt-feltet med {@link ParametersDelegate}.
- *
- * <p>Eks:
- * <p>
+ * <br>
+ * Eks:
  * <pre>
- * {@code
+ * <code>
  * public class MyArguments implements Arguments, JdbcParameters{
- *     @literal @ParametersDelegate
+ *     {@literal @}ParametersDelegate
  *      JdbcParametersDelegate jdbcParams = new JdbcParametersDelegate();
  *
  *      (...)
  *  }
- *  }
+ *  </code>
  * </pre>
- * </p>
+ *
  * @author Snorre E. Brekke - Computas
  */
 public class JdbcParametersDelegate implements JdbcParameters {

@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 /**
  * API for å hente ut jdbc-parametere fra program-argumenter angitt fra kommandolinjen.
  * @author Snorre E. Brekke - Computas
- * @see JdbcParametersDelegate - kan brukes for å komponere JdbcParameters for {@£link ProgramArgumentsFactory}-object
+ * @see JdbcParametersDelegate - kan brukes for å komponere JdbcParameters for {@link ProgramArgumentsFactory}-object
  * @see ProgramArgumentsFactory
  * @see Arguments
  */
