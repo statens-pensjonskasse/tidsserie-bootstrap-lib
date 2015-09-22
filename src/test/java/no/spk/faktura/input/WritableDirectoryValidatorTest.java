@@ -2,12 +2,9 @@ package no.spk.faktura.input;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 
 import com.beust.jcommander.ParameterException;
 import org.junit.Before;
@@ -20,7 +17,7 @@ import org.junit.rules.TestName;
 /**
  * @author Snorre E. Brekke - Computas
  */
-public class WritablePathValidatorTest {
+public class WritableDirectoryValidatorTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -30,11 +27,11 @@ public class WritablePathValidatorTest {
     @Rule
     public final TestName testName = new TestName();
 
-    WritablePathValidator validator;
+    WritableDirectoryValidator validator;
 
     @Before
     public void setUp() throws Exception {
-        validator = new WritablePathValidator();
+        validator = new WritableDirectoryValidator();
     }
 
     @Test

@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.ParameterException;
 
-public class WritablePathValidator implements IValueValidator<Path> {
+public class WritableDirectoryValidator implements IValueValidator<Path> {
     @Override
     public void validate(final String name, final Path value) throws ParameterException {
         //Files.exists(value) viser seg å returnerer false i noen tilfeller  der file.exists returnerer true.
