@@ -45,14 +45,14 @@ public class ProgramArgumentsFactoryTest {
     @Test
     public void testRequiredArgIsRequired() throws Exception {
         exception.expect(InvalidParameterException.class);
-        exception.expectMessage("The following option is required: -r");
+        exception.expectMessage("-r");
         factory.create();
     }
 
     @Test
     public void testUnknownOptionThrows() throws Exception {
         exception.expect(InvalidParameterException.class);
-        exception.expectMessage("Unknown option: -unknown");
+        exception.expectMessage("-unknown");
         factory.create("-unknown");
     }
 
