@@ -77,13 +77,6 @@ public class InvalidParameterExceptionTest {
         @Parameter(names = "-m", arity = 2)
         int[] multiple;
 
-        @Parameter(names = { "-statusfil" },
-                converter = OptionalPathConverter.class,
-                validateValueWith = OptionalWritableFileValidator.class
-        )
-        Optional<Path> statusfil = Optional.empty();
-
-
         @Parameter(names = "-e")
         TestEnum enumverdi;
     }
