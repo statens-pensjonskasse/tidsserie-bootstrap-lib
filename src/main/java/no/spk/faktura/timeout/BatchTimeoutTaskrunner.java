@@ -26,7 +26,6 @@ public class BatchTimeoutTaskrunner {
      * @param terminationCallback callback som skal kalles ved timeout
      * @return {@link ScheduledFuture} som representerer den planlagte oppgaven.
      * @see BatchTimeout
-     * @see BatchParameters
      * @see ScheduledFuture
      */
     public ScheduledFuture<?> startTerminationTimeout(Duration timeoutDelay, Runnable terminationCallback) {
