@@ -26,6 +26,7 @@ public class InvalidParameterException extends RuntimeException {
             (s) -> oversett("^Expected a value after parameter (.+)$", "Forventet en verdi etter %s.", s),
             (s) -> oversett("^Expected (.+) values after (.+)$", "Forventet %s verdier etter %s.", s),
             (s) -> oversett("^Invalid value for (.+) parameter. Allowed values:(.+)$", "Ugyldig verdi for %s. Lovlige verdier: %s.", s),
+            (s) -> oversett("^Was passed main parameter (.+) but no main parameter was defined$", "Uventet parameter %s.", s),
             (s) -> oversett("^(.+): couldn't convert (.+) to an integer$", "%s: Kunne ikke konvertere %s til et heltall.", s),
             (s) -> oversett("^Unknown option: (.+)$", "Ukjent valg: %s.", s)
     );
@@ -46,7 +47,8 @@ public class InvalidParameterException extends RuntimeException {
     private static String hentMelding(ParameterException cause){
         final String opprinneligMelding = cause.getMessage();
 
-        return oversettere.stream()
+        return "Feil i parameter: " +
+                oversettere.stream()
                 .map((o) -> o.apply(opprinneligMelding))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
