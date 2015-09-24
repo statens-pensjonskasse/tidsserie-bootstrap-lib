@@ -1,9 +1,6 @@
 package no.spk.faktura.input;
 
 
-import java.nio.file.Path;
-import java.util.Optional;
-
 import com.beust.jcommander.Parameter;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,7 +24,7 @@ public class InvalidParameterExceptionTest {
 
     @Test
     public void testOversettPaakrevd() throws Exception {
-        exception.expectMessage("Følgende valg er påkrevd: -r");
+        exception.expectMessage("Feil i parameter: Følgende valg er påkrevd: -r");
         factory.create();
     }
 
@@ -47,6 +44,13 @@ public class InvalidParameterExceptionTest {
     public void testForeventetVerdi() throws Exception {
         exception.expectMessage("Forventet en verdi etter -r.");
         factory.create("-r");
+    }
+
+
+    @Test
+    public void testMainParameterOversatt() throws Exception {
+        exception.expectMessage("Uventet parameter 'what'.");
+        factory.create("-r", "abc", "what");
     }
 
     @Test
