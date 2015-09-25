@@ -22,6 +22,28 @@ public class BatchTimeoutTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
+    public void testNewBatchTimeoutIsNotStarted() throws Exception {
+        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+        assertThat(batchTimeout.isStarted()).isFalse();
+    }
+
+    @Test
+    public void testStartedBatchTimeoutIsStarted() throws Exception {
+        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+        batchTimeout.start();
+        assertThat(batchTimeout.isStarted()).isTrue();
+    }
+
+
+    @Test
+    public void testBatchTimeoutStartedTwiceThrowsException() throws Exception {
+        exception.expectMessage("BatchTimeout er er allerede startet.");
+        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+        batchTimeout.start();
+        batchTimeout.start();
+    }
+
+    @Test
     public void testIsCompleteCalledOnUnstartedTimeoutThrowsException() throws Exception {
         exception.expectMessage("BatchTimeout er ikke startet.");
         BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
