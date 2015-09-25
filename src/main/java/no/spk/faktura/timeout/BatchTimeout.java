@@ -60,12 +60,25 @@ public class BatchTimeout {
     /**
      * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}.
      * @return this for chaining
+     * @throws IllegalStateException dersom denne metoden kalles før mer enn én gang.
+     * @see #isStarted()
      */
-    public BatchTimeout start(){
+    public BatchTimeout start() {
+        if (isStarted()) {
+            throw new IllegalStateException("BatchTimeout er er allerede startet.");
+        }
         long timeToEnd = ChronoUnit.MILLIS.between(timeProvider.currentTime(), latestEndtime);
         this.timeout = Math.min(maxRuntime.toMillis(), timeToEnd);
         timeStarted = Optional.of(timeProvider.currentMillies());
         return this;
+    }
+
+    /**
+     * Angir om {@link #start()} er blitt kalt.
+     * @return true dersom {@link #start()} er blitt kalt.
+     */
+    public boolean isStarted() {
+        return timeStarted.isPresent();
     }
 
     /**
