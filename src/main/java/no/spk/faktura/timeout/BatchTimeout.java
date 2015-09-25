@@ -44,11 +44,11 @@ public class BatchTimeout {
     }
 
     /**
-     * Lager og starter klokka for batch-timeout for batch. Faktisk timeout som brukes ved kjøring
-     * beregnes fra tidspunktet BatchTimeout-instansen blir initisialisert.
-     * @param timeout maks tid batchen kan kjøre
+     * Opppretter batch-timeout for en batch. Timeout som brukes ved kjøring
+     * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved å kalle {@link #start()}.
+     * @param maxRuntime maks tid batchen kan kjøre
      * @param latestEndtime siste tidspunkt batchen kan kjøre til. Dersom dette i praksis resulterer
-     * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra timeProvider.currentTime().
+     * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra LocalTime.now().
      * @param timeProvider gir mulighet til å overstyre hvordan BatchTimeout finner nårværende tid og systemklokke.
      */
     public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime, TimeProvider timeProvider) {
@@ -58,7 +58,8 @@ public class BatchTimeout {
     }
 
     /**
-     * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}
+     * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}.
+     * @return this for chaining
      */
     public BatchTimeout start(){
         long timeToEnd = ChronoUnit.MILLIS.between(timeProvider.currentTime(), latestEndtime);
