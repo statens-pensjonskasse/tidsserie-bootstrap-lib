@@ -12,7 +12,12 @@ public class LocalTimeValidatorTest {
 
     @Test
     public void skalValidereIntegerOk() {
-        new IntegerValidator().validate("i", "0230");
+        new LocalTimeValidator().validate("i", "0230");
+    }
+
+    @Test
+    public void skalValidereTimeWithColonOk() {
+        new LocalTimeValidator().validate("i", "02:30");
     }
 
     @Test
