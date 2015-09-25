@@ -22,7 +22,7 @@ public class BatchTimeoutTaskrunnerTest {
     public void testTerminationTimeout() throws Exception {
         Runnable callback = mock(Runnable.class);
         BatchTimeout batchTimeout = new BatchTimeout(ofNanos(0), now());
-
+        batchTimeout.start();
         BatchTimeoutTaskrunner termination = new BatchTimeoutTaskrunner(batchTimeout);
         ScheduledFuture<?> scheduledFuture = termination.startTerminationTimeout(ofMinutes(0), callback);
         scheduledFuture.get();

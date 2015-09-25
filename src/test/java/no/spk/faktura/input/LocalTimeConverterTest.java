@@ -27,12 +27,20 @@ public class LocalTimeConverterTest {
     @Test
     public void testLegalConversions() throws Exception {
         assertThat(converter.convert("23:00")).isEqualTo(LocalTime.of(23, 0));
+        assertThat(converter.convert("2300")).isEqualTo(LocalTime.of(23, 0));
         assertThat(converter.convert("23:00:00")).isEqualTo(LocalTime.of(23, 0, 0));
+        assertThat(converter.convert("230000")).isEqualTo(LocalTime.of(23, 0, 0));
     }
 
     @Test
-    public void testillegalLegalConversions() throws Exception {
+    public void testOneDigitHourFails() throws Exception {
         exception.expect(DateTimeException.class);
         converter.convert("3:00");
+    }
+
+    @Test
+    public void testOneDigitHourWithoutColonFails() throws Exception {
+        exception.expect(DateTimeException.class);
+        converter.convert("300");
     }
 }
