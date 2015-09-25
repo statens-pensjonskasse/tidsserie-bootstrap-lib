@@ -61,7 +61,7 @@ public class BatchTimeout {
      * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}.
      * @return this for chaining
      * @throws IllegalStateException dersom denne metoden kalles før mer enn én gang.
-     * @see {@link #isStarted()}
+     * @see #isStarted()
      */
     public BatchTimeout start() {
         if (isStarted()) {
