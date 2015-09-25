@@ -1,8 +1,11 @@
 package no.spk.faktura.timeout;
 
+import static java.util.Optional.empty;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 /**
  * BatchTimeout brukes for å styre når batchen skal stoppes, dersom den tar for lang tid.
@@ -22,19 +25,22 @@ import java.time.temporal.ChronoUnit;
  * @author Snorre E. Brekke - Computas
  */
 public class BatchTimeout {
-    private final long timeout;
-    private final long timeStarted;
+
+    private final Duration maxRuntime;
+    private final LocalTime latestEndtime;
     private final TimeProvider timeProvider;
+    private long timeout;
+    private Optional<Long> timeStarted = empty();
 
     /**
-     * Lager og starter klokka for batch-timeout for batch. Faktisk timeout som brukes ved kjøring
-     * beregnes fra tidspunktet BatchTimeout-instansen blir initisialisert.
-     * @param timeout maks tid batchen kan kjøre
+     * Opppretter batch-timeout for en batch. Timeout som brukes ved kjøring
+     * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved å kalle {@link #start()}.
+     * @param maxRuntime maks tid batchen kan kjøre
      * @param latestEndtime siste tidspunkt batchen kan kjøre til. Dersom dette i praksis resulterer
      * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra LocalTime.now().
      */
-    public BatchTimeout(Duration timeout, LocalTime latestEndtime) {
-        this(timeout, latestEndtime, new DefaultTimeProvider());
+    public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime) {
+        this(maxRuntime, latestEndtime, new DefaultTimeProvider());
     }
 
     /**
@@ -45,25 +51,40 @@ public class BatchTimeout {
      * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra timeProvider.currentTime().
      * @param timeProvider gir mulighet til å overstyre hvordan BatchTimeout finner nårværende tid og systemklokke.
      */
-    public BatchTimeout(Duration timeout, LocalTime latestEndtime, TimeProvider timeProvider) {
+    public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime, TimeProvider timeProvider) {
+        this.maxRuntime = maxRuntime;
+        this.latestEndtime = latestEndtime;
         this.timeProvider = timeProvider;
+    }
+
+    /**
+     * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}
+     */
+    public BatchTimeout start(){
         long timeToEnd = ChronoUnit.MILLIS.between(timeProvider.currentTime(), latestEndtime);
-        this.timeout = Math.min(timeout.toMillis(), timeToEnd);
-        timeStarted = timeProvider.currentMillies();
+        this.timeout = Math.min(maxRuntime.toMillis(), timeToEnd);
+        timeStarted = Optional.of(timeProvider.currentMillies());
+        return this;
     }
 
     /**
      * @return Returnerer gjenværende tidsintervall for batchen.
+     * @throws IllegalStateException dersom denne metoden kalles før {@link #start} er blitt kalt
      */
     public Duration timeRemaining() {
-        return Duration.ofMillis(timeStarted + timeout - timeProvider.currentMillies());
+        return Duration.ofMillis(timeStarted() + timeout - timeProvider.currentMillies());
+    }
+
+    private Long timeStarted() {
+        return timeStarted.orElseThrow(() -> new IllegalStateException("BatchTimeout er ikke startet. Vennligst kall metoden #start() først."));
     }
 
     /**
      * @return true dersom kjøretid for batchen har oversteget timeoutverdien til BatchTimeout
+     * @throws IllegalStateException dersom denne metoden kalles før {@link #start} er blitt kalt
      */
     public boolean isComplete() {
-        return (timeProvider.currentMillies() - timeStarted) >= timeout;
+        return (timeProvider.currentMillies() - timeStarted()) >= timeout;
     }
 
     TimeProvider getTimeProvider() {
