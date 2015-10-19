@@ -31,7 +31,7 @@ public class InvalidParameterException extends RuntimeException {
             (s) -> oversett("^Unknown option: (.+)$", "Ukjent valg: %s.", s)
     );
 
-    InvalidParameterException(String usageString, final ParameterException cause) {
+    public InvalidParameterException(String usageString, final ParameterException cause) {
         super(hentMelding(cause));
         this.usageString = usageString;
     }
