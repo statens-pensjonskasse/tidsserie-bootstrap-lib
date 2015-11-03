@@ -47,6 +47,7 @@ public final class ArgumentSummary {
     public static String createParameterSummary(Object programArguments) {
         return parameterFields(programArguments)
                 .filter(f -> !f.field.getAnnotation(Parameter.class).help())
+                .filter(f -> !f.field.getAnnotation(Parameter.class).hidden())
                 .map(f -> summary(f.field, f.instance))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
