@@ -17,7 +17,7 @@ public class ArgumentSummaryTest {
     public void testArgumentSummaryForDefaultArguments() throws Exception {
         TestParameters programArguments = new TestParameters();
         programArguments.required = "req";
-        programArguments.setPrivateOptional("opt");;
+        programArguments.setPrivateOptional("opt");
         String parameterSummary = ArgumentSummary.createParameterSummary(programArguments);
         assertThat(parameterSummary).contains("-r: " + programArguments.required);
         assertThat(parameterSummary).contains("-o: " + programArguments.getPrivateOptional());
@@ -45,6 +45,16 @@ public class ArgumentSummaryTest {
         assertThat(parameterSummary).contains("-p");
         assertThat(parameterSummary).contains("-x");
         assertThat(parameterSummary).doesNotContain("delegate");
+    }
+
+    @Test
+    public void testArgumentSummaryForHiddenParameter() throws Exception {
+        Object programArguments = new Object(){
+            @Parameter(hidden = true)
+            private int hidden;
+        };
+        String parameterSummary = ArgumentSummary.createParameterSummary(programArguments);
+        assertThat(parameterSummary).isEmpty();
     }
 
     public static class RecursiveDelegates implements Arguments{
