@@ -1,16 +1,26 @@
 package no.spk.faktura.input;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.of;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Holder på jdbcUrl angitt fra kommandolinje eller spk.properties, med ";appName=applikasjonsavn" på slutten,
  * samt brukernavn og passord for databasen hentet fra samme konfigurasjonskilde.
+ * Støtter kun jdbcurl med formatet {@code jdbc:jtds:sybase://<server>:<port>/<database>}.
  * @author Snorre E. Brekke - Computas
  */
 public class JdbcProperties {
+    private static final Pattern URL_PATTERN = Pattern.compile("^jdbc:jtds:sybase://(\\w+?):(\\w+?)/(\\w+?)$");
+
     private final String url;
     private final String brukernavn;
     private final String passord;
+    private final String server;
+    private final String port;
+    private final String database;
 
     public JdbcProperties(String applikasjonsnavn, String jdbcUrl, String brukernavn, String passord) {
         requireNonNull(applikasjonsnavn, "applikasjonsnavn kan ikke være null");
@@ -20,6 +30,10 @@ public class JdbcProperties {
         this.url = jdbcUrl + ";appName=" + applikasjonsnavn;
         this.brukernavn = brukernavn;
         this.passord = passord;
+        final Matcher urlMatcher = getMatcher(jdbcUrl);
+        this.server = urlMatcher.group(1);
+        this.port = urlMatcher.group(2);
+        this.database = urlMatcher.group(3);
     }
 
     /**
@@ -43,8 +57,37 @@ public class JdbcProperties {
         return passord;
     }
 
+    /**
+     * @return server fra url
+     */
+    public String server() {
+        return server;
+    }
+
+    /**
+     * @return port fra url
+     */
+    public String port() {
+        return port;
+    }
+
+    /**
+     * @return databasenavn fra url
+     */
+    public String database() {
+        return database;
+    }
+
     @Override
     public String toString() {
         return "Url: " + url + " - brukernavn: " + brukernavn;
+    }
+
+    private Matcher getMatcher(String jdbcUrl) {
+        return of(jdbcUrl)
+                .map(URL_PATTERN::matcher)
+                .filter(Matcher::find)
+                .orElseThrow(() -> new IllegalArgumentException(jdbcUrl + " er ikke en lovlig jdbc-url. " +
+                        "Url må ha formatet 'jdbc:jtds:sybase://<server>:<port>/<database>'."));
     }
 }
