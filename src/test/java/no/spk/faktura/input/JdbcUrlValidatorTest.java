@@ -19,11 +19,26 @@ public class JdbcUrlValidatorTest {
     }
 
     @Test
+    public void skalGodtaJtdsJdbcUrlMedPunktum() {
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK");
+    }
+
+    @Test
     public void skalAvviseUfullstendigUrl() {
         e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
         e.expectMessage(parameterNavn);
-        e.expectMessage("må inneholde en gyldig JDBC-url på formen 'jdbc:<subprotocol>:<subname>'");
+        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
+
+        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt");
+    }
+
+    @Test
+    public void skalAvviseUrlMedApplikjasjonsnavn() {
+        e.expect(ParameterException.class);
+        final String parameterNavn = "yadayada";
+        e.expectMessage(parameterNavn);
+        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
 
         new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:");
     }
