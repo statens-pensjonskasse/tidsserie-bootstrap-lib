@@ -2,9 +2,9 @@ package no.spk.faktura.input;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.of;
+import static no.spk.faktura.input.JdbcUrlValidator.URL_PATTERN;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Holder på jdbcUrl angitt fra kommandolinje eller spk.properties, med ";appName=applikasjonsavn" på slutten,
@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
  * @author Snorre E. Brekke - Computas
  */
 public class JdbcProperties {
-    private static final Pattern URL_PATTERN = Pattern.compile("^jdbc:jtds:sybase://(\\w+?):(\\w+?)/(\\w+?)$");
-
     private final String url;
     private final String brukernavn;
     private final String passord;
