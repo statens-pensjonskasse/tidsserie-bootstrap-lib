@@ -1,6 +1,6 @@
 # faktura-boostrap-lib
-Kode som brukes av samtlige faktura-batcher for *å starte* (boostrap) fra kommandolinja. 
+Kode som brukes av samtlige faktura-batcher for *Ã¥ starte* (boostrap) fra kommandolinja. 
  
-Omfatter programparameter håndtering og batch-timeout. 
+Omfatter programparameter hÃ¥ndtering og batch-timeout. 
 
-Dette repoet skal *ikke* benyttes som søppelfylling for alt som tilsynelatende kan gjenbrukes mellom batcher.
+Dette repoet skal *ikke* benyttes som sÃ¸ppelfylling for alt som tilsynelatende kan gjenbrukes mellom batcher.
