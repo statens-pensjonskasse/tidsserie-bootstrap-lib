@@ -65,7 +65,7 @@ public class InvalidParameterException extends RuntimeException {
             for (int i = 0; i < grupper ; i++) {
                 gruppeMatch[i] = matcher.group(i + 1);
             }
-            return Optional.of(String.format(oversattMelding, gruppeMatch));
+            return Optional.of(String.format(oversattMelding, (Object[])gruppeMatch));
         }
         return Optional.empty();
     }
