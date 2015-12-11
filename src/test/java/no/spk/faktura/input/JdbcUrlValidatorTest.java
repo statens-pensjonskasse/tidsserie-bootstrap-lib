@@ -11,7 +11,7 @@ public class JdbcUrlValidatorTest {
 
     /**
      * Ok, negativ test av alle mulige feil verdiar er ikkje realistisk men la oss no iallefall
-     * verifisere at URLen vi oftast forventar å støte på blir godtatt av valideringa.
+     * verifisere at URLen vi oftast forventar Ã¥ stÃ¸te pÃ¥ blir godtatt av valideringa.
      */
     @Test
     public void skalGodtaJtdsJdbcUrl() {
@@ -28,7 +28,7 @@ public class JdbcUrlValidatorTest {
         e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
         e.expectMessage(parameterNavn);
-        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
+        e.expectMessage(" mÃ¥ inneholde en gyldig JDBC-url pÃ¥ formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
 
         new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt");
     }
@@ -38,7 +38,7 @@ public class JdbcUrlValidatorTest {
         e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
         e.expectMessage(parameterNavn);
-        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
+        e.expectMessage(" mÃ¥ inneholde en gyldig JDBC-url pÃ¥ formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
 
         new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:");
     }

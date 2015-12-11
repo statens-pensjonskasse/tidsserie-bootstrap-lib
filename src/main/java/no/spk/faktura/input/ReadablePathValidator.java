@@ -9,7 +9,7 @@ import com.beust.jcommander.ParameterException;
 public class ReadablePathValidator implements IValueValidator<Path> {
     @Override
     public void validate(final String name, final Path value) throws ParameterException {
-        //Files.exists(value) viser seg å returnerer false i noen tilfeller  der file.exists returnerer true.
+        //Files.exists(value) viser seg Ã¥ returnerer false i noen tilfeller  der file.exists returnerer true.
         if (!value.toFile().exists()) {
             throw new ParameterException(
                     "Filen "

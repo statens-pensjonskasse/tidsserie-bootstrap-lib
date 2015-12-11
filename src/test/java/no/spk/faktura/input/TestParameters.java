@@ -15,7 +15,7 @@ public class TestParameters implements Arguments {
     boolean hjelp;
 
     @Parameter(names = { "-r" },
-            description = "Påkrevd",
+            description = "PÃ¥krevd",
             required = true)
     String required;
 

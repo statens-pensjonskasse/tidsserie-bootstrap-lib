@@ -21,7 +21,7 @@ public class JdbcParametersPostValidation {
     }
 
     static String feilmelding() {
-        return "Både -jdbcUrl, -jdbcBrukernavn og -jdbcPassordfil må ha en verdi dersom et eller flere av parameterne har fått angitt en verdi";
+        return "BÃ¥de -jdbcUrl, -jdbcBrukernavn og -jdbcPassordfil mÃ¥ ha en verdi dersom et eller flere av parameterne har fÃ¥tt angitt en verdi";
     }
 
     private boolean alleDatabaseArgumenterAngitt(final JdbcParameters programArguments) {

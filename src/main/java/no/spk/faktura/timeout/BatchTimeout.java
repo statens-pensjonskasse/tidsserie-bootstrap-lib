@@ -8,19 +8,19 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 /**
- * BatchTimeout brukes for å styre når batchen skal stoppes, dersom den tar for lang tid.
+ * BatchTimeout brukes for Ã¥ styre nÃ¥r batchen skal stoppes, dersom den tar for lang tid.
  *
  * <p>
- * Det brukes to tidsaspekter for å bestemme timeout: <br>
+ * Det brukes to tidsaspekter for Ã¥ bestemme timeout: <br>
  * Timeout oppgitt i antall sekunder,
- * og timeout gitt som et absolutt tidspunkt på dagen når batchen skal stoppe.
+ * og timeout gitt som et absolutt tidspunkt pÃ¥ dagen nÃ¥r batchen skal stoppe.
  * </p>
  * <p>
- * BatchTimeout beregner minste timeout for batchen basert på disse to tids-verdiene, beregnet
+ * BatchTimeout beregner minste timeout for batchen basert pÃ¥ disse to tids-verdiene, beregnet
  * fra tidspunktet BatchTimeout blir konstruert.
- * Dvs. at klokka for timeout kan begynne å løpe før batchen starter, dersom BatchTimeout
- * blir initsialisert før batchen er startet. Dette bør ikke være noe stort problem i praksis,
- * da presisjonen på timeout er "best-effort".
+ * Dvs. at klokka for timeout kan begynne Ã¥ lÃ¸pe fÃ¸r batchen starter, dersom BatchTimeout
+ * blir initsialisert fÃ¸r batchen er startet. Dette bÃ¸r ikke vÃ¦re noe stort problem i praksis,
+ * da presisjonen pÃ¥ timeout er "best-effort".
  * </p>
  * @author Snorre E. Brekke - Computas
  */
@@ -33,23 +33,23 @@ public class BatchTimeout {
     private Optional<Long> timeStarted = empty();
 
     /**
-     * Opppretter batch-timeout for en batch. Timeout som brukes ved kjøring
-     * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved å kalle {@link #start()}.
-     * @param maxRuntime maks tid batchen kan kjøre
-     * @param latestEndtime siste tidspunkt batchen kan kjøre til. Dersom dette i praksis resulterer
-     * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra LocalTime.now().
+     * Opppretter batch-timeout for en batch. Timeout som brukes ved kjÃ¸ring
+     * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved Ã¥ kalle {@link #start()}.
+     * @param maxRuntime maks tid batchen kan kjÃ¸re
+     * @param latestEndtime siste tidspunkt batchen kan kjÃ¸re til. Dersom dette i praksis resulterer
+     * i et kortere tidsintervall enn {@code timeout} sÃ¥ blir timeout for batcehn kalkulert utifra LocalTime.now().
      */
     public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime) {
         this(maxRuntime, latestEndtime, new DefaultTimeProvider());
     }
 
     /**
-     * Opppretter batch-timeout for en batch. Timeout som brukes ved kjøring
-     * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved å kalle {@link #start()}.
-     * @param maxRuntime maks tid batchen kan kjøre
-     * @param latestEndtime siste tidspunkt batchen kan kjøre til. Dersom dette i praksis resulterer
-     * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra LocalTime.now().
-     * @param timeProvider gir mulighet til å overstyre hvordan BatchTimeout finner nårværende tid og systemklokke.
+     * Opppretter batch-timeout for en batch. Timeout som brukes ved kjÃ¸ring
+     * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved Ã¥ kalle {@link #start()}.
+     * @param maxRuntime maks tid batchen kan kjÃ¸re
+     * @param latestEndtime siste tidspunkt batchen kan kjÃ¸re til. Dersom dette i praksis resulterer
+     * i et kortere tidsintervall enn {@code timeout} sÃ¥ blir timeout for batcehn kalkulert utifra LocalTime.now().
+     * @param timeProvider gir mulighet til Ã¥ overstyre hvordan BatchTimeout finner nÃ¥rvÃ¦rende tid og systemklokke.
      */
     public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime, TimeProvider timeProvider) {
         this.maxRuntime = maxRuntime;
@@ -58,9 +58,9 @@ public class BatchTimeout {
     }
 
     /**
-     * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}.
+     * Starter klokka for timeout. Denne metoden mÃ¥ kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}.
      * @return this for chaining
-     * @throws IllegalStateException dersom denne metoden kalles før mer enn én gang.
+     * @throws IllegalStateException dersom denne metoden kalles fÃ¸r mer enn Ã©n gang.
      * @see #isStarted()
      */
     public BatchTimeout start() {
@@ -82,20 +82,20 @@ public class BatchTimeout {
     }
 
     /**
-     * @return Returnerer gjenværende tidsintervall for batchen.
-     * @throws IllegalStateException dersom denne metoden kalles før {@link #start} er blitt kalt
+     * @return Returnerer gjenvÃ¦rende tidsintervall for batchen.
+     * @throws IllegalStateException dersom denne metoden kalles fÃ¸r {@link #start} er blitt kalt
      */
     public Duration timeRemaining() {
         return Duration.ofMillis(timeStarted() + timeout - timeProvider.currentMillies());
     }
 
     private Long timeStarted() {
-        return timeStarted.orElseThrow(() -> new IllegalStateException("BatchTimeout er ikke startet. Vennligst kall metoden #start() først."));
+        return timeStarted.orElseThrow(() -> new IllegalStateException("BatchTimeout er ikke startet. Vennligst kall metoden #start() fÃ¸rst."));
     }
 
     /**
-     * @return true dersom kjøretid for batchen har oversteget timeoutverdien til BatchTimeout
-     * @throws IllegalStateException dersom denne metoden kalles før {@link #start} er blitt kalt
+     * @return true dersom kjÃ¸retid for batchen har oversteget timeoutverdien til BatchTimeout
+     * @throws IllegalStateException dersom denne metoden kalles fÃ¸r {@link #start} er blitt kalt
      */
     public boolean isComplete() {
         return (timeProvider.currentMillies() - timeStarted()) >= timeout;

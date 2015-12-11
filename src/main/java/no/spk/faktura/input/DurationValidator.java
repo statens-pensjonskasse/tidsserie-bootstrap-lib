@@ -11,6 +11,6 @@ public class DurationValidator implements IParameterValidator {
     @Override
     public void validate(String name, String value) throws ParameterException {
         DurationUtil.convert(value)
-                .orElseThrow(() -> new ParameterException("'" + name + "': mÂ bestÂ av 4 siffer pÂ formatet HHmm (fant " + value + ")."));
+                .orElseThrow(() -> new ParameterException("'" + name + "': m√• best√• av 4 siffer p√• formatet HHmm (fant " + value + ")."));
     }
 }

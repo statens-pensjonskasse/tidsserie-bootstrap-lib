@@ -12,7 +12,7 @@ import com.beust.jcommander.ParameterException;
  * Util-klasse med metoden {@link #create} som produserer @{link T} fra en array med {@code String[]}
  *
  * @author Snorre E. Brekke - Computas
- * @param <T> Typen som lages av ProgramArgumentsFactory. Klassen må ha en no-args konstruktør.
+ * @param <T> Typen som lages av ProgramArgumentsFactory. Klassen mÃ¥ ha en no-args konstruktÃ¸r.
  */
 public class ProgramArgumentsFactory<T extends Arguments> {
 
@@ -21,7 +21,7 @@ public class ProgramArgumentsFactory<T extends Arguments> {
 
     /**
      * Oppretter et nytt ProgramArgumentsFactory uten postvalidering.
-     * @param programArgumentClass Typen som ProgramArgumentsFactory skal kunne lage via {@link #create(String...)}. Klassen må ha en no-args konstruktør.
+     * @param programArgumentClass Typen som ProgramArgumentsFactory skal kunne lage via {@link #create(String...)}. Klassen mÃ¥ ha en no-args konstruktÃ¸r.
      */
     public ProgramArgumentsFactory(Class<T> programArgumentClass) {
         this(programArgumentClass, null);
@@ -29,11 +29,11 @@ public class ProgramArgumentsFactory<T extends Arguments> {
 
     /**
      * Oppretter et nytt ProgramArgumentsFactory med angitt postvalidator.
-     * @param programArgumentClass Typen som ProgramArgumentsFactory skal kunne lage via {@link #create(String...)}. Klassen må ha en no-args konstruktør.
-     * @param postValidator validator som kjører etter {@link JCommander} har fullført validering.
+     * @param programArgumentClass Typen som ProgramArgumentsFactory skal kunne lage via {@link #create(String...)}. Klassen mÃ¥ ha en no-args konstruktÃ¸r.
+     * @param postValidator validator som kjÃ¸rer etter {@link JCommander} har fullfÃ¸rt validering.
      */
     public ProgramArgumentsFactory(Class<T> programArgumentClass, PostParseValidator<T> postValidator) {
-        requireNonNull(programArgumentClass, "programArgumentClass kan ikke være null");
+        requireNonNull(programArgumentClass, "programArgumentClass kan ikke vÃ¦re null");
         this.programArgumentClass = programArgumentClass;
         this.postValidator = ofNullable(postValidator);
     }
@@ -47,7 +47,7 @@ public class ProgramArgumentsFactory<T extends Arguments> {
      * @return ProgramArguments generert fra args, dersom de kunne opprettes. {@link Optional#empty} dersom det er valideringsfeil.
      * @see JCommander
      * @throws InvalidParameterException dersom det er feil i ett eller flere argumenter
-     * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren ønsker hjelp
+     * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren Ã¸nsker hjelp
      */
     public T create(final String... args) {
         return create(true, args);
@@ -56,15 +56,15 @@ public class ProgramArgumentsFactory<T extends Arguments> {
     /**
      * Transformerer argumentene til {@link T}, see {@link #create(String...)} for mer informasjon.
      * <p>
-     * Denne metoden gjør det mulig å parse uten å utføre postvalidering av parameterne mot hverandre og er kun synlig
+     * Denne metoden gjÃ¸r det mulig Ã¥ parse uten Ã¥ utfÃ¸re postvalidering av parameterne mot hverandre og er kun synlig
      * for intern bruk og tester.
      *
-     * @param postValider <code>true</code> dersom postvalidering av parameterne skal uytføres, <code>false</code> ellers
+     * @param postValider <code>true</code> dersom postvalidering av parameterne skal uytfÃ¸res, <code>false</code> ellers
      * @param args        typisk hentet fra main(String... args)
      * @return ProgramArguments generert fra args, dersom de kunne opprettes
      * @see #create(String...)
      * @throws InvalidParameterException dersom det er feil i ett eller flere argumenter
-     * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren ønsker hjelp
+     * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren Ã¸nsker hjelp
      */
     public T create(final boolean postValider, final String... args) {
         final T arguments = createProgramArguments();
@@ -89,7 +89,7 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         try {
             return programArgumentClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalArgumentException(programArgumentClass.getClass() + " mangler en tilgjengelig no-args konstruktør.");
+            throw new IllegalArgumentException(programArgumentClass.getClass() + " mangler en tilgjengelig no-args konstruktÃ¸r.");
         }
     }
 

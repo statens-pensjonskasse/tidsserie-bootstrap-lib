@@ -10,18 +10,18 @@ import java.util.Optional;
  */
 public class PassordfilLeser {
     /**
-     * Lese inn passordet frå den angitte passordfila.
+     * Lese inn passordet frÃ¥ den angitte passordfila.
      * <p>
-     * Linjer som startar med # blir ignorert og whitespace før og etter passordet, inkludert linjeskift,
-     * blir også ignorert.
+     * Linjer som startar med # blir ignorert og whitespace fÃ¸r og etter passordet, inkludert linjeskift,
+     * blir ogsÃ¥ ignorert.
      * <p>
-     * Om fila inneheld fleire linjer blir alt anna enn første linje ignorert.
+     * Om fila inneheld fleire linjer blir alt anna enn fÃ¸rste linje ignorert.
      * <p>
-     * NB: Vær varsom med å eksponere passordverdien, det må ikkje eksponerast via loggar eller feilmeldingar seinare i
-     * batchen. Unngå kall til denne metoda frå anna enn testcase eller internt i profilen.
+     * NB: VÃ¦r varsom med Ã¥ eksponere passordverdien, det mÃ¥ ikkje eksponerast via loggar eller feilmeldingar seinare i
+     * batchen. UnngÃ¥ kall til denne metoda frÃ¥ anna enn testcase eller internt i profilen.
      *
      * @param path stien til fila som inneheld passordet som skal lesast inn
-     * @return passordet frå passordfila.
+     * @return passordet frÃ¥ passordfila.
      */
     public static String readPassword(final Path path) {
         try {
@@ -37,7 +37,7 @@ public class PassordfilLeser {
             throw new IllegalArgumentException(
                     "Lesing av passordfilen "
                             + path.toAbsolutePath()
-                            + " feilet, verifiser at den er lesbar for brukeren/gruppen batchen kjører som"
+                            + " feilet, verifiser at den er lesbar for brukeren/gruppen batchen kjÃ¸rer som"
             );
         }
     }
