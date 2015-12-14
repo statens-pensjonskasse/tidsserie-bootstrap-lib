@@ -3,21 +3,21 @@ package no.spk.faktura.timeout;
 import java.time.LocalTime;
 
 /**
- * TimeProvider gir fra seg nåværende LocalTime og nåværende millisekunder, og brukes av BatchTimeout.
- * Kan brukes til å kontrollere om tid er løpende eller statisk avhenig av implementasjon.
+ * TimeProvider gir fra seg nÃ¥vÃ¦rende LocalTime og nÃ¥vÃ¦rende millisekunder, og brukes av BatchTimeout.
+ * Kan brukes til Ã¥ kontrollere om tid er lÃ¸pende eller statisk avhenig av implementasjon.
  * @see BatchTimeout
  * @author Snorre E. Brekke - Computas
  */
 public interface TimeProvider {
     /**
-     * @return LocalTime som representerer 'nå' tidspunkt. Må ikke være virkelig tid.
-     * Det er rimelig å anta at delta mellom to påfølgende kall til currentTime() &gt;= 0;
+     * @return LocalTime som representerer 'nÃ¥' tidspunkt. MÃ¥ ikke vÃ¦re virkelig tid.
+     * Det er rimelig Ã¥ anta at delta mellom to pÃ¥fÃ¸lgende kall til currentTime() &gt;= 0;
      */
     LocalTime currentTime();
 
     /**
-     * @return antall millisekunder som representerer 'nå'.
-     * Det er rimelig å anta at delta mellom to påfølgende kall til currentMillies() &gt;= 0;
+     * @return antall millisekunder som representerer 'nÃ¥'.
+     * Det er rimelig Ã¥ anta at delta mellom to pÃ¥fÃ¸lgende kall til currentMillies() &gt;= 0;
      */
     long currentMillies();
 }

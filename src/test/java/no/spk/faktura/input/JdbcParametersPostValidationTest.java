@@ -37,7 +37,7 @@ public class JdbcParametersPostValidationTest {
     }
     /**
      * Verifiserer at alle eller ingen av JDBC-argumenta til batchen har ein verdi ettersom vi automatisk byttar
-     * profil til kommandolinjeprofil når eit av dei er satt.
+     * profil til kommandolinjeprofil nÃ¥r eit av dei er satt.
      */
     @Test
     public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCURLErAngitt() {
@@ -51,7 +51,7 @@ public class JdbcParametersPostValidationTest {
 
     /**
      * Verifiserer at alle eller ingen av JDBC-argumenta til batchen har ein verdi ettersom vi automatisk byttar
-     * profil til kommandolinjeprofil når eit av dei er satt.
+     * profil til kommandolinjeprofil nÃ¥r eit av dei er satt.
      */
     @Test
     public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCBrukernavnErAngitt() {
@@ -65,7 +65,7 @@ public class JdbcParametersPostValidationTest {
 
     /**
      * Verifiserer at alle eller ingen av JDBC-argumenta til batchen har ein verdi ettersom vi automatisk byttar
-     * profil til kommandolinjeprofil når eit av dei er satt.
+     * profil til kommandolinjeprofil nÃ¥r eit av dei er satt.
      */
     @Test
     public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCPassordfilErAngitt() throws IOException {

@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 /**
- * BatchId er en streng basert på {@link LocalDateTime} ned sekunddeler på formen <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
+ * BatchId er en streng basert pÃ¥ {@link LocalDateTime} ned sekunddeler pÃ¥ formen <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
  *
  * @author Snorre E. Brekke - Computas
  */
@@ -29,7 +29,7 @@ public class BatchId {
     /**
      * Gir LocalDateTime som BatchId er generert utifra.
      * <p><b>Merk:</b> dersom {@code batchId1.equals(batchId2)} betyr <i>ikke</i> det at {@code batchId1.asLocalDateTime().equals(batchId2.asLocalDateTime())} fordi
-     * genereringstidspunktet kan avvike på millisekundnivå.</p>
+     * genereringstidspunktet kan avvike pÃ¥ millisekundnivÃ¥.</p>
      *
      * @return LocalDateTime BatchId er generert utifra.
      */
@@ -38,11 +38,11 @@ public class BatchId {
     }
 
     /**
-     * Konverterer en batch-streng til en ny BatchId-instans. Metoden forutsetter at {@code batchId} er på formatet <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
+     * Konverterer en batch-streng til en ny BatchId-instans. Metoden forutsetter at {@code batchId} er pÃ¥ formatet <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
      *
-     * @param prefix prefix på batchid
-     * @param batchId streng på formatet <i>prefixyyyy-MM-dd_HH-mm-ss-SS</i>.
-     * @return ny BatchID-instans basert på {@code batchId}
+     * @param prefix prefix pÃ¥ batchid
+     * @param batchId streng pÃ¥ formatet <i>prefixyyyy-MM-dd_HH-mm-ss-SS</i>.
+     * @return ny BatchID-instans basert pÃ¥ {@code batchId}
      */
     public static BatchId fromString(String prefix, String batchId) {
         return new BatchId(prefix, LocalDateTime.parse(batchId.substring(prefix.length()), dateTimeFormatter));
@@ -74,10 +74,10 @@ public class BatchId {
     }
 
     /**
-     * Returnerer stien til den unike underkatalogen for batchkøyringa som batchid representerer.
+     * Returnerer stien til den unike underkatalogen for batchkÃ¸yringa som batchid representerer.
      * <p>
      * Metoda returnerer kun stien til katalogen, veirifsering eller opprettelse av katalogen
-     * er det opp til klientane av denne metoda å ta seg av.
+     * er det opp til klientane av denne metoda Ã¥ ta seg av.
      *
      * @param utKatalog batchens ut-katalog, den nye katalogen blir ein underkatalog til denne
      * @return stien til den nye arbeidskatalogen

@@ -5,9 +5,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * API for å hente ut jdbc-parametere fra program-argumenter angitt fra kommandolinjen.
+ * API for Ã¥ hente ut jdbc-parametere fra program-argumenter angitt fra kommandolinjen.
  * @author Snorre E. Brekke - Computas
- * @see JdbcParametersDelegate - kan brukes for å komponere JdbcParameters for {@link ProgramArgumentsFactory}-object
+ * @see JdbcParametersDelegate - kan brukes for Ã¥ komponere JdbcParameters for {@link ProgramArgumentsFactory}-object
  * @see ProgramArgumentsFactory
  * @see Arguments
  */
@@ -26,9 +26,9 @@ public interface JdbcParameters {
     Optional<String> getJdbcBrukernavn();
 
     /**
-     * Alle paramerterne må være angitt for att Jdbc-config skal fungere. Denne metoden brukes av
-     * {@link JdbcParametersPostValidation} for å see om alle eller ingen av parameterene er angitt.
-     * @return en strøm av {@link #getJdbcUrl()}, {@link #getJdbcPassordfil()} og {@link #getJdbcBrukernavn()}
+     * Alle paramerterne mÃ¥ vÃ¦re angitt for att Jdbc-config skal fungere. Denne metoden brukes av
+     * {@link JdbcParametersPostValidation} for Ã¥ see om alle eller ingen av parameterene er angitt.
+     * @return en strÃ¸m av {@link #getJdbcUrl()}, {@link #getJdbcPassordfil()} og {@link #getJdbcBrukernavn()}
      */
     Stream<Optional<?>> jdbcParameters();
 }

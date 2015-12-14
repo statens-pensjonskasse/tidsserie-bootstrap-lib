@@ -3,7 +3,7 @@ package no.spk.faktura.input;
 import com.beust.jcommander.ParameterException;
 
 /**
- * Brukes av {@link ProgramArgumentsFactory} for å utføre postparse-validering.
+ * Brukes av {@link ProgramArgumentsFactory} for Ã¥ utfÃ¸re postparse-validering.
  * @author Snorre E. Brekke - Computas
  */
 @FunctionalInterface

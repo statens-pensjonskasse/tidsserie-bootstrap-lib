@@ -11,15 +11,15 @@ import java.util.Optional;
 
 
 /**
- * Util-klasse for å jobbe med {@link Duration}.
+ * Util-klasse for Ã¥ jobbe med {@link Duration}.
  * @author Snorre E. Brekke - Computas
  */
 public final class DurationUtil {
     private DurationUtil(){}
 
     /**
-     * Konverterer en streng på formatet HHmm til en Optional {@link Duration}.
-     * @param duration streng på formated HHmm
+     * Konverterer en streng pÃ¥ formatet HHmm til en Optional {@link Duration}.
+     * @param duration streng pÃ¥ formated HHmm
      * @return {@code duration} som en {@link Duration}. {@link Optional#empty()} dersom {@code duration} paramteren ikke kan konverteres til en {@link Duration},
      * eller angitt verdi er negativ.
      */

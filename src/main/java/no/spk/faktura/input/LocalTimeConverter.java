@@ -11,7 +11,7 @@ import com.beust.jcommander.IStringConverter;
 
 /**
  * Konverterer et kommandolinjeargument til {@link LocalTime}.
- * Støtter formatene HHmm, HHmmss, HH:mm HH:mm:ss. Typisk ønsker vi å eksponere kun de to første i brukerveiledningen.
+ * StÃ¸tter formatene HHmm, HHmmss, HH:mm HH:mm:ss. Typisk Ã¸nsker vi Ã¥ eksponere kun de to fÃ¸rste i brukerveiledningen.
  * @author Snorre E. Brekke - Computas
  * @see com.beust.jcommander.JCommander
  */
@@ -20,7 +20,7 @@ public class LocalTimeConverter implements IStringConverter<LocalTime> {
     private static final DateTimeFormatter COMPACT_SECONDS_FORMATTER = DateTimeFormatter.ofPattern("HHmmss");
 
     /**
-     * Støtter formatene HHm, HHmmss HH:mm HH:mm:ss. Typisk ønsker vi å eksponere kun de to første i brukerveiledningen.
+     * StÃ¸tter formatene HHm, HHmmss HH:mm HH:mm:ss. Typisk Ã¸nsker vi Ã¥ eksponere kun de to fÃ¸rste i brukerveiledningen.
      * @param value Verdien som skal konverteres til {@link LocalTime}
      * @return {@code value} konvertert til {@link LocalTime}
      */

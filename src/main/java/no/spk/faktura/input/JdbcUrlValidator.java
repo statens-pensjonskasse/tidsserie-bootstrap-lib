@@ -6,7 +6,7 @@ import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.ParameterException;
 
 /**
- * Validator som grovvaliderer JDBC URLen som brukaren angit på kommandolinja.
+ * Validator som grovvaliderer JDBC URLen som brukaren angit pÃ¥ kommandolinja.
  * <p>
  * Valideringa verifiserer kun at URLen startar med jdbc:something:something:something, ikkje at det er JTDS, sybase osv.
  *
@@ -21,7 +21,7 @@ public class JdbcUrlValidator implements IParameterValidator {
             throw new ParameterException(
                     "Parameter " +
                             name +
-                            " må inneholde en gyldig JDBC-url på formen " +
+                            " mÃ¥ inneholde en gyldig JDBC-url pÃ¥ formen " +
                             "'jdbc:jtds:sybase://<server>:<port>/<database>'"
             );
         }
