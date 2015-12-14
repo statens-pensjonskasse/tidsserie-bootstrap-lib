@@ -3,8 +3,8 @@ package no.spk.faktura.timeout;
 import java.time.LocalTime;
 
 /**
- * Default implementasjon av TimeProvider. Bruker LocalTime.now() og System.currentMillies() til å bestemme tid.
- * Dette betyr at klasser som baserer seg på bruk av denne implementasjonen vil få forskjellig resultat for hvert kall til metodene.,
+ * Default implementasjon av TimeProvider. Bruker LocalTime.now() og System.currentMillies() til Ã¥ bestemme tid.
+ * Dette betyr at klasser som baserer seg pÃ¥ bruk av denne implementasjonen vil fÃ¥ forskjellig resultat for hvert kall til metodene.,
  * @author Snorre E. Brekke - Computas
  */
 public class DefaultTimeProvider implements TimeProvider{

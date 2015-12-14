@@ -12,8 +12,8 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
 
 /**
- * Util-klasse som bruker reflection for å lage en tekstlig oppsummering av innholdet i en klasse som
- * har {@link Parameter} annoteringer på felter i klassen. Felt annotert med {@link ParametersDelegate},
+ * Util-klasse som bruker reflection for Ã¥ lage en tekstlig oppsummering av innholdet i en klasse som
+ * har {@link Parameter} annoteringer pÃ¥ felter i klassen. Felt annotert med {@link ParametersDelegate},
  * vil rekursivt bli behandlet, og eventuelle felt annotert med {@link Parameter} under disse, vil bli inkludert i
  * oppsummeringen.
  *
@@ -25,13 +25,13 @@ public final class ArgumentSummary {
     }
 
     /**
-     * Lager en oppsummering i form av en streng som inneholder èn linje per {@link Parameter} felt i klassen.
+     * Lager en oppsummering i form av en streng som inneholder Ã¨n linje per {@link Parameter} felt i klassen.
      * <p>
      * Felt annotert med {@link ParametersDelegate},
      * vil rekursivt bli behandlet, og eventuelle felt annotert med {@link Parameter} under disse, vil bli inkludert i
      * oppsummeringen.
      * </p>
-     * Følgende {@link Parameter} felt  blir utelatt fra oppsummeringen:
+     * FÃ¸lgende {@link Parameter} felt  blir utelatt fra oppsummeringen:
      * <ul>
      * <li>
      * Felt som har verdi lik {@link Optional#empty()}.
@@ -41,8 +41,8 @@ public final class ArgumentSummary {
      * </li>
      * </ul>
      *
-     * @param programArguments instans av en klasse som har en eller flere {@link Parameter} annoteringer på felter
-     * @return en streng som inneholder èn linje per {@link Parameter} felt
+     * @param programArguments instans av en klasse som har en eller flere {@link Parameter} annoteringer pÃ¥ felter
+     * @return en streng som inneholder Ã¨n linje per {@link Parameter} felt
      */
     public static String createParameterSummary(Object programArguments) {
         return parameterFields(programArguments)

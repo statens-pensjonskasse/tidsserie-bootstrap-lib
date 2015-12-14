@@ -48,7 +48,7 @@ public class JdbcParametersDelegateTest {
     public void testFactoryForJdbcDelegateSkalValidereUrl() throws Exception {
         final Path expected = temp.newFile().toPath();
         exception.expect(InvalidParameterException.class);
-        exception.expectMessage("-jdbcUrl må inneholde en gyldig JDBC-url");
+        exception.expectMessage("-jdbcUrl mÃ¥ inneholde en gyldig JDBC-url");
         ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         factory.create(
                 "-jdbcUrl", "feilurl",

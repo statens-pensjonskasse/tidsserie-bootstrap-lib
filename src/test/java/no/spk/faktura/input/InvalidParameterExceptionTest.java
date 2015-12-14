@@ -24,13 +24,13 @@ public class InvalidParameterExceptionTest {
 
     @Test
     public void testOversettPaakrevd() throws Exception {
-        exception.expectMessage("Feil i parameter: Følgende valg er påkrevd: -r");
+        exception.expectMessage("Feil i parameter: FÃ¸lgende valg er pÃ¥krevd: -r");
         factory.create();
     }
 
     @Test
     public void testGjentatteValg() throws Exception {
-        exception.expectMessage("Kan bare angi -r én gang.");
+        exception.expectMessage("Kan bare angi -r Ã©n gang.");
         factory.create("-r", "abc", "-r", "abc");
     }
 

@@ -39,7 +39,7 @@ public class PassordfilLeserTest {
     }
 
     /**
-     * Verifiserer at passordet blir henta frå første linje i passordfila som ikkje er kommentarlinjer.
+     * Verifiserer at passordet blir henta frÃ¥ fÃ¸rste linje i passordfila som ikkje er kommentarlinjer.
      */
     @Test
     public void skalHentePassordFrafoersteInnholdslinje() throws IOException {

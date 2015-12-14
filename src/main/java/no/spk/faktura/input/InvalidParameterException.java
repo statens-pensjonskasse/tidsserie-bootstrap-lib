@@ -20,9 +20,9 @@ public class InvalidParameterException extends RuntimeException {
     private final String usageString;
 
     private static final List<Function<String, Optional<String>>> oversettere = Arrays.asList(
-            (s) -> oversett("^The following options? (?:is|are) required: (.+)$", "Følgende valg er påkrevd: %s", s),
+            (s) -> oversett("^The following options? (?:is|are) required: (.+)$", "FÃ¸lgende valg er pÃ¥krevd: %s", s),
             (s) -> oversett("^Found the option (.+) multiple times$", "Fant valget %s flere ganger.", s),
-            (s) -> oversett("^Can only specify option (.+) once.$", "Kan bare angi %s én gang.", s),
+            (s) -> oversett("^Can only specify option (.+) once.$", "Kan bare angi %s Ã©n gang.", s),
             (s) -> oversett("^Expected a value after parameter (.+)$", "Forventet en verdi etter %s.", s),
             (s) -> oversett("^Expected (.+) values after (.+)$", "Forventet %s verdier etter %s.", s),
             (s) -> oversett("^Invalid value for (.+) parameter. Allowed values:(.+)$", "Ugyldig verdi for %s. Lovlige verdier: %s.", s),

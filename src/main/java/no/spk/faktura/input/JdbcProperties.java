@@ -7,9 +7,9 @@ import static no.spk.faktura.input.JdbcUrlValidator.URL_PATTERN;
 import java.util.regex.Matcher;
 
 /**
- * Holder på jdbcUrl angitt fra kommandolinje eller spk.properties, med ";appName=applikasjonsavn" på slutten,
+ * Holder pÃ¥ jdbcUrl angitt fra kommandolinje eller spk.properties, med ";appName=applikasjonsavn" pÃ¥ slutten,
  * samt brukernavn og passord for databasen hentet fra samme konfigurasjonskilde.
- * Støtter kun jdbcurl med formatet {@code jdbc:jtds:sybase://<server>:<port>/<database>}.
+ * StÃ¸tter kun jdbcurl med formatet {@code jdbc:jtds:sybase://<server>:<port>/<database>}.
  * @author Snorre E. Brekke - Computas
  */
 public class JdbcProperties {
@@ -21,10 +21,10 @@ public class JdbcProperties {
     private final String database;
 
     public JdbcProperties(String applikasjonsnavn, String jdbcUrl, String brukernavn, String passord) {
-        requireNonNull(applikasjonsnavn, "applikasjonsnavn kan ikke være null");
-        requireNonNull(jdbcUrl, "jdbcUrl kan ikke være null");
-        requireNonNull(brukernavn, "brukernavn kan ikke være null");
-        requireNonNull(passord, "passord kan ikke være null");
+        requireNonNull(applikasjonsnavn, "applikasjonsnavn kan ikke vÃ¦re null");
+        requireNonNull(jdbcUrl, "jdbcUrl kan ikke vÃ¦re null");
+        requireNonNull(brukernavn, "brukernavn kan ikke vÃ¦re null");
+        requireNonNull(passord, "passord kan ikke vÃ¦re null");
         this.url = jdbcUrl + ";appName=" + applikasjonsnavn;
         this.brukernavn = brukernavn;
         this.passord = passord;
@@ -86,6 +86,6 @@ public class JdbcProperties {
                 .map(URL_PATTERN::matcher)
                 .filter(Matcher::find)
                 .orElseThrow(() -> new IllegalArgumentException(jdbcUrl + " er ikke en lovlig jdbc-url. " +
-                        "Url må ha formatet 'jdbc:jtds:sybase://<server>:<port>/<database>'."));
+                        "Url mÃ¥ ha formatet 'jdbc:jtds:sybase://<server>:<port>/<database>'."));
     }
 }

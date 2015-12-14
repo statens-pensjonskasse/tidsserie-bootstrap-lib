@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
 /**
- * Denne klassen er siste utvei for å avslutt batchen dersom den bruker for lang tid.
+ * Denne klassen er siste utvei for Ã¥ avslutt batchen dersom den bruker for lang tid.
  *
  * @author Snorre E. Brekke - Computas
  */
@@ -19,10 +19,10 @@ public class BatchTimeoutTaskrunner {
     }
 
     /**
-     * Planlegger en oppgave som vil kjøre {@code terminationCallback} etter BatchTimeout pluss {@code timeoutDelay}.
+     * Planlegger en oppgave som vil kjÃ¸re {@code terminationCallback} etter BatchTimeout pluss {@code timeoutDelay}.
      *
-     * @param timeoutDelay verdi som skal legges til BatchTimeout før terminationCallback bli kjørt. Nyttig for å la andre timeout-mekanismer
-     * få tid til å agere først.
+     * @param timeoutDelay verdi som skal legges til BatchTimeout fÃ¸r terminationCallback bli kjÃ¸rt. Nyttig for Ã¥ la andre timeout-mekanismer
+     * fÃ¥ tid til Ã¥ agere fÃ¸rst.
      * @param terminationCallback callback som skal kalles ved timeout
      * @return {@link ScheduledFuture} som representerer den planlagte oppgaven.
      * @see BatchTimeout
