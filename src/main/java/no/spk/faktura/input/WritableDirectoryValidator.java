@@ -1,5 +1,6 @@
 package no.spk.faktura.input;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -34,7 +35,12 @@ public class WritableDirectoryValidator implements IValueValidator<Path> {
             );
         }
 
-        if (!Files.isWritable(value)) {
+        try {
+            //Vi kan ikke stole på at Files.isWriteable(path) rapporterer riktig, og skriver derfor heller en testfil for å sjekke skrivetilgang
+            final Path testWriteFile = value.resolve("testwrite.txt");
+            Files.createFile(testWriteFile);
+            Files.delete(testWriteFile);
+        } catch (IOException e) {
             throw new ParameterException(
                     "Katalogen "
                             + value
