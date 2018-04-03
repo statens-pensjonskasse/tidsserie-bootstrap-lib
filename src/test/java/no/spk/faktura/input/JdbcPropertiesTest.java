@@ -15,7 +15,7 @@ public class JdbcPropertiesTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testPropertiesBlirSatt() throws Exception {
+    public void skal_godta_sybase_url() {
         final String navn = "navn";
         final String url = "jdbc:jtds:sybase://SERVER1:PORT2/DATABASE3";
         final String brukeravn = "brukeravn";
@@ -30,11 +30,25 @@ public class JdbcPropertiesTest {
     }
 
     @Test
-    public void testUgyldigJdbcUrlFeiler() throws Exception {
+    public void skal_godta_mssql_url() {
+        final String navn = "navn";
+        final String url = "jdbc:jtds:sqlserver://SERVER1:PORT2/DATABASE3";
+        final String brukeravn = "brukeravn";
+        final String passord = "passord";
+        JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
+        assertThat(properties.url()).isEqualTo(url + ";appName=navn");
+        assertThat(properties.brukernavn()).isEqualTo(brukeravn);
+        assertThat(properties.passord()).isEqualTo(passord);
+        assertThat(properties.server()).isEqualTo("SERVER1");
+        assertThat(properties.port()).isEqualTo("PORT2");
+        assertThat(properties.database()).isEqualTo("DATABASE3");
+    }
+
+    @Test
+    public void testUgyldigJdbcUrlFeiler() {
         final String url = "ulovlig-url";
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("ulovlig-url");
         new JdbcProperties("navn", url, "brukeravn", "passord");
     }
-
 }
