@@ -49,6 +49,9 @@ public class JdbcParametersDelegateTest {
         final Path expected = temp.newFile().toPath();
         exception.expect(InvalidParameterException.class);
         exception.expectMessage("-jdbcUrl må inneholde en gyldig JDBC-url");
+        exception.expectMessage( "jdbc:jtds:sybase://<server>:<port>/<database>");
+        exception.expectMessage( "jdbc:jtds:sqlserver://<server>:<port>/<database>");
+
         ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         factory.create(
                 "-jdbcUrl", "feilurl",
