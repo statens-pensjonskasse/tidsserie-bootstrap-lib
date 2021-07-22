@@ -2,9 +2,9 @@ package no.spk.faktura.input;
 
 import java.util.Optional;
 
-import com.beust.jcommander.IStringConverter;
+import picocli.CommandLine.ITypeConverter;
 
-public class OptionalStringConverter implements IStringConverter<Optional<String>> {
+public class OptionalStringConverter implements ITypeConverter<Optional<String>> {
     @Override
     public Optional<String> convert(final String s) {
         return Optional.ofNullable(s);

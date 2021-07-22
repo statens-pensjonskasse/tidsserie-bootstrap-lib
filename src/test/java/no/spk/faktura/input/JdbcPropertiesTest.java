@@ -6,9 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class JdbcPropertiesTest {
 
     @Rule

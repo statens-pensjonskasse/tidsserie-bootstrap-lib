@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 /**
  * BatchId er en streng basert på {@link LocalDateTime} ned sekunddeler på formen <i>batch_yyyy-MM-dd_HH-mm-ss-SS</i>.
- *
- * @author Snorre E. Brekke - Computas
  */
 public class BatchId {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss-SS");
@@ -28,8 +26,8 @@ public class BatchId {
 
     /**
      * Gir LocalDateTime som BatchId er generert utifra.
-     * <p><b>Merk:</b> dersom {@code batchId1.equals(batchId2)} betyr <i>ikke</i> det at {@code batchId1.asLocalDateTime().equals(batchId2.asLocalDateTime())} fordi
-     * genereringstidspunktet kan avvike på millisekundnivå.</p>
+     * <p><b>Merk:</b> dersom {@code batchId1.equals(batchId2)} betyr <i>ikke</i> det at {@code batchId1.asLocalDateTime().equals(batchId2.asLocalDateTime())}
+     * fordi genereringstidspunktet kan avvike på millisekundnivå.</p>
      *
      * @return LocalDateTime BatchId er generert utifra.
      */

@@ -10,9 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class LocalTimeConverterTest {
 
     private LocalTimeConverter converter;
@@ -25,7 +22,7 @@ public class LocalTimeConverterTest {
     }
 
     @Test
-    public void testLegalConversions() throws Exception {
+    public void testLegalConversions() {
         assertThat(converter.convert("23:00")).isEqualTo(LocalTime.of(23, 0));
         assertThat(converter.convert("2300")).isEqualTo(LocalTime.of(23, 0));
         assertThat(converter.convert("23:00:00")).isEqualTo(LocalTime.of(23, 0, 0));
@@ -33,13 +30,13 @@ public class LocalTimeConverterTest {
     }
 
     @Test
-    public void testOneDigitHourFails() throws Exception {
+    public void testOneDigitHourFails() {
         exception.expect(DateTimeException.class);
         converter.convert("3:00");
     }
 
     @Test
-    public void testOneDigitHourWithoutColonFails() throws Exception {
+    public void testOneDigitHourWithoutColonFails() {
         exception.expect(DateTimeException.class);
         converter.convert("300");
     }

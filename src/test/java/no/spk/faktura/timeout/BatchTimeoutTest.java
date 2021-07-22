@@ -1,6 +1,5 @@
 package no.spk.faktura.timeout;
 
-
 import static java.time.Duration.of;
 import static java.time.Duration.ofMinutes;
 import static java.time.temporal.ChronoUnit.MILLIS;
@@ -14,29 +13,25 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class BatchTimeoutTest {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testNewBatchTimeoutIsNotStarted() throws Exception {
+    public void testNewBatchTimeoutIsNotStarted() {
         BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         assertThat(batchTimeout.isStarted()).isFalse();
     }
 
     @Test
-    public void testStartedBatchTimeoutIsStarted() throws Exception {
+    public void testStartedBatchTimeoutIsStarted() {
         BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         batchTimeout.start();
         assertThat(batchTimeout.isStarted()).isTrue();
     }
 
-
     @Test
-    public void testBatchTimeoutStartedTwiceThrowsException() throws Exception {
+    public void testBatchTimeoutStartedTwiceThrowsException() {
         exception.expectMessage("BatchTimeout er er allerede startet.");
         BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         batchTimeout.start();
@@ -44,42 +39,42 @@ public class BatchTimeoutTest {
     }
 
     @Test
-    public void testIsCompleteCalledOnUnstartedTimeoutThrowsException() throws Exception {
+    public void testIsCompleteCalledOnUnstartedTimeoutThrowsException() {
         exception.expectMessage("BatchTimeout er ikke startet.");
         BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         batchTimeout.isComplete();
     }
 
     @Test
-    public void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() throws Exception {
+    public void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() {
         exception.expectMessage("BatchTimeout er ikke startet.");
         BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         batchTimeout.timeRemaining();
     }
 
     @Test
-    public void testNoTimeoutCompletes() throws Exception {
+    public void testNoTimeoutCompletes() {
         BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(0));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testSomeTimeoutSameEndtimeAsStarttimeCompletes() throws Exception {
+    public void testSomeTimeoutSameEndtimeAsStarttimeCompletes() {
         BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(1));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testZeroTimeoutSomeEndtimeCompletes() throws Exception {
+    public void testZeroTimeoutSomeEndtimeCompletes() {
         BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:01", ofMinutes(0));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testEqualTimeoutAndEndtimeWillEventuallyComplete() throws Exception {
+    public void testEqualTimeoutAndEndtimeWillEventuallyComplete() {
         BatchTimeout batchTimeout = createBatchTimeoutAndStart("03:00", "03:01", ofMinutes(1));
         ConstantTimeProvider timeProvider = (ConstantTimeProvider) batchTimeout.getTimeProvider();
 
@@ -92,19 +87,18 @@ public class BatchTimeoutTest {
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
-    private BatchTimeout createBatchTimeoutAndStart(String startTime, String latestEndTime, Duration timeout) {
+    private BatchTimeout createBatchTimeoutAndStart(final String startTime, final String latestEndTime, final Duration timeout) {
         return createBatchTimeout(startTime, latestEndTime, timeout).start();
     }
 
-    private BatchTimeout createBatchTimeout(String startTime, String latestEndTime, Duration timeout) {
+    private BatchTimeout createBatchTimeout(final String startTime, final String latestEndTime, final Duration timeout) {
         LocalTime localStartTime = LocalTime.parse(startTime);
         LocalTime localEndTime = LocalTime.parse(latestEndTime);
         TimeProvider timeProvider = getNowTimeProvider(localStartTime);
         return new BatchTimeout(timeout, localEndTime, timeProvider);
     }
 
-    private ConstantTimeProvider getNowTimeProvider(LocalTime startTime) {
+    private ConstantTimeProvider getNowTimeProvider(final LocalTime startTime) {
         return new ConstantTimeProvider(startTime, 0);
     }
-
 }

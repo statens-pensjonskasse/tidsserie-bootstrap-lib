@@ -6,7 +6,7 @@ public class ConstantTimeProvider implements TimeProvider {
     LocalTime time;
     long millies;
 
-    public ConstantTimeProvider(LocalTime time, long millies) {
+    public ConstantTimeProvider(final LocalTime time, final long millies) {
         this.time = time;
         this.millies = millies;
     }
@@ -21,11 +21,11 @@ public class ConstantTimeProvider implements TimeProvider {
         return millies;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(final LocalTime time) {
         this.time = time;
     }
 
-    public void setMillies(long millies) {
+    public void setMillies(final long millies) {
         this.millies = millies;
     }
 }

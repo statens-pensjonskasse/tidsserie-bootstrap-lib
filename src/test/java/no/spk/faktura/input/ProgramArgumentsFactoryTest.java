@@ -6,17 +6,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.beust.jcommander.ParameterException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import picocli.CommandLine;
+import picocli.CommandLine.ParameterException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class ProgramArgumentsFactoryTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -53,7 +51,7 @@ public class ProgramArgumentsFactoryTest {
     public void testUnknownOptionThrows() throws Exception {
         exception.expect(InvalidParameterException.class);
         exception.expectMessage("-unknown");
-        factory.create("-unknown");
+        factory.create("-r", "test", "-unknown");
     }
 
     @Test
@@ -89,26 +87,40 @@ public class ProgramArgumentsFactoryTest {
 
     @Test
     public void testPostValidationCanBeSkipped() throws Exception {
+        final TestParameters test = new TestParameters();
+        final CommandLine cmd = new CommandLine(test);
         factory = new ProgramArgumentsFactory<>(TestParameters.class,
-                (a) -> {throw new ParameterException("skal ikke kastes");});
+                (a) -> {
+                    throw new ParameterException(cmd, "skal ikke kastes");
+                });
         factory.create(false, "-r", "test");
     }
 
     @Test
     public void testPostValidationCanThrow() throws Exception {
+        final TestParameters test = new TestParameters();
+        final CommandLine cmd = new CommandLine(test);
+
         exception.expect(InvalidParameterException.class);
         final String expectedMessage = "skal kastes";
         exception.expectMessage(expectedMessage);
         factory = new ProgramArgumentsFactory<>(TestParameters.class,
-                (a) -> { throw new ParameterException(expectedMessage);});
+                (a) -> {
+                    throw new ParameterException(cmd, expectedMessage);
+                });
         factory.create(true, "-r", "test");
     }
 
     @Test
     public void testPostValidationShouldNotRunWhenHelpIsRequested() throws Exception {
+        final TestParameters test = new TestParameters();
+        final CommandLine cmd = new CommandLine(test);
+
         exception.expect(UsageRequestedException.class);
         factory = new ProgramArgumentsFactory<>(TestParameters.class,
-                (a) -> { throw new ParameterException("skal ikke kastes");});
+                (a) -> {
+                    throw new ParameterException(cmd, "skal ikke kastes");
+                });
         factory.create(true, "-h");
     }
 }

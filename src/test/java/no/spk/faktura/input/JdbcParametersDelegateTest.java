@@ -5,15 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
 
-import com.beust.jcommander.ParametersDelegate;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import picocli.CommandLine.Mixin;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class JdbcParametersDelegateTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -22,8 +19,8 @@ public class JdbcParametersDelegateTest {
     public final TemporaryFolder temp = new TemporaryFolder();
 
     @Test
-    public void testFactoryForJdbcDelegateForTomArgs() throws Exception {
-        ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
+    public void testFactoryForJdbcDelegateForTomArgs() {
+        final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         final TestArgument testArgument = factory.create();
         assertThat(testArgument.jdbcParams.jdbcUrl.isPresent()).isFalse();
         assertThat(testArgument.jdbcParams.jdbcBrukernavn.isPresent()).isFalse();
@@ -34,7 +31,7 @@ public class JdbcParametersDelegateTest {
     public void testFactoryForJdbcDelegateParsesArgs() throws Exception {
         final Path expected = temp.newFile().toPath();
 
-        ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
+        final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         final TestArgument testArgument = factory.create(
                 "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
                 "-jdbcBrukernavn", "user",
@@ -48,11 +45,10 @@ public class JdbcParametersDelegateTest {
     public void testFactoryForJdbcDelegateSkalValidereUrl() throws Exception {
         final Path expected = temp.newFile().toPath();
         exception.expect(InvalidParameterException.class);
-        exception.expectMessage("-jdbcUrl må inneholde en gyldig JDBC-url");
-        exception.expectMessage( "jdbc:jtds:sybase://<server>:<port>/<database>");
-        exception.expectMessage( "jdbc:jtds:sqlserver://<server>:<port>/<database>");
+        exception.expectMessage("Feil i parameter: Parameter -jdbcUrl må inneholde en gyldig JDBC-url på formen " +
+                "'jdbc:jtds:sybase://<server>:<port>/<database>' eller 'jdbc:jtds:sqlserver://<server>:<port>/<database>', du sendte inn feilurl");
 
-        ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
+        final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         factory.create(
                 "-jdbcUrl", "feilurl",
                 "-jdbcBrukernavn", "user",
@@ -60,18 +56,18 @@ public class JdbcParametersDelegateTest {
     }
 
     @Test
-    public void testFactoryForJdbcDelegateSkalValiderePassordfilsti() throws Exception {
+    public void testFactoryForJdbcDelegateSkalValiderePassordfilsti() {
         exception.expect(InvalidParameterException.class);
         exception.expectMessage("missing eksisterer ikke");
-        ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
+        final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         factory.create(
                 "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
                 "-jdbcBrukernavn", "user",
                 "-jdbcPassordfil", "missing");
     }
 
-    public static class TestArgument implements Arguments{
-        @ParametersDelegate
+    public static class TestArgument implements Arguments {
+        @Mixin
         JdbcParametersDelegate jdbcParams = new JdbcParametersDelegate();
 
         @Override
@@ -79,5 +75,4 @@ public class JdbcParametersDelegateTest {
             return false;
         }
     }
-
 }

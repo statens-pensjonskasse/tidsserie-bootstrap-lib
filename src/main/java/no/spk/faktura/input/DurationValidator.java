@@ -1,16 +1,12 @@
 package no.spk.faktura.input;
 
+import picocli.CommandLine;
+import picocli.CommandLine.ParameterException;
 
-import com.beust.jcommander.IParameterValidator;
-import com.beust.jcommander.ParameterException;
-
-/**
- * @author Snorre E. Brekke - Computas
- */
-public class DurationValidator implements IParameterValidator {
-    @Override
-    public void validate(String name, String value) throws ParameterException {
+public class DurationValidator {
+    public void validate(final String name, final String value, final CommandLine cmd) throws ParameterException {
         DurationUtil.convert(value)
-                .orElseThrow(() -> new ParameterException("'" + name + "': må bestå av 4 siffer på formatet HHmm (fant " + value + ")."));
+                .orElseThrow(() -> new ParameterException(cmd,
+                        "'" + name + "': må bestå av 4 siffer på formatet HHmm (fant " + value + ")."));
     }
 }

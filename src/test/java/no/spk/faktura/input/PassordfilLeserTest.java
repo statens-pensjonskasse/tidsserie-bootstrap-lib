@@ -1,8 +1,6 @@
 package no.spk.faktura.input;
 
-import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,9 +11,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class PassordfilLeserTest {
 
     @Rule

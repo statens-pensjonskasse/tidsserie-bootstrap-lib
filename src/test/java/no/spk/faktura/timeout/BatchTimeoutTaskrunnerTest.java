@@ -1,6 +1,5 @@
 package no.spk.faktura.timeout;
 
-
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofNanos;
 import static java.time.LocalTime.now;
@@ -11,12 +10,9 @@ import java.util.concurrent.ScheduledFuture;
 
 import org.junit.Test;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class BatchTimeoutTaskrunnerTest {
     /*
-     * Verifisrer at callback-metode blir brukt
+     * Verifiserer at callback-metode blir brukt
      */
     @Test
     public void testTerminationTimeout() throws Exception {

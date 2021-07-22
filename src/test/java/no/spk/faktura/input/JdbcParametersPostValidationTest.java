@@ -4,18 +4,24 @@ import static java.util.Optional.of;
 
 import java.io.IOException;
 
-import com.beust.jcommander.ParameterException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
+import picocli.CommandLine;
+import picocli.CommandLine.ParameterException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class JdbcParametersPostValidationTest {
+
+    private TestParameters parameters;
+
+    @Before
+    public void setup() {
+        parameters = new TestParameters();
+        new CommandLine(parameters).parseArgs("-r", "test", "-d", "0200", "-url", "jdbc:jtds:sqlserver://jalla:1234/testdb", "-t", "0200", "-pw", "README.md");
+    }
 
     @Rule
     public final ExpectedException e = ExpectedException.none();
@@ -77,7 +83,7 @@ public class JdbcParametersPostValidationTest {
         valider(arguments);
     }
 
-    private void valider(JdbcParameters programArguments) {
-        validator.validate(programArguments);
+    private void valider(final JdbcParameters programArguments) {
+        validator.validate(programArguments, parameters.spec.commandLine());
     }
 }
