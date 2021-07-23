@@ -11,14 +11,6 @@ import picocli.CommandLine.ParameterException;
 
 public class PathStringValidatorTest {
 
-    private TestParameters parameters;
-
-    @Before
-    public void setup() {
-        parameters = new TestParameters();
-        new CommandLine(parameters).parseArgs("-r", "test", "-d", "0200", "-url", "jdbc:jtds:sqlserver://jalla:1234/testdb", "-t", "0200", "-pw", "README.md");
-    }
-
     private static final String SOME_PARAM = "-param";
 
     @Rule
@@ -27,21 +19,21 @@ public class PathStringValidatorTest {
     PathStringValidator validator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         validator = new PathStringValidator();
     }
 
     @Test
-    public void testIncorrectPathThrowsException() throws Exception {
+    public void testIncorrectPathThrowsException() {
         assumeTrue( isWindows() );
         exception.expect(ParameterException.class);
         exception.expectMessage(SOME_PARAM + " er ikke en gyldig filbane");
-        validator.validate(SOME_PARAM, "H\"", parameters.spec.commandLine());
+        validator.validate(SOME_PARAM, "H\"");
     }
 
     @Test
-    public void testCorrectPathValidatesWithoutException() throws Exception {
-        validator.validate(SOME_PARAM, "H:", parameters.spec.commandLine());
+    public void testCorrectPathValidatesWithoutException() {
+        validator.validate(SOME_PARAM, "H:");
     }
 
     private boolean isWindows() {

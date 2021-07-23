@@ -5,9 +5,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import picocli.CommandLine;
-import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Spec;
 
 /**
  * Kompositt-klasse som kan brukes ved implementering av {@link Arguments} til bruk
@@ -28,9 +26,6 @@ import picocli.CommandLine.Spec;
  */
 public class JdbcParametersDelegate implements JdbcParameters {
 
-    @Spec
-    CommandSpec spec;
-
     Optional<Path> jdbcPassordfil = Optional.empty();
     Optional<String> jdbcUrl = Optional.empty();
     Optional<String> jdbcBrukernavn = Optional.empty();
@@ -40,7 +35,7 @@ public class JdbcParametersDelegate implements JdbcParameters {
             description = "JDBC URL for databasetilkoblingen som batchen skal bruke."
     )
     public void setJdbcUrl(final String value) {
-        new JdbcUrlValidator().validate("-jdbcUrl", value, spec.commandLine());
+        new JdbcUrlValidator().validate("-jdbcUrl", value);
         jdbcUrl = new OptionalStringConverter().convert(value);
     }
 
@@ -50,7 +45,7 @@ public class JdbcParametersDelegate implements JdbcParameters {
     )
     public void setJdbcPassordfil(final String value) {
         final Optional<Path> optionalPath = new OptionalPathConverter().convert(value);
-        new PathValidator().validate("-jdbcPassordfil", optionalPath, spec.commandLine());
+        new PathValidator().validate("-jdbcPassordfil", optionalPath);
         jdbcPassordfil = optionalPath;
     }
 

@@ -8,14 +8,14 @@ import picocli.CommandLine;
 import picocli.CommandLine.ParameterException;
 
 public class PathValidator {
-    public void validate(final String name, final Optional<Path> value, final CommandLine cmd) throws ParameterException {
+    public void validate(final String name, final Optional<Path> value) throws ParameterException {
         if (!value.isPresent()) {
             return;
         }
 
         if (!Files.exists(value.get())) {
             throw new ParameterException(
-                    cmd,
+                    new CommandLine(new DummyCommand()),
                     "Filen "
                             + value.get()
                             + " eksisterer ikke, verifiser at du har angitt rett filnavn og -sti."
@@ -24,7 +24,7 @@ public class PathValidator {
 
         if (!Files.isReadable(value.get())) {
             throw new ParameterException(
-                    cmd,
+                    new CommandLine(new DummyCommand()),
                     "Filen "
                             + value.get()
                             + " er ikke lesbar for batchen, verifiser at batchbrukeren har lesetilgang til filen."

@@ -13,10 +13,10 @@ import picocli.CommandLine.ParameterException;
 public class JdbcUrlValidator {
     static final Pattern URL_PATTERN = Pattern.compile("^jdbc:jtds:(?:sybase|sqlserver)://([^:]+):([^/]+)/([^;]+)$");
 
-    public void validate(final String name, final String value, final CommandLine cmd) throws ParameterException {
+    public void validate(final String name, final String value) throws ParameterException {
         if (!URL_PATTERN.matcher(value).find()) {
             throw new ParameterException(
-                    cmd,
+                    new CommandLine(new DummyCommand()),
                     String.format(
                             "Parameter %s må inneholde en gyldig JDBC-url på formen '%s' eller '%s', du sendte inn %s",
                             name,

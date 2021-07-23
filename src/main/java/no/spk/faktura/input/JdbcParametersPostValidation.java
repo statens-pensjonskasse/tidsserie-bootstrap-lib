@@ -15,9 +15,9 @@ public class JdbcParametersPostValidation {
      * @param parameters kommandolinjeargument som skal sjekkes for konsistens
      * @throws ParameterException dersom bare deler (en eller to) av jdbcUrl, jdbcPassordfil og jdbcBruker er angitt.
      */
-    public void validate(final JdbcParameters parameters, final CommandLine cmd) throws ParameterException {
+    public void validate(final JdbcParameters parameters) throws ParameterException {
         if (!ingenDatabaseArgumenterAngitt(parameters) && !alleDatabaseArgumenterAngitt(parameters)) {
-            throw new ParameterException(cmd, feilmelding());
+            throw new ParameterException(new CommandLine(new DummyCommand()), feilmelding());
         }
     }
 

@@ -13,14 +13,14 @@ public class BatchId {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss-SS");
 
     private final String id;
-    private LocalDateTime localDateTime;
+    private final LocalDateTime localDateTime;
 
-    public BatchId(String prefix, LocalDateTime localDateTime) {
+    public BatchId(final String prefix, final LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
         this.id = prefix + dateTimeFormatter.format(localDateTime);
     }
 
-    public static Pattern createBatchIdPattern(String batchIdPrefix) {
+    public static Pattern createBatchIdPattern(final String batchIdPrefix) {
         return Pattern.compile("^(" + batchIdPrefix + "\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}-\\d{2}-\\d{2})$");
     }
 
@@ -42,7 +42,7 @@ public class BatchId {
      * @param batchId streng på formatet <i>prefixyyyy-MM-dd_HH-mm-ss-SS</i>.
      * @return ny BatchID-instans basert på {@code batchId}
      */
-    public static BatchId fromString(String prefix, String batchId) {
+    public static BatchId fromString(final String prefix, final String batchId) {
         return new BatchId(prefix, LocalDateTime.parse(batchId.substring(prefix.length()), dateTimeFormatter));
     }
 
@@ -57,7 +57,7 @@ public class BatchId {
      * @param o objektet som skal sammenlignes med denn BatchId-instansen
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof BatchId)) return false;
 

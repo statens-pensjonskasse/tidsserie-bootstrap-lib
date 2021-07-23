@@ -5,15 +5,10 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Spec;
 
 @Command(name = "tests", mixinStandardHelpOptions = true, version = "0.1")
 public class TestParameters implements Arguments {
-
-    @Spec
-    CommandSpec spec;
 
     String duration;
     Optional<String> url = Optional.empty();
@@ -32,7 +27,7 @@ public class TestParameters implements Arguments {
             description = "Duration"
     )
     public void setDuration(final String value) {
-        new DurationValidator().validate("kjøretid", value, spec.commandLine());
+        new DurationValidator().validate("kjøretid", value);
         duration = value;
     }
 
@@ -41,7 +36,7 @@ public class TestParameters implements Arguments {
             description = "Optional url"
     )
     public void setUrl(final String value) {
-        new JdbcUrlValidator().validate("url", value, spec.commandLine());
+        new JdbcUrlValidator().validate("url", value);
         url = new OptionalStringConverter().convert(value);
     }
 
@@ -49,7 +44,7 @@ public class TestParameters implements Arguments {
             description = "Localtime"
     )
     public void setTime(final String value) {
-        new LocalTimeValidator().validate("time", value, spec.commandLine());
+        new LocalTimeValidator().validate("time", value);
         time = new LocalTimeConverter().convert(value);
     }
 
@@ -59,7 +54,7 @@ public class TestParameters implements Arguments {
     )
     public void setPassword(final String value) {
         final Optional<Path> path = new OptionalPathConverter().convert(value);
-        new PathValidator().validate("password", path, spec.commandLine());
+        new PathValidator().validate("password", path);
         password = path;
     }
 

@@ -17,7 +17,7 @@ public class LocalTimeConverterTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new LocalTimeConverter();
     }
 

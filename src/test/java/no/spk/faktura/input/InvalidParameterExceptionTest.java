@@ -21,49 +21,49 @@ public class InvalidParameterExceptionTest {
     }
 
     @Test
-    public void testOversettPaakrevd() throws Exception {
+    public void testOversettPaakrevd() {
         exception.expectMessage("Feil i parameter: Følgende valg er påkrevd: -r");
         factory.create();
     }
 
     @Test
-    public void testGjentatteValg() throws Exception {
+    public void testGjentatteValg() {
         exception.expectMessage("Feil i parameter: Kan bare angi -r én gang.");
         factory.create("-r", "abc", "-r", "abc");
     }
 
     @Test
-    public void testFeilEnum() throws Exception {
+    public void testFeilEnum() {
         exception.expectMessage("Feil i parameter: Ugyldig verdi for -e. Lovlige verdier: [A, B].");
         factory.create("-r", "abc", "-e", "X");
     }
 
     @Test
-    public void testForeventetVerdi() throws Exception {
+    public void testForeventetVerdi() {
         exception.expectMessage("Feil i parameter: Forventet en verdi etter -r.");
         factory.create("-r");
     }
 
     @Test
-    public void testMainParameterOversatt() throws Exception {
+    public void testMainParameterOversatt() {
         exception.expectMessage("Feil i parameter: Uventet parameter 'what'.");
         factory.create("-r", "abc", "what");
     }
 
     @Test
-    public void testFlereVerdierForEnParameterMangler() throws Exception {
+    public void testFlereVerdierForEnParameterMangler() {
         exception.expectMessage("Feil i parameter: Forventet 2 verdier etter -m.");
         factory.create("-r", "abc", "-m", "x");
     }
 
     @Test
-    public void testFeilIntegerVerdi() throws Exception {
+    public void testFeilIntegerVerdi() {
         exception.expectMessage("Feil i parameter: \"-o\": Kunne ikke konvertere \"x\" til et heltall.");
         factory.create("-r", "abc", "-o", "x");
     }
 
     @Test
-    public void testUkjentValg() throws Exception {
+    public void testUkjentValg() {
         exception.expectMessage("Feil i parameter: Ukjent valg: -u");
         factory.create("-r", "test", "-u");
     }
@@ -82,14 +82,14 @@ public class InvalidParameterExceptionTest {
         TestEnum enumverdi;
     }
 
-    private static class ArgumentsAdapter implements Arguments{
+    private static class ArgumentsAdapter implements Arguments {
         @Override
         public boolean hjelp() {
             return false;
         }
     }
 
-    private enum TestEnum{
+    private enum TestEnum {
         A, B
     }
 }

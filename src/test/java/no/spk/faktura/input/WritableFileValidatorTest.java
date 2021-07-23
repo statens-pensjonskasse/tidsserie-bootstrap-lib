@@ -13,18 +13,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
-import picocli.CommandLine;
 import picocli.CommandLine.ParameterException;
 
 public class WritableFileValidatorTest {
-
-    private TestParameters parameters;
-
-    @Before
-    public void setup() {
-        parameters = new TestParameters();
-        new CommandLine(parameters).parseArgs("-r", "test", "-d", "0200", "-url", "jdbc:jtds:sqlserver://jalla:1234/testdb", "-t", "0200", "-pw", "README.md");
-    }
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -38,15 +29,15 @@ public class WritableFileValidatorTest {
     WritableFileValidator validator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         validator = new WritableFileValidator();
     }
 
     @Test
-    public void testManglendeStiFeiler() throws Exception {
+    public void testManglendeStiFeiler() {
         exception.expect(ParameterException.class);
         exception.expectMessage("eksisterer ikke");
-        validator.validate("bane", Paths.get("nowhere"), parameters.spec.commandLine());
+        validator.validate("bane", Paths.get("nowhere"));
     }
 
     @Test
@@ -54,7 +45,7 @@ public class WritableFileValidatorTest {
         final File file = temp.newFolder(testName.getMethodName());
         exception.expect(ParameterException.class);
         exception.expectMessage("peker ikke til en fil");
-        validator.validate("bane", file.toPath(), parameters.spec.commandLine());
+        validator.validate("bane", file.toPath());
     }
 
     @Test
@@ -64,7 +55,7 @@ public class WritableFileValidatorTest {
         assertThat(file.setReadable(false)).isTrue();
         exception.expect(ParameterException.class);
         exception.expectMessage("er ikke lesbar for batchen");
-        validator.validate("bane", file.toPath(), parameters.spec.commandLine());
+        validator.validate("bane", file.toPath());
         assertThat(file.setReadable(true)).isTrue();
     }
 
@@ -75,16 +66,16 @@ public class WritableFileValidatorTest {
         assertThat(file.setWritable(false)).isTrue();
         exception.expect(ParameterException.class);
         exception.expectMessage("er ikke skrivbar for batchen");
-        validator.validate("bane", file.toPath(), parameters.spec.commandLine());
+        validator.validate("bane", file.toPath());
         assertThat(file.setWritable(true)).isTrue();
     }
 
     @Test
-    public void testOptionalFilManglerSkalIkkeFeile() throws Exception {
-        new OptionalWritableFileValidator().validate("bane", Optional.empty(), parameters.spec.commandLine());
+    public void testOptionalFilManglerSkalIkkeFeile() {
+        new OptionalWritableFileValidator().validate("bane", Optional.empty());
     }
 
-    private boolean isWindowsOs(){
-        return System.getProperty( "os.name" ).startsWith( "Windows" );
+    private boolean isWindowsOs() {
+        return System.getProperty("os.name").startsWith("Windows");
     }
 }

@@ -14,20 +14,12 @@ import picocli.CommandLine.ParameterException;
 
 public class PathValidatorTest {
 
-    private TestParameters parameters;
-
-    @Before
-    public void setup() {
-        parameters = new TestParameters();
-        new CommandLine(parameters).parseArgs("-r", "test", "-d", "0200", "-url", "jdbc:jtds:sqlserver://jalla:1234/testdb", "-t", "0200", "-pw", "README.md");
-    }
-
     @Rule
     public final ExpectedException e = ExpectedException.none();
 
     @Test
     public void skalIgnorereManglendeVerdi() {
-        new PathValidator().validate("path", empty(), parameters.spec.commandLine());
+        new PathValidator().validate("path", empty());
     }
 
     @Test
@@ -35,6 +27,6 @@ public class PathValidatorTest {
         e.expect(ParameterException.class);
         e.expectMessage("Filen yadayada.whatever eksisterer ikke");
         e.expectMessage("verifiser at du har angitt rett filnavn og -sti");
-        new PathValidator().validate("path", of("yadayada.whatever").map(Paths::get), parameters.spec.commandLine());
+        new PathValidator().validate("path", of("yadayada.whatever").map(Paths::get));
     }
 }

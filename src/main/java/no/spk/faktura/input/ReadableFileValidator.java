@@ -7,12 +7,12 @@ import picocli.CommandLine;
 import picocli.CommandLine.ParameterException;
 
 public class ReadableFileValidator {
-    public void validate(final String name, final Path value, final CommandLine cmd) throws ParameterException {
-        new ReadablePathValidator().validate(name, value, cmd);
+    public void validate(final String name, final Path value) throws ParameterException {
+        new ReadablePathValidator().validate(name, value);
 
         if (!Files.isRegularFile(value)) {
             throw new ParameterException(
-                    cmd,
+                    new CommandLine(new DummyCommand()),
                     "Stien "
                             + value
                             + " peker ikke til en fil, verifiser at du har angitt rett filsti."

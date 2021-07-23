@@ -13,6 +13,7 @@ import org.junit.rules.ExternalResource;
  * støye til konsollen.
  */
 public class StandardOutputAndError extends ExternalResource {
+
     private ByteArrayOutputStream stderr = new ByteArrayOutputStream();
     private ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
@@ -20,7 +21,7 @@ public class StandardOutputAndError extends ExternalResource {
     private PrintStream oldStderror;
 
     @Override
-    protected void before() throws Throwable {
+    protected void before() {
         oldStdout = System.out;
         oldStderror = System.err;
 

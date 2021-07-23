@@ -10,18 +10,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
-import picocli.CommandLine;
 import picocli.CommandLine.ParameterException;
 
 public class JdbcParametersPostValidationTest {
-
-    private TestParameters parameters;
-
-    @Before
-    public void setup() {
-        parameters = new TestParameters();
-        new CommandLine(parameters).parseArgs("-r", "test", "-d", "0200", "-url", "jdbc:jtds:sqlserver://jalla:1234/testdb", "-t", "0200", "-pw", "README.md");
-    }
 
     @Rule
     public final ExpectedException e = ExpectedException.none();
@@ -84,6 +75,6 @@ public class JdbcParametersPostValidationTest {
     }
 
     private void valider(final JdbcParameters programArguments) {
-        validator.validate(programArguments, parameters.spec.commandLine());
+        validator.validate(programArguments);
     }
 }

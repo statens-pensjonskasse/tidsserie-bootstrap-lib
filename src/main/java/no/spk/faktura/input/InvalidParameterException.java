@@ -45,7 +45,7 @@ public class InvalidParameterException extends RuntimeException {
         return usageString;
     }
 
-    private static String hentMelding(ParameterException cause) {
+    private static String hentMelding(final ParameterException cause) {
         final String opprinneligMelding = cause.getMessage();
 
         return "Feil i parameter: " +
