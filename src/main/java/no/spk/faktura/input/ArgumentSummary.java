@@ -11,7 +11,7 @@ public final class ArgumentSummary {
         return
                 programArguments.argumenter()
                         .stream()
-                        .map(s -> String.format("\n- %s", s))
+                        .map(s -> String.format("\n-%s", s))
                         .collect(Collectors.joining(""))
                         + "\n\n";
     }
