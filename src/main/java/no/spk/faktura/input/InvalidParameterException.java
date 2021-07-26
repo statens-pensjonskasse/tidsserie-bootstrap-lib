@@ -19,6 +19,7 @@ public class InvalidParameterException extends RuntimeException {
 
     private static final List<Function<String, Optional<String>>> oversettere = Arrays.asList(
             (s) -> oversett("^Missing required options and parameters: (.+)$", "Følgende valg er påkrevd: %s", s),
+            (s) -> oversett("^Missing required options: (.+)$", "Følgende valg er påkrevd: %s", s),
             (s) -> oversett("^Missing required option: '(.+)=(.*)'$", "Følgende valg er påkrevd: %s", s),
             (s) -> oversett("^Found the option (.+) multiple times$", "Fant valget %s flere ganger.", s),
             (s) -> oversett("^option '(.+)' \\(.*\\) should be specified only once$", "Kan bare angi %s én gang.", s),
