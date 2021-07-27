@@ -4,51 +4,63 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.ParametersDelegate;
+import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Spec;
 
 /**
- * Kompositt-klasse som kan brukes ved implementering av  {@link Arguments} til bruk
+ * Kompositt-klasse som kan brukes ved implementering av {@link Arguments} til bruk
  * i {@link ProgramArgumentsFactory}.
- * Annoter kompositt-feltet med {@link ParametersDelegate}.
+ * Annoter kompositt-feltet med {@link CommandLine.Mixin}.
  * <br>
  * Eks:
  * <pre>
  * <code>
- * public class MyArguments implements Arguments, JdbcParameters{
- *     {@literal @}ParametersDelegate
+ * public class MyArguments implements Arguments, JdbcParameters {
+ *     {@literal @}Mixin
  *      JdbcParametersDelegate jdbcParams = new JdbcParametersDelegate();
  *
  *      (...)
  *  }
  *  </code>
  * </pre>
- *
- * @author Snorre E. Brekke - Computas
  */
 public class JdbcParametersDelegate implements JdbcParameters {
-    @Parameter(
-            names = { "-jdbcUrl" },
-            description = "JDBC URL for databasetilkoblingen som batchen skal bruke.",
-            converter = OptionalStringConverter.class,
-            validateWith = JdbcUrlValidator.class
-    )
-    Optional<String> jdbcUrl = Optional.empty();
 
-    @Parameter(
-            names = { "-jdbcPassordfil" },
-            description = "Stien til filen som inneholder passordet for databasetilkoblingen",
-            converter = OptionalPathConverter.class,
-            validateValueWith = PathValidator.class
-    )
     Optional<Path> jdbcPassordfil = Optional.empty();
-
-    @Parameter(
-            names = { "-jdbcBrukernavn" },
-            description = "Brukernavnet for databasetilkoblingen",
-            converter = OptionalStringConverter.class
-    )
+    Optional<String> jdbcUrl = Optional.empty();
     Optional<String> jdbcBrukernavn = Optional.empty();
+
+    @Spec
+    CommandSpec spec;
+
+    @Option(
+            names = { "-jdbcUrl" },
+            description = "JDBC URL for databasetilkoblingen som batchen skal bruke."
+    )
+    public void setJdbcUrl(final String value) {
+        new JdbcUrlValidator().validate("-jdbcUrl", value, spec);
+        jdbcUrl = new OptionalStringConverter().convert(value);
+    }
+
+    @Option(
+            names = { "-jdbcPassordfil" },
+            description = "Stien til filen som inneholder passordet for databasetilkoblingen"
+    )
+    public void setJdbcPassordfil(final String value) {
+        final Optional<Path> optionalPath = new OptionalPathConverter().convert(value);
+        new PathValidator().validate("-jdbcPassordfil", optionalPath, spec);
+        jdbcPassordfil = optionalPath;
+    }
+
+    @Option(
+            names = { "-jdbcBrukernavn" },
+            description = "Brukernavnet for databasetilkoblingen"
+    )
+    public void setJdbcBrukernavn(final String value) {
+        jdbcBrukernavn = new OptionalStringConverter().convert(value);
+    }
 
     @Override
     public Optional<String> getJdbcUrl() {
@@ -68,17 +80,5 @@ public class JdbcParametersDelegate implements JdbcParameters {
     @Override
     public Stream<Optional<?>> jdbcParameters() {
         return Stream.of(jdbcUrl, jdbcBrukernavn, jdbcPassordfil);
-    }
-
-    public void setJdbcUrl(Optional<String> jdbcUrl) {
-        this.jdbcUrl = jdbcUrl;
-    }
-
-    public void setJdbcPassordfil(Optional<Path> jdbcPassordfil) {
-        this.jdbcPassordfil = jdbcPassordfil;
-    }
-
-    public void setJdbcBrukernavn(Optional<String> jdbcBrukernavn) {
-        this.jdbcBrukernavn = jdbcBrukernavn;
     }
 }

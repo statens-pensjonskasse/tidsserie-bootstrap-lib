@@ -4,9 +4,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-import com.beust.jcommander.IStringConverter;
+import picocli.CommandLine.ITypeConverter;
 
-public class OptionalPathConverter implements IStringConverter<Optional<Path>> {
+public class OptionalPathConverter implements ITypeConverter<Optional<Path>> {
     @Override
     public Optional<Path> convert(final String s) {
         return Optional.ofNullable(s).map(Paths::get);

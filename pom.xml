@@ -10,7 +10,7 @@
 
     <groupId>no.spk.pensjon.faktura</groupId>
     <artifactId>faktura-bootstrap-lib</artifactId>
-    <version>1.0.18</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <description>
@@ -25,6 +25,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <picocli.version>4.6.1</picocli.version>
     </properties>
 
     <build>
@@ -70,7 +73,7 @@
                             <artifactId>${project.artifactId}</artifactId>
                             <!-- NB: Ved binært-inkompatible endringar som fører til bump -->
                             <!-- i versjonsnummer på modulen må også den her bumpast opp -->
-                            <version>1.0.0</version>
+                            <version>2.0.0</version>
                         </dependency>
                     </oldVersion>
                     <newVersion>
@@ -138,8 +141,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
         </dependency>
         <!-- test -->
         <dependency>
@@ -167,9 +170,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.beust</groupId>
-                <artifactId>jcommander</artifactId>
-                <version>1.48</version>
+                <groupId>info.picocli</groupId>
+                <artifactId>picocli</artifactId>
+                <version>${picocli.version}</version>
             </dependency>
             <!-- test -->
             <dependency>

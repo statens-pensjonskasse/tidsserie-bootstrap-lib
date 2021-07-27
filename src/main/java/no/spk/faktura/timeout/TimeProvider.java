@@ -5,8 +5,8 @@ import java.time.LocalTime;
 /**
  * TimeProvider gir fra seg nåværende LocalTime og nåværende millisekunder, og brukes av BatchTimeout.
  * Kan brukes til å kontrollere om tid er løpende eller statisk avhenig av implementasjon.
+ *
  * @see BatchTimeout
- * @author Snorre E. Brekke - Computas
  */
 public interface TimeProvider {
     /**

@@ -2,7 +2,6 @@ package no.spk.faktura.input;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.of;
-import static no.spk.faktura.input.JdbcUrlValidator.URL_PATTERN;
 
 import java.util.regex.Matcher;
 
@@ -10,7 +9,6 @@ import java.util.regex.Matcher;
  * Holder på jdbcUrl angitt fra kommandolinje eller spk.properties, med ";appName=applikasjonsavn" på slutten,
  * samt brukernavn og passord for databasen hentet fra samme konfigurasjonskilde.
  * Støtter kun jdbcurl med formatet {@code jdbc:jtds:sybase://<server>:<port>/<database>}.
- * @author Snorre E. Brekke - Computas
  */
 public class JdbcProperties {
     private final String url;
@@ -20,7 +18,7 @@ public class JdbcProperties {
     private final String port;
     private final String database;
 
-    public JdbcProperties(String applikasjonsnavn, String jdbcUrl, String brukernavn, String passord) {
+    public JdbcProperties(final String applikasjonsnavn, final String jdbcUrl, final String brukernavn, final String passord) {
         requireNonNull(applikasjonsnavn, "applikasjonsnavn kan ikke være null");
         requireNonNull(jdbcUrl, "jdbcUrl kan ikke være null");
         requireNonNull(brukernavn, "brukernavn kan ikke være null");
@@ -81,9 +79,9 @@ public class JdbcProperties {
         return "Url: " + url + " - brukernavn: " + brukernavn;
     }
 
-    private Matcher getMatcher(String jdbcUrl) {
+    private Matcher getMatcher(final String jdbcUrl) {
         return of(jdbcUrl)
-                .map(URL_PATTERN::matcher)
+                .map(JdbcUrlValidator.URL_PATTERN::matcher)
                 .filter(Matcher::find)
                 .orElseThrow(() -> new IllegalArgumentException(jdbcUrl + " er ikke en lovlig jdbc-url. " +
                         "Url må ha formatet 'jdbc:jtds:sybase://<server>:<port>/<database>'."));

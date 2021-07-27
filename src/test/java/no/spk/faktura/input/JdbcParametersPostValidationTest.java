@@ -4,17 +4,15 @@ import static java.util.Optional.of;
 
 import java.io.IOException;
 
-import com.beust.jcommander.ParameterException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParameterException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class JdbcParametersPostValidationTest {
 
     @Rule
@@ -77,7 +75,11 @@ public class JdbcParametersPostValidationTest {
         valider(arguments);
     }
 
-    private void valider(JdbcParameters programArguments) {
-        validator.validate(programArguments);
+    private void valider(final JdbcParameters programArguments) {
+        validator.validate(programArguments, dummySpec());
+    }
+
+    private CommandSpec dummySpec() {
+        return CommandSpec.create();
     }
 }

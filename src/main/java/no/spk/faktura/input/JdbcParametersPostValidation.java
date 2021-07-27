@@ -2,21 +2,23 @@ package no.spk.faktura.input;
 
 import java.util.Optional;
 
-import com.beust.jcommander.ParameterException;
+import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParameterException;
 
 /**
  * Brukes for konsistenssjekking av JdbcParameters. Sjekker at JdbcParameters inneholder alle eller ingen av feltene angitt.
- * @author Snorre E. Brekke - Computas
  */
 public class JdbcParametersPostValidation {
     /**
      * Sjekker at JdbcParameters inneholder alle eller ingen av feltene angitt.
+     *
      * @param parameters kommandolinjeargument som skal sjekkes for konsistens
      * @throws ParameterException dersom bare deler (en eller to) av jdbcUrl, jdbcPassordfil og jdbcBruker er angitt.
      */
-    public void validate(final JdbcParameters parameters) throws ParameterException {
+    public void validate(final JdbcParameters parameters, final CommandSpec spec) throws ParameterException {
         if (!ingenDatabaseArgumenterAngitt(parameters) && !alleDatabaseArgumenterAngitt(parameters)) {
-            throw new ParameterException(feilmelding());
+            throw new ParameterException(new CommandLine(spec), feilmelding());
         }
     }
 

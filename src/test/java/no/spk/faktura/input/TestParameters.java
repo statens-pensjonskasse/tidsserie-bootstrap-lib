@@ -4,62 +4,67 @@ import java.nio.file.Path;
 import java.time.LocalTime;
 import java.util.Optional;
 
-import com.beust.jcommander.Parameter;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Spec;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
+@Command(name = "tests", mixinStandardHelpOptions = true, version = "0.1")
 public class TestParameters implements Arguments {
-    @Parameter(names = { "-h" }, help = true,
-            description = "Printer denne oversikten.")
-    boolean hjelp;
 
-    @Parameter(names = { "-r" },
-            description = "Påkrevd",
-            required = true)
-    String required;
+    @Spec
+    CommandSpec spec;
 
-    @Parameter(names = { "-o" },
-            description = "Valgfri")
-    private String privateOptional;
-
-    @Parameter(
-            names = { "-url" },
-            description = "Optional url",
-            converter = OptionalStringConverter.class,
-            validateWith = JdbcUrlValidator.class
-    )
+    String duration;
     Optional<String> url = Optional.empty();
-
-    @Parameter(
-            names = { "-pw" },
-            description = "Optional fil",
-            converter = OptionalPathConverter.class,
-            validateValueWith = PathValidator.class
-    )
+    LocalTime time = LocalTime.parse("23:59");
     Optional<Path> password = Optional.empty();
 
-    @Parameter(names = "-d",
-            description = "Duration",
-            validateWith = DurationValidator.class)
-    String duration = "0200";
+    @Option(
+            names = { "-r" },
+            description = "Påkrevd",
+            required = true
+    )
+    String required;
 
-    @Parameter(names = { "-t" },
-            description = "Localtime",
-            validateWith = LocalTimeValidator.class,
-            converter = LocalTimeConverter.class)
-    LocalTime time = LocalTime.parse("23:59");
+    @Option(
+            names = "-d",
+            description = "Duration"
+    )
+    public void setDuration(final String value) {
+        new DurationValidator().validate("kjøretid", value, spec);
+        duration = value;
+    }
+
+    @Option(
+            names = {"-url"},
+            description = "Optional url"
+    )
+    public void setUrl(final String value) {
+        new JdbcUrlValidator().validate("url", value, spec);
+        url = new OptionalStringConverter().convert(value);
+    }
+
+    @Option(names = {"-t"},
+            description = "Localtime"
+    )
+    public void setTime(final String value) {
+        new LocalTimeValidator().validate("time", value, spec);
+        time = new LocalTimeConverter().convert(value);
+    }
+
+    @Option(
+            names = {"-pw"},
+            description = "Optional fil"
+    )
+    public void setPassword(final String value) {
+        final Optional<Path> path = new OptionalPathConverter().convert(value);
+        new PathValidator().validate("password", path, spec);
+        password = path;
+    }
 
     @Override
     public boolean hjelp() {
-        return hjelp;
-    }
-
-    public String getPrivateOptional() {
-        return privateOptional;
-    }
-
-    public void setPrivateOptional(String privateOptional) {
-        this.privateOptional = privateOptional;
+        return false;
     }
 }

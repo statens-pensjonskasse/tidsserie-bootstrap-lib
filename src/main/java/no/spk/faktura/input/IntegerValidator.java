@@ -1,18 +1,19 @@
 package no.spk.faktura.input;
 
-import com.beust.jcommander.IParameterValidator;
-import com.beust.jcommander.ParameterException;
+import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParameterException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
-public class IntegerValidator implements IParameterValidator {
-    @Override
-    public void validate(String name, String value) throws ParameterException {
+public class IntegerValidator {
+
+    public void validate(final String name, final String value, final CommandSpec spec) throws ParameterException {
         try {
-            int i = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throw new ParameterException("'" + name + "': er ikke et gyldig tall (fant " + value + ").");
+            Integer.parseInt(value);
+        } catch (final NumberFormatException e) {
+            throw new ParameterException(
+                    new CommandLine(spec),
+                    "'" + name + "': er ikke et gyldig tall (fant " + value + ")."
+            );
         }
     }
 }

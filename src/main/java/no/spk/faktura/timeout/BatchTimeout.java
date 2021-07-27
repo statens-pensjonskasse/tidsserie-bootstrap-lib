@@ -21,8 +21,6 @@ import java.util.Optional;
  * Dvs. at klokka for timeout kan begynne å løpe før batchen starter, dersom BatchTimeout
  * blir initsialisert før batchen er startet. Dette bør ikke være noe stort problem i praksis,
  * da presisjonen på timeout er "best-effort".
- * </p>
- * @author Snorre E. Brekke - Computas
  */
 public class BatchTimeout {
 
@@ -35,23 +33,25 @@ public class BatchTimeout {
     /**
      * Opppretter batch-timeout for en batch. Timeout som brukes ved kjøring
      * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved å kalle {@link #start()}.
+     *
      * @param maxRuntime maks tid batchen kan kjøre
      * @param latestEndtime siste tidspunkt batchen kan kjøre til. Dersom dette i praksis resulterer
      * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra LocalTime.now().
      */
-    public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime) {
+    public BatchTimeout(final Duration maxRuntime, final LocalTime latestEndtime) {
         this(maxRuntime, latestEndtime, new DefaultTimeProvider());
     }
 
     /**
      * Opppretter batch-timeout for en batch. Timeout som brukes ved kjøring
      * beregnes fra maxRuntime og latestEndtime. Timeout-klokka startes ved å kalle {@link #start()}.
+     *
      * @param maxRuntime maks tid batchen kan kjøre
      * @param latestEndtime siste tidspunkt batchen kan kjøre til. Dersom dette i praksis resulterer
      * i et kortere tidsintervall enn {@code timeout} så blir timeout for batcehn kalkulert utifra LocalTime.now().
      * @param timeProvider gir mulighet til å overstyre hvordan BatchTimeout finner nårværende tid og systemklokke.
      */
-    public BatchTimeout(Duration maxRuntime, LocalTime latestEndtime, TimeProvider timeProvider) {
+    public BatchTimeout(final Duration maxRuntime, final LocalTime latestEndtime, final TimeProvider timeProvider) {
         this.maxRuntime = maxRuntime;
         this.latestEndtime = latestEndtime;
         this.timeProvider = timeProvider;
@@ -59,6 +59,7 @@ public class BatchTimeout {
 
     /**
      * Starter klokka for timeout. Denne metoden må kalles i forkant av {@link #timeRemaining()} og {@link #isComplete()}.
+     *
      * @return this for chaining
      * @throws IllegalStateException dersom denne metoden kalles før mer enn én gang.
      * @see #isStarted()
@@ -75,6 +76,7 @@ public class BatchTimeout {
 
     /**
      * Angir om {@link #start()} er blitt kalt.
+     *
      * @return true dersom {@link #start()} er blitt kalt.
      */
     public boolean isStarted() {

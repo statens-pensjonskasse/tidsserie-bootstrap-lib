@@ -9,12 +9,11 @@ import java.util.concurrent.ScheduledFuture;
 
 /**
  * Denne klassen er siste utvei for å avslutt batchen dersom den bruker for lang tid.
- *
- * @author Snorre E. Brekke - Computas
  */
 public class BatchTimeoutTaskrunner {
     private BatchTimeout batchTimeout;
-    public BatchTimeoutTaskrunner(BatchTimeout batchTimeout) {
+
+    public BatchTimeoutTaskrunner(final BatchTimeout batchTimeout) {
         this.batchTimeout = batchTimeout;
     }
 
@@ -28,7 +27,7 @@ public class BatchTimeoutTaskrunner {
      * @see BatchTimeout
      * @see ScheduledFuture
      */
-    public ScheduledFuture<?> startTerminationTimeout(Duration timeoutDelay, Runnable terminationCallback) {
+    public ScheduledFuture<?> startTerminationTimeout(final Duration timeoutDelay, final Runnable terminationCallback) {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread timeoutTaskrunner = new Thread(r, "BatchTimeoutTaskrunner");
             timeoutTaskrunner.setDaemon(true);

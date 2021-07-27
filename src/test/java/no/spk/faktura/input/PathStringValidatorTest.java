@@ -2,15 +2,13 @@ package no.spk.faktura.input;
 
 import static org.junit.Assume.assumeTrue;
 
-import com.beust.jcommander.ParameterException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParameterException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class PathStringValidatorTest {
 
     private static final String SOME_PARAM = "-param";
@@ -21,24 +19,28 @@ public class PathStringValidatorTest {
     PathStringValidator validator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         validator = new PathStringValidator();
     }
 
     @Test
-    public void testIncorrectPathThrowsException() throws Exception {
+    public void testIncorrectPathThrowsException() {
         assumeTrue( isWindows() );
         exception.expect(ParameterException.class);
         exception.expectMessage(SOME_PARAM + " er ikke en gyldig filbane");
-        validator.validate(SOME_PARAM, "H\"");
+        validator.validate(SOME_PARAM, "H\"", dummySpec());
     }
 
     @Test
-    public void testCorrectPathValidatesWithoutException() throws Exception {
-        validator.validate(SOME_PARAM, "H:");
+    public void testCorrectPathValidatesWithoutException() {
+        validator.validate(SOME_PARAM, "H:", dummySpec());
     }
 
     private boolean isWindows() {
         return System.getProperty("os.name").startsWith("Windows");
+    }
+
+    private CommandSpec dummySpec() {
+        return CommandSpec.create();
     }
 }

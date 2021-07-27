@@ -5,9 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
 public class PassordfilLeser {
     /**
      * Lese inn passordet frå den angitte passordfila.

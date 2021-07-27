@@ -3,15 +3,17 @@ package no.spk.faktura.input;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
+import picocli.CommandLine;
+import picocli.CommandLine.ParameterException;
 
 /**
  * Util-klasse med metoden {@link #create} som produserer @{link T} fra en array med {@code String[]}
  *
- * @author Snorre E. Brekke - Computas
  * @param <T> Typen som lages av ProgramArgumentsFactory. Klassen må ha en no-args konstruktør.
  */
 public class ProgramArgumentsFactory<T extends Arguments> {
@@ -21,6 +23,7 @@ public class ProgramArgumentsFactory<T extends Arguments> {
 
     /**
      * Oppretter et nytt ProgramArgumentsFactory uten postvalidering.
+     *
      * @param programArgumentClass Typen som ProgramArgumentsFactory skal kunne lage via {@link #create(String...)}. Klassen må ha en no-args konstruktør.
      */
     public ProgramArgumentsFactory(Class<T> programArgumentClass) {
@@ -29,8 +32,9 @@ public class ProgramArgumentsFactory<T extends Arguments> {
 
     /**
      * Oppretter et nytt ProgramArgumentsFactory med angitt postvalidator.
+     *
      * @param programArgumentClass Typen som ProgramArgumentsFactory skal kunne lage via {@link #create(String...)}. Klassen må ha en no-args konstruktør.
-     * @param postValidator validator som kjører etter {@link JCommander} har fullført validering.
+     * @param postValidator validator som kjører etter picocli har fullført validering.
      */
     public ProgramArgumentsFactory(Class<T> programArgumentClass, PostParseValidator<T> postValidator) {
         requireNonNull(programArgumentClass, "programArgumentClass kan ikke være null");
@@ -45,7 +49,6 @@ public class ProgramArgumentsFactory<T extends Arguments> {
      *
      * @param args typisk hentet fra main(String... args)
      * @return ProgramArguments generert fra args, dersom de kunne opprettes. {@link Optional#empty} dersom det er valideringsfeil.
-     * @see JCommander
      * @throws InvalidParameterException dersom det er feil i ett eller flere argumenter
      * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren ønsker hjelp
      */
@@ -60,42 +63,48 @@ public class ProgramArgumentsFactory<T extends Arguments> {
      * for intern bruk og tester.
      *
      * @param postValider <code>true</code> dersom postvalidering av parameterne skal uytføres, <code>false</code> ellers
-     * @param args        typisk hentet fra main(String... args)
+     * @param args typisk hentet fra main(String... args)
      * @return ProgramArguments generert fra args, dersom de kunne opprettes
-     * @see #create(String...)
      * @throws InvalidParameterException dersom det er feil i ett eller flere argumenter
      * @throws UsageRequestedException {@code args} inneholder parameter som indikerer at brukeren ønsker hjelp
+     * @see #create(String...)
      */
     public T create(final boolean postValider, final String... args) {
         final T arguments = createProgramArguments();
+        final CommandLine cmd = new CommandLine(arguments);
 
-        final JCommander jCommander = new JCommander(arguments);
         try {
-            jCommander.parse(args);
-            if (arguments.hjelp()) {
-                throw new UsageRequestedException(usage(jCommander));
+            final CommandLine.ParseResult result = cmd.parseArgs(args);
+
+            if (result.isUsageHelpRequested()) {
+                throw new UsageRequestedException(usage(cmd));
             }
 
             if (postValider) {
-                postValidator.ifPresent(p -> p.validate(arguments));
+                postValidator.ifPresent(p -> p.validate(arguments, cmd.getCommandSpec()));
             }
         } catch (final ParameterException exception) {
-            throw new InvalidParameterException(usage(jCommander), exception);
+            throw new InvalidParameterException(usage(cmd), exception);
         }
+
         return arguments;
     }
 
     private T createProgramArguments() {
         try {
-            return programArgumentClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return programArgumentClass.getDeclaredConstructor().newInstance();
+        } catch (final InstantiationException | IllegalAccessException e) {
             throw new IllegalArgumentException(programArgumentClass.getClass() + " mangler en tilgjengelig no-args konstruktør.");
+        } catch (final NoSuchMethodException | InvocationTargetException e) {
+            throw new IllegalArgumentException("Noe gikk galt under innlesing av " + programArgumentClass.getClass());
         }
     }
 
-    public String usage(JCommander jCommander) {
-        final StringBuilder usage = new StringBuilder();
-        jCommander.usage(usage);
-        return usage.toString();
+    public String usage(final CommandLine cmd) {
+        final StringWriter writer = new StringWriter();
+        final PrintWriter out = new PrintWriter(writer);
+        cmd.usage(out);
+
+        return writer.toString();
     }
 }

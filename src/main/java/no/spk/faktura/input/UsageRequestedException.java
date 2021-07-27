@@ -1,7 +1,5 @@
 package no.spk.faktura.input;
 
-import com.beust.jcommander.JCommander;
-
 /**
  * Exception som kastes dersom bruker har angitt ønske om hjelp.
  */
@@ -15,7 +13,7 @@ public class UsageRequestedException extends RuntimeException {
     }
 
     /**
-     * Konstruerer en hjelpetekst for programmet vha {@link JCommander#usage()}
+     * Konstruerer en hjelpetekst for programmet
      * @return en streng som beskriver bruk av programmet.
      */
     public String usage() {

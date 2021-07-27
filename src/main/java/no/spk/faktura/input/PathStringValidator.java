@@ -3,19 +3,20 @@ package no.spk.faktura.input;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 
-import com.beust.jcommander.IParameterValidator;
-import com.beust.jcommander.ParameterException;
+import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParameterException;
 
-/**
- * @author Snorre E. Brekke - Computas
- */
-public class PathStringValidator implements IParameterValidator {
-    @Override
-    public void validate(String name, String value) throws ParameterException {
+public class PathStringValidator {
+    public void validate(final String name, final String value, final CommandSpec spec) throws ParameterException {
         try {
             Paths.get(value);
         } catch (InvalidPathException e) {
-            throw new ParameterException(name + " er ikke en gyldig filbane: " + value, e);
+            throw new ParameterException(
+                    new CommandLine(spec),
+                    name + " er ikke en gyldig filbane: " + value,
+                    e
+            );
         }
     }
 }
