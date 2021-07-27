@@ -3,6 +3,8 @@ package no.spk.faktura.input;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 public class JdbcUrlValidatorTest {
@@ -16,12 +18,12 @@ public class JdbcUrlValidatorTest {
      */
     @Test
     public void skalGodtaJtdsJdbcUrl() {
-        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb123:4100/kasper123");
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb123:4100/kasper123", dummySpec());
     }
 
     @Test
     public void skalGodtaJtdsJdbcUrlMedPunktum() {
-        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK");
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK", dummySpec());
     }
 
     @Test
@@ -31,7 +33,7 @@ public class JdbcUrlValidatorTest {
         e.expectMessage(parameterNavn);
         e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
 
-        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt");
+        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt", dummySpec());
     }
 
     @Test
@@ -41,13 +43,17 @@ public class JdbcUrlValidatorTest {
         e.expectMessage(parameterNavn);
         e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
 
-        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:");
+        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:", dummySpec());
     }
 
     @Test
     public void skalAvviseFullstendigRubsih() {
         e.expect(ParameterException.class);
 
-        new JdbcUrlValidator().validate("jdbcUrl", "wth?");
+        new JdbcUrlValidator().validate("jdbcUrl", "wth?", dummySpec());
+    }
+
+    private CommandSpec dummySpec() {
+        return CommandSpec.create();
     }
 }

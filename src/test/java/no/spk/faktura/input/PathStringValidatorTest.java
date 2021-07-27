@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 public class PathStringValidatorTest {
@@ -28,15 +28,19 @@ public class PathStringValidatorTest {
         assumeTrue( isWindows() );
         exception.expect(ParameterException.class);
         exception.expectMessage(SOME_PARAM + " er ikke en gyldig filbane");
-        validator.validate(SOME_PARAM, "H\"");
+        validator.validate(SOME_PARAM, "H\"", dummySpec());
     }
 
     @Test
     public void testCorrectPathValidatesWithoutException() {
-        validator.validate(SOME_PARAM, "H:");
+        validator.validate(SOME_PARAM, "H:", dummySpec());
     }
 
     private boolean isWindows() {
         return System.getProperty("os.name").startsWith("Windows");
+    }
+
+    private CommandSpec dummySpec() {
+        return CommandSpec.create();
     }
 }

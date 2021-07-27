@@ -81,7 +81,7 @@ public class ProgramArgumentsFactory<T extends Arguments> {
             }
 
             if (postValider) {
-                postValidator.ifPresent(p -> p.validate(arguments));
+                postValidator.ifPresent(p -> p.validate(arguments, cmd.getCommandSpec()));
             }
         } catch (final ParameterException exception) {
             throw new InvalidParameterException(usage(cmd), exception);

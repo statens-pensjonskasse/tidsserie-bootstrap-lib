@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
+import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 public class WritableDirectoryValidatorTest {
@@ -36,7 +38,7 @@ public class WritableDirectoryValidatorTest {
     public void testManglendeStiFeiler() {
         exception.expect(ParameterException.class);
         exception.expectMessage("eksisterer ikke");
-        validator.validate("bane", Paths.get("nowhere"));
+        validator.validate("bane", Paths.get("nowhere"), dummySpec());
     }
 
     @Test
@@ -44,7 +46,7 @@ public class WritableDirectoryValidatorTest {
         final File file = temp.newFile(testName.getMethodName());
         exception.expect(ParameterException.class);
         exception.expectMessage("peker ikke til en katalog");
-        validator.validate("bane", file.toPath());
+        validator.validate("bane", file.toPath(), dummySpec());
     }
 
     @Test
@@ -54,7 +56,7 @@ public class WritableDirectoryValidatorTest {
         assertThat(file.setReadable(false)).isTrue();
         exception.expect(ParameterException.class);
         exception.expectMessage("er ikke lesbar for batchen");
-        validator.validate("bane", file.toPath());
+        validator.validate("bane", file.toPath(), dummySpec());
         assertThat(file.setReadable(true)).isTrue();
     }
 
@@ -64,10 +66,14 @@ public class WritableDirectoryValidatorTest {
         final File file = new File("/");
         exception.expect(ParameterException.class);
         exception.expectMessage("er ikke skrivbar for batchen");
-        validator.validate("bane", file.toPath());
+        validator.validate("bane", file.toPath(), dummySpec());
     }
 
     private boolean isWindowsOs(){
         return System.getProperty( "os.name" ).startsWith( "Windows" );
+    }
+
+    private CommandSpec dummySpec() {
+        return CommandSpec.create();
     }
 }

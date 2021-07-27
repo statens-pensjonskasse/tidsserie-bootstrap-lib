@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 public class JdbcParametersPostValidationTest {
@@ -75,6 +76,10 @@ public class JdbcParametersPostValidationTest {
     }
 
     private void valider(final JdbcParameters programArguments) {
-        validator.validate(programArguments);
+        validator.validate(programArguments, dummySpec());
+    }
+
+    private CommandSpec dummySpec() {
+        return CommandSpec.create();
     }
 }

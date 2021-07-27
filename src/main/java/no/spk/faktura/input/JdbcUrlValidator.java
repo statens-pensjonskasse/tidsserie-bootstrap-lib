@@ -3,6 +3,7 @@ package no.spk.faktura.input;
 import java.util.regex.Pattern;
 
 import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 /**
@@ -13,10 +14,10 @@ import picocli.CommandLine.ParameterException;
 public class JdbcUrlValidator {
     static final Pattern URL_PATTERN = Pattern.compile("^jdbc:jtds:(?:sybase|sqlserver)://([^:]+):([^/]+)/([^;]+)$");
 
-    public void validate(final String name, final String value) throws ParameterException {
+    public void validate(final String name, final String value, final CommandSpec spec) throws ParameterException {
         if (!URL_PATTERN.matcher(value).find()) {
             throw new ParameterException(
-                    new CommandLine(new DummyCommand()),
+                    new CommandLine(spec),
                     String.format(
                             "Parameter %s må inneholde en gyldig JDBC-url på formen '%s' eller '%s', du sendte inn %s",
                             name,

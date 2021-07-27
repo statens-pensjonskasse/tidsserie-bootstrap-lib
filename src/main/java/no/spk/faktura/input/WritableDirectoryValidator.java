@@ -5,14 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 public class WritableDirectoryValidator {
-    public void validate(final String name, final Path value) throws ParameterException {
+
+    public void validate(final String name, final Path value, final CommandSpec spec) throws ParameterException {
         // Files.exists(value) viser seg å returnerer false i noen tilfeller  der file.exists returnerer true.
         if (!value.toFile().exists()) {
             throw new ParameterException(
-                    new CommandLine(new DummyCommand()),
+                    new CommandLine(spec),
                     "Katalogen "
                             + value
                             + " eksisterer ikke, verifiser at du har angitt rett katalogsti."
@@ -21,7 +23,7 @@ public class WritableDirectoryValidator {
 
         if (!Files.isDirectory(value)) {
             throw new ParameterException(
-                    new CommandLine(new DummyCommand()),
+                    new CommandLine(spec),
                     "Stien "
                             + value
                             + " peker ikke til en katalog, verifiser at du har angitt rett katalogsti."
@@ -30,7 +32,7 @@ public class WritableDirectoryValidator {
 
         if (!Files.isReadable(value)) {
             throw new ParameterException(
-                    new CommandLine(new DummyCommand()),
+                    new CommandLine(spec),
                     "Innholdet i katalogen "
                             + value
                             + " er ikke lesbar for batchen, verifiser at batchbrukeren har lesetilgang til katalogen."
@@ -44,7 +46,7 @@ public class WritableDirectoryValidator {
             Files.delete(testWriteFile);
         } catch (final IOException e) {
             throw new ParameterException(
-                    new CommandLine(new DummyCommand()),
+                    new CommandLine(spec),
                     "Katalogen "
                             + value
                             + " er ikke skrivbar for batchen, verifiser at batchbrukeren har skrivetilgang til katalogen."

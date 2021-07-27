@@ -90,7 +90,7 @@ public class ProgramArgumentsFactoryTest {
         final TestParameters test = new TestParameters();
         final CommandLine cmd = new CommandLine(test);
         factory = new ProgramArgumentsFactory<>(TestParameters.class,
-                (a) -> {
+                (a, b) -> {
                     throw new ParameterException(cmd, "skal ikke kastes");
                 });
         factory.create(false, "-r", "test");
@@ -105,7 +105,7 @@ public class ProgramArgumentsFactoryTest {
         final String expectedMessage = "skal kastes";
         exception.expectMessage(expectedMessage);
         factory = new ProgramArgumentsFactory<>(TestParameters.class,
-                (a) -> {
+                (a, b) -> {
                     throw new ParameterException(cmd, expectedMessage);
                 });
         factory.create(true, "-r", "test");
@@ -118,7 +118,7 @@ public class ProgramArgumentsFactoryTest {
 
         exception.expect(UsageRequestedException.class);
         factory = new ProgramArgumentsFactory<>(TestParameters.class,
-                (a) -> {
+                (a, b) -> {
                     throw new ParameterException(cmd, "skal ikke kastes");
                 });
         factory.create(true, "-h");
