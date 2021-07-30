@@ -28,8 +28,10 @@ public class InvalidParameterException extends RuntimeException {
             (s) -> oversett("^Invalid value for option (.+): (.+) is not a (.+)$", "Ugyldig verdi for %s. %s er ikke en boolean", s),
             (s) -> oversett("^Invalid value for option '(.+)': expected one of \\[(.*)\\] \\(case-sensitive\\) but was '(.*)'$", "Ugyldig verdi for %s. Lovlige verdier: [%s].", s),
             (s) -> oversett("^Unmatched argument at index \\d+: (.*)$", "Uventet parameter %s.", s),
+            (s) -> oversett("^Unmatched arguments from index \\d+: (.*)$", "Uventede parametere %s.", s),
             (s) -> oversett("^Invalid value for option '(.+)': '(.+)' is not an int$", "\"%s\": Kunne ikke konvertere \"%s\" til et heltall.", s),
-            (s) -> oversett("^Unknown option: '(.+)'$", "Ukjent valg: %s.", s)
+            (s) -> oversett("^Unknown option: '(.+)'$", "Ukjent valg: %s.", s),
+            (s) -> oversett("^Unknown options: (.+)$", "Ukjente valg: %s.", s)
     );
 
     public InvalidParameterException(final String usageString, final ParameterException cause) {
