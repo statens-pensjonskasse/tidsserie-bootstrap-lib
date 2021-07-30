@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import picocli.CommandLine;
 import picocli.CommandLine.ParameterException;
+import picocli.CommandLine.ParseResult;
 
 /**
  * Util-klasse med metoden {@link #create} som produserer @{link T} fra en array med {@code String[]}
@@ -74,10 +75,14 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         final CommandLine cmd = new CommandLine(arguments);
 
         try {
-            final CommandLine.ParseResult result = cmd.parseArgs(args);
+            final ParseResult result = cmd.parseArgs(args);
 
             if (result.isUsageHelpRequested()) {
                 throw new UsageRequestedException(usage(cmd));
+            }
+
+            if (result.subcommand() != null && result.subcommand().isUsageHelpRequested()) {
+                throw new UsageRequestedException(usage(result.subcommand().commandSpec().commandLine()));
             }
 
             if (postValider) {
