@@ -73,6 +73,7 @@ public class ProgramArgumentsFactory<T extends Arguments> {
     public T create(final boolean postValider, final String... args) {
         final T arguments = createProgramArguments();
         final CommandLine cmd = new CommandLine(arguments);
+        hideSubcommandInUsage(cmd, "generate-completion");
 
         try {
             final ParseResult result = cmd.parseArgs(args);
@@ -102,6 +103,13 @@ public class ProgramArgumentsFactory<T extends Arguments> {
             throw new IllegalArgumentException(programArgumentClass.getClass() + " mangler en tilgjengelig no-args konstruktør.");
         } catch (final NoSuchMethodException | InvocationTargetException e) {
             throw new IllegalArgumentException("Noe gikk galt under innlesing av " + programArgumentClass.getClass());
+        }
+    }
+
+    private void hideSubcommandInUsage(final CommandLine cmd, final String subcommandName) {
+        final CommandLine gen = cmd.getSubcommands().get(subcommandName);
+        if (gen != null) {
+            gen.getCommandSpec().usageMessage().hidden(true);
         }
     }
 
