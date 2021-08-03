@@ -86,6 +86,8 @@ public class ProgramArgumentsFactory<T extends Arguments> {
                 throw new UsageRequestedException(usage(result.subcommand().commandSpec().commandLine()));
             }
 
+            maybeRunAutocompleteGeneratorAndQuit(cmd, args);
+
             if (postValider) {
                 postValidator.ifPresent(p -> p.validate(arguments, cmd.getCommandSpec()));
             }
@@ -110,6 +112,14 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         final CommandLine gen = cmd.getSubcommands().get(subcommandName);
         if (gen != null) {
             gen.getCommandSpec().usageMessage().hidden(true);
+        }
+    }
+
+    private void maybeRunAutocompleteGeneratorAndQuit(final CommandLine cmd, final String... args) {
+        final CommandLine gen = cmd.getSubcommands().get("generate-completion");
+        if (gen != null && args.length >= 1 && args[0].equals("generate-completion")) {
+            gen.execute(args);
+            System.exit(0);
         }
     }
 
