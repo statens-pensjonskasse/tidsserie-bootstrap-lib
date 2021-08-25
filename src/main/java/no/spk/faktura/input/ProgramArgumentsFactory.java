@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import picocli.CommandLine;
 import picocli.CommandLine.ParameterException;
+import picocli.CommandLine.ParseResult;
 
 /**
  * Util-klasse med metoden {@link #create} som produserer @{link T} fra en array med {@code String[]}
@@ -72,13 +73,20 @@ public class ProgramArgumentsFactory<T extends Arguments> {
     public T create(final boolean postValider, final String... args) {
         final T arguments = createProgramArguments();
         final CommandLine cmd = new CommandLine(arguments);
+        hideSubcommandInUsage(cmd, "generate-completion");
 
         try {
-            final CommandLine.ParseResult result = cmd.parseArgs(args);
+            final ParseResult result = cmd.parseArgs(args);
 
             if (result.isUsageHelpRequested()) {
                 throw new UsageRequestedException(usage(cmd));
             }
+
+            if (result.subcommand() != null && result.subcommand().isUsageHelpRequested()) {
+                throw new UsageRequestedException(usage(result.subcommand().commandSpec().commandLine()));
+            }
+
+            maybeRunAutocompleteGeneratorAndQuit(cmd, args);
 
             if (postValider) {
                 postValidator.ifPresent(p -> p.validate(arguments, cmd.getCommandSpec()));
@@ -97,6 +105,21 @@ public class ProgramArgumentsFactory<T extends Arguments> {
             throw new IllegalArgumentException(programArgumentClass.getClass() + " mangler en tilgjengelig no-args konstruktør.");
         } catch (final NoSuchMethodException | InvocationTargetException e) {
             throw new IllegalArgumentException("Noe gikk galt under innlesing av " + programArgumentClass.getClass());
+        }
+    }
+
+    private void hideSubcommandInUsage(final CommandLine cmd, final String subcommandName) {
+        final CommandLine gen = cmd.getSubcommands().get(subcommandName);
+        if (gen != null) {
+            gen.getCommandSpec().usageMessage().hidden(true);
+        }
+    }
+
+    private void maybeRunAutocompleteGeneratorAndQuit(final CommandLine cmd, final String... args) {
+        final CommandLine gen = cmd.getSubcommands().get("generate-completion");
+        if (gen != null && args.length >= 1 && args[0].equals("generate-completion")) {
+            gen.execute(args);
+            System.exit(0);
         }
     }
 
