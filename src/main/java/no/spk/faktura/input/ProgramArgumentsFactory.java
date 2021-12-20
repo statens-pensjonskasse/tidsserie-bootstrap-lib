@@ -92,7 +92,11 @@ public class ProgramArgumentsFactory<T extends Arguments> {
                 postValidator.ifPresent(p -> p.validate(arguments, cmd.getCommandSpec()));
             }
         } catch (final ParameterException exception) {
-            throw new InvalidParameterException(usage(cmd), exception);
+            if (args.length > 0 && hasSubCommandThatCanBeUsed(exception.getCommandLine(), args[0])) {
+                throw new InvalidParameterException(usage(exception.getCommandLine().getParent().getCommandSpec().subcommands().get(args[0])), exception);
+            } else {
+                throw new InvalidParameterException(usage(cmd), exception);
+            }
         }
 
         return arguments;
@@ -106,6 +110,14 @@ public class ProgramArgumentsFactory<T extends Arguments> {
         } catch (final NoSuchMethodException | InvocationTargetException e) {
             throw new IllegalArgumentException("Noe gikk galt under innlesing av " + programArgumentClass.getClass());
         }
+    }
+
+    private boolean hasSubCommandThatCanBeUsed(final CommandLine commandLine, final String arg) {
+        return commandLine != null
+                && commandLine.getParent() != null
+                && commandLine.getParent().getCommandSpec() != null
+                && commandLine.getParent().getCommandSpec().subcommands() != null
+                && commandLine.getParent().getCommandSpec().subcommands().get(arg) != null;
     }
 
     private void hideSubcommandInUsage(final CommandLine cmd, final String subcommandName) {
