@@ -1,20 +1,17 @@
 package no.spk.faktura.input;
 
-import static org.junit.Assume.assumeTrue;
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 public class PathStringValidatorTest {
 
     private static final String SOME_PARAM = "-param";
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     PathStringValidator validator;
 
@@ -26,9 +23,9 @@ public class PathStringValidatorTest {
     @Test
     public void testIncorrectPathThrowsException() {
         assumeTrue( isWindows() );
-        exception.expect(ParameterException.class);
-        exception.expectMessage(SOME_PARAM + " er ikke en gyldig filbane");
-        validator.validate(SOME_PARAM, "H\"", dummySpec());
+
+        ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate(SOME_PARAM, "H\"", dummySpec()));
+        assertTrue(exception.getMessage().contains(SOME_PARAM + " er ikke en gyldig filbane"));
     }
 
     @Test

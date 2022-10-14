@@ -1,16 +1,12 @@
 package no.spk.faktura.input;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class LocalTimeValidatorTest {
+import static org.junit.Assert.assertThrows;
 
-    @Rule
-    public final ExpectedException e = ExpectedException.none();
+public class LocalTimeValidatorTest {
 
     @Test
     public void skalValidereIntegerOk() {
@@ -24,14 +20,12 @@ public class LocalTimeValidatorTest {
 
     @Test
     public void skalFeilePaaFloat() {
-        e.expect(ParameterException.class);
-        new LocalTimeValidator().validate("i", "1.2", dummySpec());
+        assertThrows(ParameterException.class, () -> new LocalTimeValidator().validate("i", "1.2", dummySpec()));
     }
 
     @Test
     public void skalFeilePaaTekst() {
-        e.expect(ParameterException.class);
-        new LocalTimeValidator().validate("i", "t", dummySpec());
+        assertThrows(ParameterException.class, () -> new LocalTimeValidator().validate("i", "t", dummySpec()));
     }
 
     private CommandSpec dummySpec() {

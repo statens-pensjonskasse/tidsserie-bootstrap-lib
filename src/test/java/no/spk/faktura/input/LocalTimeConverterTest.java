@@ -1,20 +1,17 @@
 package no.spk.faktura.input;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.DateTimeException;
 import java.time.LocalTime;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class LocalTimeConverterTest {
 
     private LocalTimeConverter converter;
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -31,13 +28,11 @@ public class LocalTimeConverterTest {
 
     @Test
     public void testOneDigitHourFails() {
-        exception.expect(DateTimeException.class);
-        converter.convert("3:00");
+        assertThrows(DateTimeException.class, () -> converter.convert("3:00"));
     }
 
     @Test
     public void testOneDigitHourWithoutColonFails() {
-        exception.expect(DateTimeException.class);
-        converter.convert("300");
+        assertThrows(DateTimeException.class, () -> converter.convert("300"));
     }
 }
