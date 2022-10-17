@@ -26,7 +26,7 @@ pipeline {
         stage("Deploy or Verify") {
              steps {
                  echo "Kjører bygg med kommando: ${command}"
-                 sh "mvn -T1C -clean ${command} source:jar javadoc:jar"
+                 sh "mvn -T1C clean ${command} source:jar javadoc:jar"
              }
         }
     }
