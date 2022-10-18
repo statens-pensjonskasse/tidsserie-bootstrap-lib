@@ -1,21 +1,19 @@
 package no.spk.faktura.timeout;
 
+import org.junit.Test;
+
+import java.time.Duration;
+import java.time.LocalTime;
+
 import static java.time.Duration.of;
 import static java.time.Duration.ofMinutes;
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.Duration;
-import java.time.LocalTime;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class BatchTimeoutTest {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testNewBatchTimeoutIsNotStarted() {
@@ -32,24 +30,30 @@ public class BatchTimeoutTest {
 
     @Test
     public void testBatchTimeoutStartedTwiceThrowsException() {
-        exception.expectMessage("BatchTimeout er er allerede startet.");
-        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
-        batchTimeout.start();
-        batchTimeout.start();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+            batchTimeout.start();
+            batchTimeout.start();
+        });
+        assertTrue(exception.getMessage().contains( "BatchTimeout er er allerede startet."));
     }
 
     @Test
     public void testIsCompleteCalledOnUnstartedTimeoutThrowsException() {
-        exception.expectMessage("BatchTimeout er ikke startet.");
-        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
-        batchTimeout.isComplete();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+            batchTimeout.isComplete();
+        });
+        assertTrue(exception.getMessage().contains( "BatchTimeout er ikke startet."));
     }
 
     @Test
     public void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() {
-        exception.expectMessage("BatchTimeout er ikke startet.");
-        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
-        batchTimeout.timeRemaining();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+            batchTimeout.timeRemaining();
+        });
+        assertTrue(exception.getMessage().contains( "BatchTimeout er ikke startet."));
     }
 
     @Test

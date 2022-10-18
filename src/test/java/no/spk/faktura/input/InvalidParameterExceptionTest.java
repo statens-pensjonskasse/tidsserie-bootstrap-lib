@@ -1,71 +1,70 @@
 package no.spk.faktura.input;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import picocli.CommandLine.Option;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tester oversetting av picocli-feilmeldinger.
  */
 public class InvalidParameterExceptionTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     ProgramArgumentsFactory<?> factory;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         factory = new ProgramArgumentsFactory<>(ArgumentsTest.class);
     }
 
     @Test
     public void testOversettPaakrevd() {
-        exception.expectMessage("Feil i parameter: Følgende valg er påkrevd: -r");
-        factory.create();
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create());
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Følgende valg er påkrevd: -r"));
     }
 
     @Test
     public void testGjentatteValg() {
-        exception.expectMessage("Feil i parameter: Kan bare angi -r én gang.");
-        factory.create("-r", "abc", "-r", "abc");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r", "abc", "-r", "abc"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Kan bare angi -r én gang."));
     }
 
     @Test
     public void testFeilEnum() {
-        exception.expectMessage("Feil i parameter: Ugyldig verdi for -e. Lovlige verdier: [A, B].");
-        factory.create("-r", "abc", "-e", "X");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r", "abc", "-e", "X"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Ugyldig verdi for -e. Lovlige verdier: [A, B]."));
     }
 
     @Test
     public void testForeventetVerdi() {
-        exception.expectMessage("Feil i parameter: Forventet en verdi etter -r.");
-        factory.create("-r");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Forventet en verdi etter -r."));
     }
 
     @Test
     public void testMainParameterOversatt() {
-        exception.expectMessage("Feil i parameter: Uventet parameter 'what'.");
-        factory.create("-r", "abc", "what");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r", "abc", "what"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Uventet parameter 'what'."));
     }
 
     @Test
     public void testFlereVerdierForEnParameterMangler() {
-        exception.expectMessage("Feil i parameter: Forventet 2 verdier etter -m.");
-        factory.create("-r", "abc", "-m", "x");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r", "abc", "-m", "x"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Forventet 2 verdier etter -m."));
     }
 
     @Test
     public void testFeilIntegerVerdi() {
-        exception.expectMessage("Feil i parameter: \"-o\": Kunne ikke konvertere \"x\" til et heltall.");
-        factory.create("-r", "abc", "-o", "x");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r", "abc", "-o", "x"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: \"-o\": Kunne ikke konvertere \"x\" til et heltall."));
     }
 
     @Test
     public void testUkjentValg() {
-        exception.expectMessage("Feil i parameter: Ukjent valg: -u");
-        factory.create("-r", "test", "-u");
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> factory.create("-r", "test", "-u"));
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Ukjent valg: -u"));
     }
 
     public static class ArgumentsTest extends ArgumentsAdapter {

@@ -1,15 +1,12 @@
 package no.spk.faktura.input;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class DurationValidatorTest {
+import static org.junit.Assert.assertThrows;
 
-    @Rule
-    public final ExpectedException e = ExpectedException.none();
+public class DurationValidatorTest {
 
     @Test
     public void skalValidere4SifferOk() {
@@ -18,26 +15,22 @@ public class DurationValidatorTest {
 
     @Test
     public void skalFeilePaaMindreEnnFireSiffer() {
-        e.expect(ParameterException.class);
-        new DurationValidator().validate("i", "123", dummySpec());
+        assertThrows(ParameterException.class, () ->  new DurationValidator().validate("i", "123", dummySpec()));
     }
 
     @Test
     public void skalFeilePaaMerEnnFireSiffer() {
-        e.expect(ParameterException.class);
-        new DurationValidator().validate("i", "12345", dummySpec());
+        assertThrows(ParameterException.class, () -> new DurationValidator().validate("i", "12345", dummySpec()));
     }
 
     @Test
     public void skalFeilePaaTekst() {
-        e.expect(ParameterException.class);
-        new DurationValidator().validate("i", "123t", dummySpec());
+        assertThrows(ParameterException.class, () -> new DurationValidator().validate("i", "123t", dummySpec()));
     }
 
     @Test
     public void skalFeilePaaNegativVerdi() {
-        e.expect(ParameterException.class);
-        new DurationValidator().validate("i", "-123", dummySpec());
+        assertThrows(ParameterException.class, () -> new DurationValidator().validate("i", "-123", dummySpec()));
     }
 
     private CommandSpec dummySpec() {

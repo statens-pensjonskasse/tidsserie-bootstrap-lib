@@ -1,16 +1,13 @@
 package no.spk.faktura.input;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class JdbcUrlValidatorTest {
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
-    @Rule
-    public final ExpectedException e = ExpectedException.none();
+public class JdbcUrlValidatorTest {
 
     /**
      * Ok, negativ test av alle mulige feil verdiar er ikkje realistisk men la oss no iallefall
@@ -28,29 +25,27 @@ public class JdbcUrlValidatorTest {
 
     @Test
     public void skalAvviseUfullstendigUrl() {
-        e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
-        e.expectMessage(parameterNavn);
-        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
-
-        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt", dummySpec());
+        ParameterException exception = assertThrows(ParameterException.class, () -> {
+            new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt", dummySpec());
+        });
+        assertTrue(exception.getMessage().contains(parameterNavn));
+        assertTrue(exception.getMessage().contains(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'"));
     }
 
     @Test
     public void skalAvviseUrlMedApplikjasjonsnavn() {
-        e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
-        e.expectMessage(parameterNavn);
-        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
-
-        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:", dummySpec());
+        ParameterException exception = assertThrows(ParameterException.class, () -> {
+            new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:", dummySpec());
+        });
+        assertTrue(exception.getMessage().contains(parameterNavn));
+        assertTrue(exception.getMessage().contains(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'"));
     }
 
     @Test
     public void skalAvviseFullstendigRubsih() {
-        e.expect(ParameterException.class);
-
-        new JdbcUrlValidator().validate("jdbcUrl", "wth?", dummySpec());
+        assertThrows(ParameterException.class, () -> new JdbcUrlValidator().validate("jdbcUrl", "wth?", dummySpec()));
     }
 
     private CommandSpec dummySpec() {

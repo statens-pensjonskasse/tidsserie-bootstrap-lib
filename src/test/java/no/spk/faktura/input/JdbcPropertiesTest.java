@@ -1,15 +1,12 @@
 package no.spk.faktura.input;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class JdbcPropertiesTest {
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void skal_godta_sybase_url() {
@@ -44,8 +41,8 @@ public class JdbcPropertiesTest {
     @Test
     public void testUgyldigJdbcUrlFeiler() {
         final String url = "ulovlig-url";
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("ulovlig-url");
-        new JdbcProperties("navn", url, "brukeravn", "passord");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new JdbcProperties("navn", url, "brukeravn", "passord"));
+        assertTrue(exception.getMessage().contains( "ulovlig-url"));
     }
 }

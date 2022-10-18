@@ -1,22 +1,17 @@
 package no.spk.faktura.input;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-
-import java.nio.file.Paths;
-
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class PathValidatorTest {
+import java.nio.file.Paths;
 
-    @Rule
-    public final ExpectedException e = ExpectedException.none();
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
+public class PathValidatorTest {
 
     @Test
     public void skalIgnorereManglendeVerdi() {
@@ -25,10 +20,11 @@ public class PathValidatorTest {
 
     @Test
     public void skalFeileVissFilenIkkeEksisterer() {
-        e.expect(ParameterException.class);
-        e.expectMessage("Filen yadayada.whatever eksisterer ikke");
-        e.expectMessage("verifiser at du har angitt rett filnavn og -sti");
-        new PathValidator().validate("path", of("yadayada.whatever").map(Paths::get), dummySpec());
+        ParameterException exception = assertThrows(ParameterException.class, () -> {
+            new PathValidator().validate("path", of("yadayada.whatever").map(Paths::get), dummySpec());
+        });
+        assertTrue(exception.getMessage().contains("Filen yadayada.whatever eksisterer ikke"));
+        assertTrue(exception.getMessage().contains("verifiser at du har angitt rett filnavn og -sti"));
     }
 
     private CommandSpec dummySpec() {

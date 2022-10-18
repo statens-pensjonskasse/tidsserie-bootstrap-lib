@@ -1,22 +1,20 @@
 package no.spk.faktura.input;
 
-import static java.util.Optional.of;
-
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class JdbcParametersPostValidationTest {
+import java.io.IOException;
 
-    @Rule
-    public final ExpectedException e = ExpectedException.none();
+import static java.util.Optional.of;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
+public class JdbcParametersPostValidationTest {
 
     @Rule
     public final TestName name = new TestName();
@@ -39,12 +37,10 @@ public class JdbcParametersPostValidationTest {
      */
     @Test
     public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCURLErAngitt() {
-        e.expect(ParameterException.class);
-        e.expectMessage(JdbcParametersPostValidation.feilmelding());
-
         arguments.jdbcUrl = (of("jdbc:jtds:sybase:whatnot"));
 
-        valider(arguments);
+        ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));
+        assertTrue(parameterException.getMessage().contains(JdbcParametersPostValidation.feilmelding()));
     }
 
     /**
@@ -53,12 +49,10 @@ public class JdbcParametersPostValidationTest {
      */
     @Test
     public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCBrukernavnErAngitt() {
-        e.expect(ParameterException.class);
-        e.expectMessage(JdbcParametersPostValidation.feilmelding());
-
         arguments.jdbcBrukernavn = of("myself");
 
-        valider(arguments);
+        ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));
+        assertTrue(parameterException.getMessage().contains(JdbcParametersPostValidation.feilmelding()));
     }
 
     /**
@@ -67,12 +61,10 @@ public class JdbcParametersPostValidationTest {
      */
     @Test
     public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCPassordfilErAngitt() throws IOException {
-        e.expect(ParameterException.class);
-        e.expectMessage(JdbcParametersPostValidation.feilmelding());
-
         arguments.jdbcPassordfil = of(temp.newFile(name.getMethodName()).toPath());
 
-        valider(arguments);
+        ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));
+        assertTrue(parameterException.getMessage().contains(JdbcParametersPostValidation.feilmelding()));
     }
 
     private void valider(final JdbcParameters programArguments) {

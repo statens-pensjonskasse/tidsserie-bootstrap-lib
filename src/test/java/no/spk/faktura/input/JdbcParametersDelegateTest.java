@@ -1,19 +1,18 @@
 package no.spk.faktura.input;
 
-import static java.util.Optional.of;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.nio.file.Path;
-
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import picocli.CommandLine.Mixin;
 
+import java.nio.file.Path;
+
+import static java.util.Optional.of;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
 public class JdbcParametersDelegateTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Rule
     public final TemporaryFolder temp = new TemporaryFolder();
@@ -44,26 +43,29 @@ public class JdbcParametersDelegateTest {
     @Test
     public void testFactoryForJdbcDelegateSkalValidereUrl() throws Exception {
         final Path expected = temp.newFile().toPath();
-        exception.expect(InvalidParameterException.class);
-        exception.expectMessage("Feil i parameter: Parameter -jdbcUrl må inneholde en gyldig JDBC-url på formen " +
-                "'jdbc:jtds:sybase://<server>:<port>/<database>' eller 'jdbc:jtds:sqlserver://<server>:<port>/<database>', du sendte inn feilurl");
-
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
-        factory.create(
-                "-jdbcUrl", "feilurl",
-                "-jdbcBrukernavn", "user",
-                "-jdbcPassordfil", expected.toString());
+
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
+                () -> factory.create(
+                        "-jdbcUrl", "feilurl",
+                        "-jdbcBrukernavn", "user",
+                        "-jdbcPassordfil", expected.toString())
+        );
+        assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Parameter -jdbcUrl må inneholde en gyldig JDBC-url på formen " +
+                "'jdbc:jtds:sybase://<server>:<port>/<database>' eller 'jdbc:jtds:sqlserver://<server>:<port>/<database>', du sendte inn feilurl"));
     }
 
     @Test
     public void testFactoryForJdbcDelegateSkalValiderePassordfilsti() {
-        exception.expect(InvalidParameterException.class);
-        exception.expectMessage("missing eksisterer ikke");
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
-        factory.create(
-                "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
-                "-jdbcBrukernavn", "user",
-                "-jdbcPassordfil", "missing");
+
+        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
+                () -> factory.create(
+                        "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
+                        "-jdbcBrukernavn", "user",
+                        "-jdbcPassordfil", "missing")
+        );
+        assertTrue(invalidParameterException.getMessage().contains("missing eksisterer ikke"));
     }
 
     public static class TestArgument implements Arguments {
