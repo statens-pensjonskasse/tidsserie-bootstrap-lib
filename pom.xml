@@ -32,6 +32,7 @@
         <hamcrest-core.version>2.2</hamcrest-core.version>
         <junit.version>4.13.2</junit.version>
         <mockito-core.version>4.8.0</mockito-core.version>
+        <jenkins-pipeline-library.version>0.18.0</jenkins-pipeline-library.version>
     </properties>
 
     <build>
@@ -189,6 +190,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>no.spk.infra</groupId>
+                <artifactId>jenkins-pipeline-library</artifactId>
+                <version>${jenkins-pipeline-library.version}</version>
+                <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
             <dependency>
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli</artifactId>
