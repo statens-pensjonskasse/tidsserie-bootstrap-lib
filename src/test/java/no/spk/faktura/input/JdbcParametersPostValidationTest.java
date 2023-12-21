@@ -15,7 +15,7 @@ import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class JdbcParametersPostValidationTest {
+class JdbcParametersPostValidationTest {
 
     @TempDir
     Path temp;
@@ -25,7 +25,7 @@ public class JdbcParametersPostValidationTest {
     private JdbcParametersDelegate arguments;
 
     @BeforeEach
-    public void _before() {
+    void _before() {
         arguments = new JdbcParametersDelegate();
         validator = new JdbcParametersPostValidation();
     }
@@ -35,7 +35,7 @@ public class JdbcParametersPostValidationTest {
      * profil til kommandolinjeprofil når eit av dei er satt.
      */
     @Test
-    public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCURLErAngitt() {
+    void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCURLErAngitt() {
         arguments.jdbcUrl = (of("jdbc:jtds:sybase:whatnot"));
 
         final ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));
@@ -47,7 +47,7 @@ public class JdbcParametersPostValidationTest {
      * profil til kommandolinjeprofil når eit av dei er satt.
      */
     @Test
-    public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCBrukernavnErAngitt() {
+    void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCBrukernavnErAngitt() {
         arguments.jdbcBrukernavn = of("myself");
 
         final ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));
@@ -59,7 +59,7 @@ public class JdbcParametersPostValidationTest {
      * profil til kommandolinjeprofil når eit av dei er satt.
      */
     @Test
-    public void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCPassordfilErAngitt(final TestInfo testInfo) throws IOException {
+    void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCPassordfilErAngitt(final TestInfo testInfo) throws IOException {
         arguments.jdbcPassordfil = of(Files.createFile(temp.resolve(testInfo.getDisplayName())));
 
         final ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));

@@ -13,23 +13,23 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
-public class BatchTimeoutTest {
+class BatchTimeoutTest {
 
     @Test
-    public void testNewBatchTimeoutIsNotStarted() {
+    void testNewBatchTimeoutIsNotStarted() {
         final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         assertThat(batchTimeout.isStarted()).isFalse();
     }
 
     @Test
-    public void testStartedBatchTimeoutIsStarted() {
+    void testStartedBatchTimeoutIsStarted() {
         final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         batchTimeout.start();
         assertThat(batchTimeout.isStarted()).isTrue();
     }
 
     @Test
-    public void testBatchTimeoutStartedTwiceThrowsException() {
+    void testBatchTimeoutStartedTwiceThrowsException() {
         final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
             batchTimeout.start();
@@ -39,7 +39,7 @@ public class BatchTimeoutTest {
     }
 
     @Test
-    public void testIsCompleteCalledOnUnstartedTimeoutThrowsException() {
+    void testIsCompleteCalledOnUnstartedTimeoutThrowsException() {
         final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
             batchTimeout.isComplete();
@@ -48,7 +48,7 @@ public class BatchTimeoutTest {
     }
 
     @Test
-    public void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() {
+    void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() {
         final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
             batchTimeout.timeRemaining();
@@ -57,28 +57,28 @@ public class BatchTimeoutTest {
     }
 
     @Test
-    public void testNoTimeoutCompletes() {
+    void testNoTimeoutCompletes() {
         final BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(0));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testSomeTimeoutSameEndtimeAsStarttimeCompletes() {
+    void testSomeTimeoutSameEndtimeAsStarttimeCompletes() {
         final BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(1));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testZeroTimeoutSomeEndtimeCompletes() {
+    void testZeroTimeoutSomeEndtimeCompletes() {
         final BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:01", ofMinutes(0));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testEqualTimeoutAndEndtimeWillEventuallyComplete() {
+    void testEqualTimeoutAndEndtimeWillEventuallyComplete() {
         final BatchTimeout batchTimeout = createBatchTimeoutAndStart("03:00", "03:01", ofMinutes(1));
         final ConstantTimeProvider timeProvider = (ConstantTimeProvider) batchTimeout.getTimeProvider();
 

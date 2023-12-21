@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine.Mixin;
 
-public class JdbcParametersDelegateTest {
+class JdbcParametersDelegateTest {
 
     @TempDir
     Path temp;
 
     @Test
-    public void testFactoryForJdbcDelegateForTomArgs() {
+    void testFactoryForJdbcDelegateForTomArgs() {
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         final TestArgument testArgument = factory.create();
         assertThat(testArgument.jdbcParams.jdbcUrl.isPresent()).isFalse();
@@ -28,7 +28,7 @@ public class JdbcParametersDelegateTest {
     }
 
     @Test
-    public void testFactoryForJdbcDelegateParsesArgs() throws IOException {
+    void testFactoryForJdbcDelegateParsesArgs() throws IOException {
         final Path expected = Files.createFile(temp.resolve("ny-fil"));
 
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
@@ -42,7 +42,7 @@ public class JdbcParametersDelegateTest {
     }
 
     @Test
-    public void testFactoryForJdbcDelegateSkalValidereUrl() throws IOException {
+    void testFactoryForJdbcDelegateSkalValidereUrl() throws IOException {
         final Path expected = Files.createFile(temp.resolve("ny-fil"));
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
 
@@ -57,7 +57,7 @@ public class JdbcParametersDelegateTest {
     }
 
     @Test
-    public void testFactoryForJdbcDelegateSkalValiderePassordfilsti() {
+    void testFactoryForJdbcDelegateSkalValiderePassordfilsti() {
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
 
         final InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
@@ -69,7 +69,7 @@ public class JdbcParametersDelegateTest {
         assertTrue(invalidParameterException.getMessage().contains("missing eksisterer ikke"));
     }
 
-    public static class TestArgument implements Arguments {
+    static class TestArgument implements Arguments {
         @Mixin
         JdbcParametersDelegate jdbcParams = new JdbcParametersDelegate();
 

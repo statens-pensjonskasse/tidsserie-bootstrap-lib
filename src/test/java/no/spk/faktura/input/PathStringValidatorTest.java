@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class PathStringValidatorTest {
+class PathStringValidatorTest {
 
     private static final String SOME_PARAM = "-param";
 
     private final PathStringValidator validator = new PathStringValidator();
 
     @Test
-    public void testIncorrectPathThrowsException() {
+    void testIncorrectPathThrowsException() {
         assumeTrue(isWindows());
 
         final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate(SOME_PARAM, "H\"", dummySpec()));
@@ -23,7 +23,7 @@ public class PathStringValidatorTest {
     }
 
     @Test
-    public void testCorrectPathValidatesWithoutException() {
+    void testCorrectPathValidatesWithoutException() {
         validator.validate(SOME_PARAM, "H:", dummySpec());
     }
 

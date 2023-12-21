@@ -10,45 +10,45 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
-public class BatchIdTest {
+class BatchIdTest {
 
     @Test
-    public void testBatchIdPatternmatch() {
+    void testBatchIdPatternmatch() {
         final Pattern pattern = BatchId.createBatchIdPattern("prefix_");
         assertThat(pattern.matcher("prefix_2015-01-01_01-23-23-21").matches()).isTrue();
     }
 
     @Test
-    public void testBatchIdAsTimeIsCorrect() {
+    void testBatchIdAsTimeIsCorrect() {
         final LocalDateTime timestamp = LocalDateTime.now();
         final BatchId batchId = new BatchId("prefix_", timestamp);
         assertThat(batchId.asLocalDateTime()).isEqualTo(timestamp);
     }
 
     @Test
-    public void testBatchIdFromStringIsCorrect() {
+    void testBatchIdFromStringIsCorrect() {
         final BatchId batchId = BatchId.fromString("prefix_", "prefix_2015-01-01_02-02-02-00");
         assertThat(batchId.asLocalDateTime()).isEqualTo(LocalDateTime.of(2015, Month.JANUARY, 1, 2, 2, 2));
     }
 
     @Test
-    public void testBatchIdToStringReturnsId() {
+    void testBatchIdToStringReturnsId() {
         final String expected = "prefix_2015-01-01_02-02-02-00";
         final BatchId batchId = BatchId.fromString("prefix_", expected);
         assertThat(batchId.toString()).isEqualTo(expected);
     }
 
     @Test
-    public void testBatchIdEqualsHashcodeUsesIdOnly() {
+    void testBatchIdEqualsHashcodeUsesIdOnly() {
         final String expected = "prefix_2015-01-01_02-02-02-00";
         final BatchId batchId1 = BatchId.fromString("prefix_", expected);
         final BatchId batchId2 = BatchId.fromString("prefix_", expected);
         assertThat(batchId1).isEqualTo(batchId2);
-        assertThat(batchId1.hashCode()).isEqualTo(batchId2.hashCode());
+        assertThat(batchId1).hasSameHashCodeAs(batchId2);
     }
 
     @Test
-    public void testBatchIdToArbeidskatalogReturnsath() {
+    void testBatchIdToArbeidskatalogReturnsath() {
         final String expected = "prefix_2015-01-01_02-02-02-00";
         final BatchId batchId1 = BatchId.fromString("prefix_", expected);
         final Path path = batchId1.tilArbeidskatalog(Paths.get("."));

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class WritableDirectoryValidatorTest {
+class WritableDirectoryValidatorTest {
 
     @TempDir
     Path temp;
@@ -25,20 +25,20 @@ public class WritableDirectoryValidatorTest {
     private final WritableDirectoryValidator validator = new WritableDirectoryValidator();
 
     @Test
-    public void testManglendeStiFeiler() {
+    void testManglendeStiFeiler() {
         final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", Paths.get("nowhere"), dummySpec()));
         assertTrue(exception.getMessage().contains("eksisterer ikke"));
     }
 
     @Test
-    public void testStiErFilFeiler(final TestInfo testInfo) throws IOException {
+    void testStiErFilFeiler(final TestInfo testInfo) throws IOException {
         final File file = Files.createFile(temp.resolve(testInfo.getDisplayName())).toFile();
         final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
         assertTrue(exception.getMessage().contains("peker ikke til en katalog"));
     }
 
     @Test
-    public void testStiIkkeLesbarFeiler(final TestInfo testInfo) throws IOException {
+    void testStiIkkeLesbarFeiler(final TestInfo testInfo) throws IOException {
         assumeFalse(isWindowsOs());
         final File file = Files.createDirectories(temp.resolve(testInfo.getDisplayName())).toFile();
         assertThat(file.setReadable(false)).isTrue();
@@ -49,7 +49,7 @@ public class WritableDirectoryValidatorTest {
     }
 
     @Test
-    public void testStiIkkeSkrivbarFeiler() {
+    void testStiIkkeSkrivbarFeiler() {
         assumeFalse(isWindowsOs());
         final File file = new File("/");
 

@@ -7,24 +7,24 @@ import org.junit.jupiter.api.Test;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-public class JdbcUrlValidatorTest {
+class JdbcUrlValidatorTest {
 
     /**
      * Ok, negativ test av alle mulige feil verdiar er ikkje realistisk men la oss no iallefall
      * verifisere at URLen vi oftast forventar å støte på blir godtatt av valideringa.
      */
     @Test
-    public void skalGodtaJtdsJdbcUrl() {
+    void skalGodtaJtdsJdbcUrl() {
         new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb123:4100/kasper123", dummySpec());
     }
 
     @Test
-    public void skalGodtaJtdsJdbcUrlMedPunktum() {
+    void skalGodtaJtdsJdbcUrlMedPunktum() {
         new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK", dummySpec());
     }
 
     @Test
-    public void skalAvviseUfullstendigUrl() {
+    void skalAvviseUfullstendigUrl() {
         final String parameterNavn = "yadayada";
         final ParameterException exception = assertThrows(ParameterException.class, () -> {
             new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt", dummySpec());
@@ -34,7 +34,7 @@ public class JdbcUrlValidatorTest {
     }
 
     @Test
-    public void skalAvviseUrlMedApplikjasjonsnavn() {
+    void skalAvviseUrlMedApplikjasjonsnavn() {
         final String parameterNavn = "yadayada";
         final ParameterException exception = assertThrows(ParameterException.class, () -> {
             new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:", dummySpec());
@@ -44,7 +44,7 @@ public class JdbcUrlValidatorTest {
     }
 
     @Test
-    public void skalAvviseFullstendigRubsih() {
+    void skalAvviseFullstendigRubsih() {
         assertThrows(ParameterException.class, () -> new JdbcUrlValidator().validate("jdbcUrl", "wth?", dummySpec()));
     }
 

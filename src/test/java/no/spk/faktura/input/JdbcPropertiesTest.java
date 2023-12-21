@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class JdbcPropertiesTest {
+class JdbcPropertiesTest {
 
     @Test
-    public void skal_godta_sybase_url() {
+    void skal_godta_sybase_url() {
         final String navn = "navn";
         final String url = "jdbc:jtds:sybase://SERVER1:PORT2/DATABASE3";
         final String brukeravn = "brukeravn";
@@ -24,7 +24,7 @@ public class JdbcPropertiesTest {
     }
 
     @Test
-    public void skal_godta_mssql_url() {
+    void skal_godta_mssql_url() {
         final String navn = "navn";
         final String url = "jdbc:jtds:sqlserver://SERVER1:PORT2/DATABASE3";
         final String brukeravn = "brukeravn";
@@ -39,10 +39,10 @@ public class JdbcPropertiesTest {
     }
 
     @Test
-    public void testUgyldigJdbcUrlFeiler() {
+    void testUgyldigJdbcUrlFeiler() {
         final String url = "ulovlig-url";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new JdbcProperties("navn", url, "brukeravn", "passord"));
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new JdbcProperties("navn", url, "brukeravn", "passord"));
         assertTrue(exception.getMessage().contains("ulovlig-url"));
     }
 }

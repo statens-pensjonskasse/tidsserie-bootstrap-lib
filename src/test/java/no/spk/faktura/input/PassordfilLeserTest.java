@@ -9,20 +9,20 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class PassordfilLeserTest {
+class PassordfilLeserTest {
 
     @TempDir
     Path folder;
 
     @Test
-    public void skalTrimmeAllWhitespaceRundtPassordet() throws IOException {
+    void skalTrimmeAllWhitespaceRundtPassordet() throws IOException {
         final Path fil = passordfil();
         writePassword(fil, "       I like my spaces      ");
         assertThat(PassordfilLeser.readPassword(fil)).isEqualTo("I like my spaces");
     }
 
     @Test
-    public void skalIgnorereKommentarLinjer() throws IOException {
+    void skalIgnorereKommentarLinjer() throws IOException {
         final Path fil = passordfil();
         writePassword(fil, "# This is my password\nMy secret password\n");
         assertThat(PassordfilLeser.readPassword(fil)).isEqualTo("My secret password");
@@ -32,7 +32,7 @@ public class PassordfilLeserTest {
      * Verifiserer at passordet blir henta frå første linje i passordfila som ikkje er kommentarlinjer.
      */
     @Test
-    public void skalHentePassordFrafoersteInnholdslinje() throws IOException {
+    void skalHentePassordFrafoersteInnholdslinje() throws IOException {
         final Path fil = passordfil();
         writePassword(fil, "# This is my password\nMy supersecret password\nMy other secret password");
         assertThat(PassordfilLeser.readPassword(fil)).isEqualTo("My supersecret password");

@@ -10,12 +10,12 @@ import java.util.concurrent.ScheduledFuture;
 
 import org.junit.jupiter.api.Test;
 
-public class BatchTimeoutTaskrunnerTest {
+class BatchTimeoutTaskrunnerTest {
     /*
      * Verifiserer at callback-metode blir brukt
      */
     @Test
-    public void testTerminationTimeout() throws Exception {
+    void testTerminationTimeout() throws Exception {
         final Runnable callback = mock(Runnable.class);
         final BatchTimeout batchTimeout = new BatchTimeout(ofNanos(0), now());
         batchTimeout.start();

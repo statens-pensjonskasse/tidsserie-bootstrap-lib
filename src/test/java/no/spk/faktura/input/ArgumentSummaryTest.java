@@ -8,11 +8,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class ArgumentSummaryTest {
+class ArgumentSummaryTest {
 
     @Test
-    public void skal_returnere_en_streng_av_printbare_argumenter() {
-
+    void skal_returnere_en_streng_av_printbare_argumenter() {
         assertThat(
                 ArgumentSummary.createParameterSummary(
                         new TestKlasse()

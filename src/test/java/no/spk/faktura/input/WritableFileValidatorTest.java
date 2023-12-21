@@ -21,58 +21,58 @@ import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
 @Disabled("ukjent grunn")
-public class WritableFileValidatorTest {
+class WritableFileValidatorTest {
 
     @TempDir
     Path temp;
 
-    WritableFileValidator validator;
+    private WritableFileValidator validator;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         validator = new WritableFileValidator();
     }
 
     @Test
-    public void testManglendeStiFeiler() {
-        ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", Paths.get("nowhere"), dummySpec()));
+    void testManglendeStiFeiler() {
+        final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", Paths.get("nowhere"), dummySpec()));
         assertTrue(exception.getMessage().contains("eksisterer ikke"));
     }
 
     @Test
-    public void testStiErFilFeiler(final TestInfo testInfo) throws IOException {
+    void testStiErFilFeiler(final TestInfo testInfo) throws IOException {
         final File file = Files.createDirectories(temp.resolve(testInfo.getDisplayName())).toFile();
 
-        ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
+        final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
         assertTrue(exception.getMessage().contains("peker ikke til en fil"));
     }
 
     @Test
-    public void testStiIkkeLesbarFeiler(final TestInfo testInfo) throws IOException {
+    void testStiIkkeLesbarFeiler(final TestInfo testInfo) throws IOException {
         assumeFalse(isWindowsOs());
         final File file = Files.createFile(temp.resolve(testInfo.getDisplayName())).toFile();
         assertThat(file.setReadable(false)).isTrue();
 
-        ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
+        final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
         assertTrue(exception.getMessage().contains("er ikke lesbar for batchen"));
 
         assertThat(file.setReadable(true)).isTrue();
     }
 
     @Test
-    public void testStiIkkeSkrivbarFeiler(final TestInfo testInfo) throws IOException {
+    void testStiIkkeSkrivbarFeiler(final TestInfo testInfo) throws IOException {
         assumeFalse(isWindowsOs());
         final File file = Files.createFile(temp.resolve(testInfo.getDisplayName())).toFile();
         assertThat(file.setWritable(false)).isTrue();
 
-        ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
+        final ParameterException exception = assertThrows(ParameterException.class, () -> validator.validate("bane", file.toPath(), dummySpec()));
         assertTrue(exception.getMessage().contains("er ikke skrivbar for batchen"));
 
         assertThat(file.setWritable(true)).isTrue();
     }
 
     @Test
-    public void testOptionalFilManglerSkalIkkeFeile() {
+    void testOptionalFilManglerSkalIkkeFeile() {
         new OptionalWritableFileValidator().validate("bane", Optional.empty(), dummySpec());
     }
 
