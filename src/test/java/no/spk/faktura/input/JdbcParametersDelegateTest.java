@@ -1,21 +1,22 @@
 package no.spk.faktura.input;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import picocli.CommandLine.Mixin;
-
-import java.nio.file.Path;
-
 import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import picocli.CommandLine.Mixin;
 
 public class JdbcParametersDelegateTest {
 
-    @Rule
-    public final TemporaryFolder temp = new TemporaryFolder();
+    @TempDir
+    Path temp;
 
     @Test
     public void testFactoryForJdbcDelegateForTomArgs() {
@@ -27,8 +28,8 @@ public class JdbcParametersDelegateTest {
     }
 
     @Test
-    public void testFactoryForJdbcDelegateParsesArgs() throws Exception {
-        final Path expected = temp.newFile().toPath();
+    public void testFactoryForJdbcDelegateParsesArgs() throws IOException {
+        final Path expected = Files.createFile(temp.resolve("ny-fil"));
 
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         final TestArgument testArgument = factory.create(
@@ -41,11 +42,11 @@ public class JdbcParametersDelegateTest {
     }
 
     @Test
-    public void testFactoryForJdbcDelegateSkalValidereUrl() throws Exception {
-        final Path expected = temp.newFile().toPath();
+    public void testFactoryForJdbcDelegateSkalValidereUrl() throws IOException {
+        final Path expected = Files.createFile(temp.resolve("ny-fil"));
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
 
-        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
+        final InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
                 () -> factory.create(
                         "-jdbcUrl", "feilurl",
                         "-jdbcBrukernavn", "user",
@@ -59,7 +60,7 @@ public class JdbcParametersDelegateTest {
     public void testFactoryForJdbcDelegateSkalValiderePassordfilsti() {
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
 
-        InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
+        final InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
                 () -> factory.create(
                         "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
                         "-jdbcBrukernavn", "user",

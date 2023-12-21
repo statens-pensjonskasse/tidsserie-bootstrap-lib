@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.regex.Pattern;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BatchIdTest {
 
@@ -21,7 +21,7 @@ public class BatchIdTest {
     @Test
     public void testBatchIdAsTimeIsCorrect() {
         final LocalDateTime timestamp = LocalDateTime.now();
-        BatchId batchId = new BatchId("prefix_", timestamp);
+        final BatchId batchId = new BatchId("prefix_", timestamp);
         assertThat(batchId.asLocalDateTime()).isEqualTo(timestamp);
     }
 

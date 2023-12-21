@@ -6,18 +6,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class PassordfilLeserTest {
 
-    @Rule
-    public final TemporaryFolder folder = new TemporaryFolder();
-
-    @Rule
-    public final TestName name = new TestName();
+    @TempDir
+    Path folder;
 
     @Test
     public void skalTrimmeAllWhitespaceRundtPassordet() throws IOException {
@@ -44,7 +39,7 @@ public class PassordfilLeserTest {
     }
 
     private Path passordfil() throws IOException {
-        return folder.newFile("topsecret").toPath();
+        return Files.createFile(folder.resolve("topsecret"));
     }
 
     private void writePassword(Path file, String expected) throws IOException {

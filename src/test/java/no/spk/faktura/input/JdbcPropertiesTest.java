@@ -1,10 +1,10 @@
 package no.spk.faktura.input;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 public class JdbcPropertiesTest {
 
@@ -14,7 +14,7 @@ public class JdbcPropertiesTest {
         final String url = "jdbc:jtds:sybase://SERVER1:PORT2/DATABASE3";
         final String brukeravn = "brukeravn";
         final String passord = "passord";
-        JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
+        final JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
         assertThat(properties.url()).isEqualTo(url + ";appName=navn");
         assertThat(properties.brukernavn()).isEqualTo(brukeravn);
         assertThat(properties.passord()).isEqualTo(passord);
@@ -29,7 +29,7 @@ public class JdbcPropertiesTest {
         final String url = "jdbc:jtds:sqlserver://SERVER1:PORT2/DATABASE3";
         final String brukeravn = "brukeravn";
         final String passord = "passord";
-        JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
+        final JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
         assertThat(properties.url()).isEqualTo(url + ";appName=navn");
         assertThat(properties.brukernavn()).isEqualTo(brukeravn);
         assertThat(properties.passord()).isEqualTo(passord);
@@ -43,6 +43,6 @@ public class JdbcPropertiesTest {
         final String url = "ulovlig-url";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new JdbcProperties("navn", url, "brukeravn", "passord"));
-        assertTrue(exception.getMessage().contains( "ulovlig-url"));
+        assertTrue(exception.getMessage().contains("ulovlig-url"));
     }
 }

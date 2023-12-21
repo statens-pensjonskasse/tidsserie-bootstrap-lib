@@ -1,19 +1,19 @@
 package no.spk.faktura.input;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.DateTimeException;
 import java.time.LocalTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LocalTimeConverterTest {
 
     private LocalTimeConverter converter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = new LocalTimeConverter();
     }

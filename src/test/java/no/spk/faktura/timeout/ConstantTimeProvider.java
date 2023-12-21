@@ -3,8 +3,8 @@ package no.spk.faktura.timeout;
 import java.time.LocalTime;
 
 public class ConstantTimeProvider implements TimeProvider {
-    LocalTime time;
-    long millies;
+    private LocalTime time;
+    private long millies;
 
     public ConstantTimeProvider(final LocalTime time, final long millies) {
         this.time = time;

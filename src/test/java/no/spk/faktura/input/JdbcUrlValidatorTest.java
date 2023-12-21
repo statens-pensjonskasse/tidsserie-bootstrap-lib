@@ -1,11 +1,11 @@
 package no.spk.faktura.input;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
-
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 public class JdbcUrlValidatorTest {
 
@@ -26,7 +26,7 @@ public class JdbcUrlValidatorTest {
     @Test
     public void skalAvviseUfullstendigUrl() {
         final String parameterNavn = "yadayada";
-        ParameterException exception = assertThrows(ParameterException.class, () -> {
+        final ParameterException exception = assertThrows(ParameterException.class, () -> {
             new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt", dummySpec());
         });
         assertTrue(exception.getMessage().contains(parameterNavn));
@@ -36,7 +36,7 @@ public class JdbcUrlValidatorTest {
     @Test
     public void skalAvviseUrlMedApplikjasjonsnavn() {
         final String parameterNavn = "yadayada";
-        ParameterException exception = assertThrows(ParameterException.class, () -> {
+        final ParameterException exception = assertThrows(ParameterException.class, () -> {
             new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:", dummySpec());
         });
         assertTrue(exception.getMessage().contains(parameterNavn));

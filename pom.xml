@@ -5,7 +5,7 @@
     <parent>
         <artifactId>spk-root-pom</artifactId>
         <groupId>no.spk</groupId>
-        <version>126.0.1</version>
+        <version>128.0.1</version>
     </parent>
 
     <groupId>no.spk.pensjon.faktura</groupId>
@@ -27,12 +27,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <picocli.version>4.6.2</picocli.version>
-        <assertj-core.version>3.23.1</assertj-core.version>
+        <picocli.version>4.7.5</picocli.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
         <hamcrest-core.version>2.2</hamcrest-core.version>
-        <junit.version>4.13.2</junit.version>
-        <mockito-core.version>4.8.0</mockito-core.version>
-        <jenkins-pipeline-library.version>0.18.0</jenkins-pipeline-library.version>
+        <junit.version>5.10.1</junit.version>
+        <mockito-core.version>5.8.0</mockito-core.version>
+        <jenkins-pipeline-library.version>0.28.0</jenkins-pipeline-library.version>
+
+        <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
+        <maven-compiler-plugin.version>3.12.0</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
     </properties>
 
     <build>
@@ -40,12 +44,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>${maven-deploy-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <release>11</release>
                     <showDeprecation>true</showDeprecation>
@@ -59,7 +63,7 @@
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.0-m4.3</version>
+                <version>1.0-m5.1</version>
                 <configuration>
                     <!-- see goals wiki page for configuration options -->
                     <noDeploy>true</noDeploy>
@@ -142,7 +146,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>${maven-dependency-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>analyze</id>
@@ -182,8 +186,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
