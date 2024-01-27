@@ -8,19 +8,19 @@ import static org.mockito.Mockito.verify;
 
 import java.util.concurrent.ScheduledFuture;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class BatchTimeoutTaskrunnerTest {
+class BatchTimeoutTaskrunnerTest {
     /*
      * Verifiserer at callback-metode blir brukt
      */
     @Test
-    public void testTerminationTimeout() throws Exception {
-        Runnable callback = mock(Runnable.class);
-        BatchTimeout batchTimeout = new BatchTimeout(ofNanos(0), now());
+    void testTerminationTimeout() throws Exception {
+        final Runnable callback = mock(Runnable.class);
+        final BatchTimeout batchTimeout = new BatchTimeout(ofNanos(0), now());
         batchTimeout.start();
-        BatchTimeoutTaskrunner termination = new BatchTimeoutTaskrunner(batchTimeout);
-        ScheduledFuture<?> scheduledFuture = termination.startTerminationTimeout(ofMinutes(0), callback);
+        final BatchTimeoutTaskrunner termination = new BatchTimeoutTaskrunner(batchTimeout);
+        final ScheduledFuture<?> scheduledFuture = termination.startTerminationTimeout(ofMinutes(0), callback);
         scheduledFuture.get();
         verify(callback).run();
     }

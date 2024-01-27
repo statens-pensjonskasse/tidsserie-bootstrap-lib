@@ -1,25 +1,25 @@
 package no.spk.faktura.input;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-import static org.junit.Assert.assertThrows;
-
-public class IntegerValidatorTest {
+class IntegerValidatorTest {
 
     @Test
-    public void skalValidereIntegerOk() {
+    void skalValidereIntegerOk() {
         new IntegerValidator().validate("i", "1", dummySpec());
     }
 
     @Test
-    public void skalFeilePaaFloat() {
+    void skalFeilePaaFloat() {
         assertThrows(ParameterException.class, () -> new IntegerValidator().validate("i", "1.2", dummySpec()));
     }
 
     @Test
-    public void skalFeilePaaTekst() {
+    void skalFeilePaaTekst() {
         assertThrows(ParameterException.class, () -> new IntegerValidator().validate("i", "t", dummySpec()));
     }
 

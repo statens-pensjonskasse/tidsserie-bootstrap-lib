@@ -6,28 +6,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-public class PassordfilLeserTest {
+class PassordfilLeserTest {
 
-    @Rule
-    public final TemporaryFolder folder = new TemporaryFolder();
-
-    @Rule
-    public final TestName name = new TestName();
+    @TempDir
+    Path folder;
 
     @Test
-    public void skalTrimmeAllWhitespaceRundtPassordet() throws IOException {
+    void skalTrimmeAllWhitespaceRundtPassordet() throws IOException {
         final Path fil = passordfil();
         writePassword(fil, "       I like my spaces      ");
         assertThat(PassordfilLeser.readPassword(fil)).isEqualTo("I like my spaces");
     }
 
     @Test
-    public void skalIgnorereKommentarLinjer() throws IOException {
+    void skalIgnorereKommentarLinjer() throws IOException {
         final Path fil = passordfil();
         writePassword(fil, "# This is my password\nMy secret password\n");
         assertThat(PassordfilLeser.readPassword(fil)).isEqualTo("My secret password");
@@ -37,14 +32,14 @@ public class PassordfilLeserTest {
      * Verifiserer at passordet blir henta frå første linje i passordfila som ikkje er kommentarlinjer.
      */
     @Test
-    public void skalHentePassordFrafoersteInnholdslinje() throws IOException {
+    void skalHentePassordFrafoersteInnholdslinje() throws IOException {
         final Path fil = passordfil();
         writePassword(fil, "# This is my password\nMy supersecret password\nMy other secret password");
         assertThat(PassordfilLeser.readPassword(fil)).isEqualTo("My supersecret password");
     }
 
     private Path passordfil() throws IOException {
-        return folder.newFile("topsecret").toPath();
+        return Files.createFile(folder.resolve("topsecret"));
     }
 
     private void writePassword(Path file, String expected) throws IOException {

@@ -1,8 +1,8 @@
 # faktura-bootstrap-lib
 
-Kode som brukes av samtlige faktura-batcher for *å starte* (boostrap) fra kommandolinja. 
- 
-Omfatter programparameter håndtering og batch-timeout. 
+Kode som brukes av samtlige faktura- og panda-batcher for *å starte* (boostrap) fra kommandolinja.
+
+Omfatter programparameter håndtering og batch-timeout.
 
 Dette repoet skal *ikke* benyttes som søppelfylling for alt som tilsynelatende kan gjenbrukes mellom batcher.
 
@@ -14,5 +14,5 @@ Viss ein har vore inne og gjort endringar bør ein i så stor grad som mulig, un
 inne og gjort endringar uten å tenke på dette kan ein derfor fort komme til å ha gjort ei endring som bryter bakoverkompatibiliteten fordi ein har renama,
 fjerna eller endra på metodeparameter og/eller synligheit.
 
-Sjå [SPK Puma Faktura - Bakoverkompatibilitetspolicy](http://wiki/confluence/display/dok/SPK+Puma+Faktura+-+Bakoverkompatibilitetspolicy) for meir informasjon.
-
+Sjå [SPK Puma Faktura - Bakoverkompatibilitetspolicy](http://wiki/confluence/display/dok/SPK+Puma+Faktura+-+Bakoverkompatibilitetspolicy) for meir
+informasjon.

@@ -1,92 +1,92 @@
 package no.spk.faktura.timeout;
 
-import org.junit.Test;
-
-import java.time.Duration;
-import java.time.LocalTime;
-
 import static java.time.Duration.of;
 import static java.time.Duration.ofMinutes;
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BatchTimeoutTest {
+import java.time.Duration;
+import java.time.LocalTime;
+
+import org.junit.jupiter.api.Test;
+
+class BatchTimeoutTest {
 
     @Test
-    public void testNewBatchTimeoutIsNotStarted() {
-        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+    void testNewBatchTimeoutIsNotStarted() {
+        final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         assertThat(batchTimeout.isStarted()).isFalse();
     }
 
     @Test
-    public void testStartedBatchTimeoutIsStarted() {
-        BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+    void testStartedBatchTimeoutIsStarted() {
+        final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
         batchTimeout.start();
         assertThat(batchTimeout.isStarted()).isTrue();
     }
 
     @Test
-    public void testBatchTimeoutStartedTwiceThrowsException() {
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+    void testBatchTimeoutStartedTwiceThrowsException() {
+        final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
             batchTimeout.start();
             batchTimeout.start();
         });
-        assertTrue(exception.getMessage().contains( "BatchTimeout er er allerede startet."));
+        assertTrue(exception.getMessage().contains("BatchTimeout er er allerede startet."));
     }
 
     @Test
-    public void testIsCompleteCalledOnUnstartedTimeoutThrowsException() {
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+    void testIsCompleteCalledOnUnstartedTimeoutThrowsException() {
+        final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
             batchTimeout.isComplete();
         });
-        assertTrue(exception.getMessage().contains( "BatchTimeout er ikke startet."));
+        assertTrue(exception.getMessage().contains("BatchTimeout er ikke startet."));
     }
 
     @Test
-    public void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() {
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
+    void testTimeRemainingCalledOnUnstartedTimeoutThrowsException() {
+        final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            final BatchTimeout batchTimeout = createBatchTimeout("02:00", "02:00", ofMinutes(0));
             batchTimeout.timeRemaining();
         });
-        assertTrue(exception.getMessage().contains( "BatchTimeout er ikke startet."));
+        assertTrue(exception.getMessage().contains("BatchTimeout er ikke startet."));
     }
 
     @Test
-    public void testNoTimeoutCompletes() {
-        BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(0));
+    void testNoTimeoutCompletes() {
+        final BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(0));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testSomeTimeoutSameEndtimeAsStarttimeCompletes() {
-        BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(1));
+    void testSomeTimeoutSameEndtimeAsStarttimeCompletes() {
+        final BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:00", ofMinutes(1));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testZeroTimeoutSomeEndtimeCompletes() {
-        BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:01", ofMinutes(0));
+    void testZeroTimeoutSomeEndtimeCompletes() {
+        final BatchTimeout batchTimeout = createBatchTimeoutAndStart("02:00", "02:01", ofMinutes(0));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
 
     @Test
-    public void testEqualTimeoutAndEndtimeWillEventuallyComplete() {
-        BatchTimeout batchTimeout = createBatchTimeoutAndStart("03:00", "03:01", ofMinutes(1));
-        ConstantTimeProvider timeProvider = (ConstantTimeProvider) batchTimeout.getTimeProvider();
+    void testEqualTimeoutAndEndtimeWillEventuallyComplete() {
+        final BatchTimeout batchTimeout = createBatchTimeoutAndStart("03:00", "03:01", ofMinutes(1));
+        final ConstantTimeProvider timeProvider = (ConstantTimeProvider) batchTimeout.getTimeProvider();
 
         assertThat(batchTimeout.isComplete()).isFalse();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(1, MINUTES));
 
         timeProvider.setMillies(timeProvider.currentMillies() + ofMinutes(1).toMillis());
-        timeProvider.setTime(timeProvider.currentTime().plus(1, MINUTES));
+        timeProvider.setTime(timeProvider.currentTime().plusMinutes(1));
         assertThat(batchTimeout.isComplete()).isTrue();
         assertThat(batchTimeout.timeRemaining()).isEqualTo(of(0, MILLIS));
     }
@@ -96,9 +96,9 @@ public class BatchTimeoutTest {
     }
 
     private BatchTimeout createBatchTimeout(final String startTime, final String latestEndTime, final Duration timeout) {
-        LocalTime localStartTime = LocalTime.parse(startTime);
-        LocalTime localEndTime = LocalTime.parse(latestEndTime);
-        TimeProvider timeProvider = getNowTimeProvider(localStartTime);
+        final LocalTime localStartTime = LocalTime.parse(startTime);
+        final LocalTime localEndTime = LocalTime.parse(latestEndTime);
+        final TimeProvider timeProvider = getNowTimeProvider(localStartTime);
         return new BatchTimeout(timeout, localEndTime, timeProvider);
     }
 

@@ -1,30 +1,30 @@
 package no.spk.faktura.input;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParameterException;
 
-import static org.junit.Assert.assertThrows;
-
-public class LocalTimeValidatorTest {
+class LocalTimeValidatorTest {
 
     @Test
-    public void skalValidereIntegerOk() {
+    void skalValidereIntegerOk() {
         new LocalTimeValidator().validate("i", "0230", dummySpec());
     }
 
     @Test
-    public void skalValidereTimeWithColonOk() {
+    void skalValidereTimeWithColonOk() {
         new LocalTimeValidator().validate("i", "02:30", dummySpec());
     }
 
     @Test
-    public void skalFeilePaaFloat() {
+    void skalFeilePaaFloat() {
         assertThrows(ParameterException.class, () -> new LocalTimeValidator().validate("i", "1.2", dummySpec()));
     }
 
     @Test
-    public void skalFeilePaaTekst() {
+    void skalFeilePaaTekst() {
         assertThrows(ParameterException.class, () -> new LocalTimeValidator().validate("i", "t", dummySpec()));
     }
 
