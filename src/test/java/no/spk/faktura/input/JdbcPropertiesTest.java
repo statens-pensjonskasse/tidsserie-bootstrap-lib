@@ -9,28 +9,13 @@ import org.junit.jupiter.api.Test;
 class JdbcPropertiesTest {
 
     @Test
-    void skal_godta_sybase_url() {
-        final String navn = "navn";
-        final String url = "jdbc:jtds:sybase://SERVER1:PORT2/DATABASE3";
-        final String brukeravn = "brukeravn";
-        final String passord = "passord";
-        final JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
-        assertThat(properties.url()).isEqualTo(url + ";appName=navn");
-        assertThat(properties.brukernavn()).isEqualTo(brukeravn);
-        assertThat(properties.passord()).isEqualTo(passord);
-        assertThat(properties.server()).isEqualTo("SERVER1");
-        assertThat(properties.port()).isEqualTo("PORT2");
-        assertThat(properties.database()).isEqualTo("DATABASE3");
-    }
-
-    @Test
     void skal_godta_mssql_url() {
         final String navn = "navn";
-        final String url = "jdbc:jtds:sqlserver://SERVER1:PORT2/DATABASE3";
+        final String url = "jdbc:sqlserver://SERVER1:PORT2;databaseName=DATABASE3";
         final String brukeravn = "brukeravn";
         final String passord = "passord";
         final JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
-        assertThat(properties.url()).isEqualTo(url + ";appName=navn");
+        assertThat(properties.url()).isEqualTo(url + ";encrypt=true;trustServerCertificate=true;appName=navn");
         assertThat(properties.brukernavn()).isEqualTo(brukeravn);
         assertThat(properties.passord()).isEqualTo(passord);
         assertThat(properties.server()).isEqualTo("SERVER1");

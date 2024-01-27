@@ -6,9 +6,9 @@ import static java.util.Optional.of;
 import java.util.regex.Matcher;
 
 /**
- * Holder på jdbcUrl angitt fra kommandolinje eller spk.properties, med ";appName=applikasjonsavn" på slutten,
+ * Holder på jdbcUrl angitt fra kommandolinje eller spk.properties, med ";encrypt=true;trustServerCertificate=true;appName=applikasjonsavn" på slutten,
  * samt brukernavn og passord for databasen hentet fra samme konfigurasjonskilde.
- * Støtter kun jdbcurl med formatet {@code jdbc:jtds:sybase://<server>:<port>/<database>}.
+ * Støtter kun jdbcurl med formatet {@code jdbc:sqlserver://<server>:<port>;databaseName=<database>}.
  */
 public class JdbcProperties {
     private final String url;
@@ -23,7 +23,7 @@ public class JdbcProperties {
         requireNonNull(jdbcUrl, "jdbcUrl kan ikke være null");
         requireNonNull(brukernavn, "brukernavn kan ikke være null");
         requireNonNull(passord, "passord kan ikke være null");
-        this.url = jdbcUrl + ";appName=" + applikasjonsnavn;
+        this.url = jdbcUrl + ";encrypt=true;trustServerCertificate=true;appName=" + applikasjonsnavn;
         this.brukernavn = brukernavn;
         this.passord = passord;
         final Matcher urlMatcher = getMatcher(jdbcUrl);
@@ -84,6 +84,6 @@ public class JdbcProperties {
                 .map(JdbcUrlValidator.URL_PATTERN::matcher)
                 .filter(Matcher::find)
                 .orElseThrow(() -> new IllegalArgumentException(jdbcUrl + " er ikke en lovlig jdbc-url. " +
-                        "Url må ha formatet 'jdbc:jtds:sybase://<server>:<port>/<database>'."));
+                        "Url må ha formatet 'jdbc:sqlserver://<server>:<port>;databaseName=<database>'."));
     }
 }

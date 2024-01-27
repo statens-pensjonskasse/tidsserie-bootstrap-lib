@@ -51,7 +51,7 @@ class ProgramArgumentsFactoryTest {
 
     @Test
     void testOptionalUrlSet() {
-        final String expected = "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK";
+        final String expected = "jdbc:sqlserver://syb08t.spk.no:4100;databaseName=CI_TRUNK";
         final TestParameters arguments = factory.create(
                 "-r", "yadayada",
                 "-url", expected

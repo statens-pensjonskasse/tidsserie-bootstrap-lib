@@ -36,7 +36,7 @@ class JdbcParametersPostValidationTest {
      */
     @Test
     void skalKreveAtAlleJDBCParameterHarEnVerdiHvisJDBCURLErAngitt() {
-        arguments.jdbcUrl = (of("jdbc:jtds:sybase:whatnot"));
+        arguments.jdbcUrl = (of("jdbc:sqlserver;databaseName=whatnot"));
 
         final ParameterException parameterException = assertThrows(ParameterException.class, () -> valider(arguments));
         assertTrue(parameterException.getMessage().contains(JdbcParametersPostValidation.feilmelding()));

@@ -33,10 +33,10 @@ class JdbcParametersDelegateTest {
 
         final ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         final TestArgument testArgument = factory.create(
-                "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
+                "-jdbcUrl", "jdbc:sqlserver://server:port;databaseName=database",
                 "-jdbcBrukernavn", "user",
                 "-jdbcPassordfil", expected.toString());
-        assertThat(testArgument.jdbcParams.getJdbcUrl()).isEqualTo(of("jdbc:jtds:sybase://server:port/database"));
+        assertThat(testArgument.jdbcParams.getJdbcUrl()).isEqualTo(of("jdbc:sqlserver://server:port;databaseName=database"));
         assertThat(testArgument.jdbcParams.getJdbcBrukernavn()).isEqualTo(of("user"));
         assertThat(testArgument.jdbcParams.getJdbcPassordfil()).isEqualTo(of(expected));
     }
@@ -53,7 +53,7 @@ class JdbcParametersDelegateTest {
                         "-jdbcPassordfil", expected.toString())
         );
         assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Parameter -jdbcUrl må inneholde en gyldig JDBC-url på formen " +
-                "'jdbc:jtds:sybase://<server>:<port>/<database>' eller 'jdbc:jtds:sqlserver://<server>:<port>/<database>', du sendte inn feilurl"));
+                "'jdbc:sqlserver://<server>:<port>;databaseName=<database>', du sendte inn feilurl"));
     }
 
     @Test
@@ -62,7 +62,7 @@ class JdbcParametersDelegateTest {
 
         final InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class,
                 () -> factory.create(
-                        "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
+                        "-jdbcUrl", "jdbc:sqlserver://server:port;databaseName=database",
                         "-jdbcBrukernavn", "user",
                         "-jdbcPassordfil", "missing")
         );
