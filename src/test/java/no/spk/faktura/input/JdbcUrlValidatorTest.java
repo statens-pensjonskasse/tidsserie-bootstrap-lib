@@ -43,7 +43,7 @@ class JdbcUrlValidatorTest {
     void skalAvviseUrlMedApplikjasjonsnavn() {
         final String parameterNavn = "yadayada";
         final ParameterException exception = assertThrows(ParameterException.class, () -> {
-            new JdbcUrlValidator().validate(parameterNavn, "jdbc:sqlserver://syb08t.spk.no:4100;databaseName=CI_TRUNK;appname=tt", dummySpec());
+            new JdbcUrlValidator().validate(parameterNavn, "jdbc:sqlserver://syb08t.spk.no:4100;databaseName=CI_TRUNK;ApplicationName=tt", dummySpec());
         });
         assertTrue(exception.getMessage().contains(parameterNavn));
         assertTrue(exception.getMessage().contains(" må inneholde en gyldig JDBC-url på formen 'jdbc:sqlserver://<server>:<port>;database=<database>' " +
