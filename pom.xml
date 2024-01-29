@@ -10,7 +10,7 @@
 
     <groupId>no.spk.pensjon.faktura</groupId>
     <artifactId>faktura-bootstrap-lib</artifactId>
-    <version>3.0.4-SNAPSHOT</version>
+    <version>3.0.4</version>
     <packaging>jar</packaging>
 
     <description>
