@@ -84,6 +84,7 @@ public class JdbcProperties {
                 .map(JdbcUrlValidator.URL_PATTERN::matcher)
                 .filter(Matcher::find)
                 .orElseThrow(() -> new IllegalArgumentException(jdbcUrl + " er ikke en lovlig jdbc-url. " +
-                        "Url må ha formatet 'jdbc:sqlserver://<server>:<port>;databaseName=<database>'."));
+                        "Url må ha formatet 'jdbc:sqlserver://<server>:<port>;database=<database>' eller " +
+                        "'jdbc:sqlserver://<server>:<port>;databaseName=<database>'."));
     }
 }
