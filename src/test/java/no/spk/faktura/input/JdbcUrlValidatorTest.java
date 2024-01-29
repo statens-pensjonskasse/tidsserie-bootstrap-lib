@@ -24,6 +24,11 @@ class JdbcUrlValidatorTest {
     }
 
     @Test
+    void skalGodtaJdbcUrlUtenPortnummer() {
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:sqlserver://syb123;databaseName=kasper123", dummySpec());
+    }
+
+    @Test
     void skalGodtaJtdsJdbcUrlMedPunktum() {
         new JdbcUrlValidator().validate("jdbcUrl", "jdbc:sqlserver://syb08t.spk.no:4100;databaseName=CI_TRUNK", dummySpec());
     }
@@ -36,7 +41,7 @@ class JdbcUrlValidatorTest {
         });
         assertTrue(exception.getMessage().contains(parameterNavn));
         assertTrue(exception.getMessage().contains(" må inneholde en gyldig JDBC-url på formen 'jdbc:sqlserver://<server>:<port>;database=<database>' " +
-                "eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>'"));
+                "eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>', eventuelt uten portnummer"));
     }
 
     @Test
@@ -47,7 +52,7 @@ class JdbcUrlValidatorTest {
         });
         assertTrue(exception.getMessage().contains(parameterNavn));
         assertTrue(exception.getMessage().contains(" må inneholde en gyldig JDBC-url på formen 'jdbc:sqlserver://<server>:<port>;database=<database>' " +
-                "eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>'"));
+                "eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>', eventuelt uten portnummer"));
     }
 
     @Test

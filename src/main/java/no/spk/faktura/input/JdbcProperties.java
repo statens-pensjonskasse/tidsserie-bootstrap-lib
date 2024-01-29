@@ -26,10 +26,17 @@ public class JdbcProperties {
         this.url = jdbcUrl + ";encrypt=true;trustServerCertificate=true;ApplicationName=" + applikasjonsnavn;
         this.brukernavn = brukernavn;
         this.passord = passord;
+
         final Matcher urlMatcher = getMatcher(jdbcUrl);
         this.server = urlMatcher.group(1);
-        this.port = urlMatcher.group(2);
-        this.database = urlMatcher.group(3);
+
+        if (urlMatcher.group(3) != null) { // Angitt med portnummer.
+            this.port = urlMatcher.group(3);
+        } else { // Angitt uten portnummer.
+            this.port = "";
+        }
+
+        this.database = urlMatcher.group(4);
     }
 
     /**
@@ -85,6 +92,6 @@ public class JdbcProperties {
                 .filter(Matcher::find)
                 .orElseThrow(() -> new IllegalArgumentException(jdbcUrl + " er ikke en lovlig jdbc-url. " +
                         "Url må ha formatet 'jdbc:sqlserver://<server>:<port>;database=<database>' eller " +
-                        "'jdbc:sqlserver://<server>:<port>;databaseName=<database>'."));
+                        "'jdbc:sqlserver://<server>:<port>;databaseName=<database>', eventuelt uten port."));
     }
 }

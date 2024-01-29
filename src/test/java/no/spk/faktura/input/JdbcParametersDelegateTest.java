@@ -53,7 +53,7 @@ class JdbcParametersDelegateTest {
                         "-jdbcPassordfil", expected.toString())
         );
         assertTrue(invalidParameterException.getMessage().contains("Feil i parameter: Parameter -jdbcUrl må inneholde en gyldig JDBC-url på formen " +
-                "'jdbc:sqlserver://<server>:<port>;database=<database>' eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>', du sendte inn feilurl"));
+                "'jdbc:sqlserver://<server>:<port>;database=<database>' eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>', eventuelt uten portnummer, du sendte inn feilurl"));
     }
 
     @Test
