@@ -15,12 +15,17 @@ public class JdbcUrlValidatorTest {
      */
     @Test
     public void skalGodtaJtdsJdbcUrl() {
-        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb123:4100/kasper123");
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:sqlserver://syb123:4100;database=kasper123");
     }
 
     @Test
     public void skalGodtaJtdsJdbcUrlMedPunktum() {
-        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK");
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:sqlserver://syb08t.spk.no:4100;database=CI_TRUNK");
+    }
+
+    @Test
+    public void skalGodtaJdbcUrlUtenPortnummer() {
+        new JdbcUrlValidator().validate("jdbcUrl", "jdbc:sqlserver://syb123;databaseName=kasper123");
     }
 
     @Test
@@ -28,9 +33,9 @@ public class JdbcUrlValidatorTest {
         e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
         e.expectMessage(parameterNavn);
-        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
+        e.expectMessage("Parameter yadayada må inneholde en gyldig JDBC-url på formen 'jdbc:sqlserver://<server>:<port>;database=<database>' eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>', eventuelt uten portnummer");
 
-        new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:sybase://syb08t.spk.no:4100/CI_TRUNK;appname=tt");
+        new JdbcUrlValidator().validate(parameterNavn, "jdbc:sqlserver://syb08t.spk.no:4100;database=CI_TRUNK;appname=tt");
     }
 
     @Test
@@ -38,7 +43,7 @@ public class JdbcUrlValidatorTest {
         e.expect(ParameterException.class);
         final String parameterNavn = "yadayada";
         e.expectMessage(parameterNavn);
-        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:jtds:sybase://<server>:<port>/<database>'");
+        e.expectMessage(" må inneholde en gyldig JDBC-url på formen 'jdbc:sqlserver://<server>:<port>;database=<database>' eller 'jdbc:sqlserver://<server>:<port>;databaseName=<database>', eventuelt uten portnummer");
 
         new JdbcUrlValidator().validate(parameterNavn, "jdbc:jtds:");
     }

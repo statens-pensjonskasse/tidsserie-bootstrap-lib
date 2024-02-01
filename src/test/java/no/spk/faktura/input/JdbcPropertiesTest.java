@@ -17,7 +17,7 @@ public class JdbcPropertiesTest {
     @Test
     public void skal_godta_sybase_url() {
         final String navn = "navn";
-        final String url = "jdbc:jtds:sybase://SERVER1:PORT2/DATABASE3";
+        final String url = "jdbc:sqlserver://SERVER1:PORT2;database=DATABASE3";
         final String brukeravn = "brukeravn";
         final String passord = "passord";
         JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
@@ -32,7 +32,7 @@ public class JdbcPropertiesTest {
     @Test
     public void skal_godta_mssql_url() {
         final String navn = "navn";
-        final String url = "jdbc:jtds:sqlserver://SERVER1:PORT2/DATABASE3";
+        final String url = "jdbc:sqlserver://SERVER1:PORT2;database=DATABASE3";
         final String brukeravn = "brukeravn";
         final String passord = "passord";
         JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);

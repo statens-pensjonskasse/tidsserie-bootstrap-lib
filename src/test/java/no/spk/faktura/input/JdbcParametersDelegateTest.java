@@ -36,10 +36,10 @@ public class JdbcParametersDelegateTest {
 
         ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         final TestArgument testArgument = factory.create(
-                "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
+                "-jdbcUrl", "jdbc:sqlserver://server:port;database=database",
                 "-jdbcBrukernavn", "user",
                 "-jdbcPassordfil", expected.toString());
-        assertThat(testArgument.jdbcParams.getJdbcUrl()).isEqualTo(of("jdbc:jtds:sybase://server:port/database"));
+        assertThat(testArgument.jdbcParams.getJdbcUrl()).isEqualTo(of("jdbc:sqlserver://server:port;database=database"));
         assertThat(testArgument.jdbcParams.getJdbcBrukernavn()).isEqualTo(of("user"));
         assertThat(testArgument.jdbcParams.getJdbcPassordfil()).isEqualTo(of(expected));
     }
@@ -49,8 +49,8 @@ public class JdbcParametersDelegateTest {
         final Path expected = temp.newFile().toPath();
         exception.expect(InvalidParameterException.class);
         exception.expectMessage("-jdbcUrl må inneholde en gyldig JDBC-url");
-        exception.expectMessage( "jdbc:jtds:sybase://<server>:<port>/<database>");
-        exception.expectMessage( "jdbc:jtds:sqlserver://<server>:<port>/<database>");
+        exception.expectMessage( "jdbc:sqlserver://<server>:<port>;database=<database>");
+        exception.expectMessage( "jdbc:sqlserver://<server>:<port>;databaseName=<database>");
 
         ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         factory.create(
@@ -65,7 +65,7 @@ public class JdbcParametersDelegateTest {
         exception.expectMessage("missing eksisterer ikke");
         ProgramArgumentsFactory<TestArgument> factory = new ProgramArgumentsFactory<>(TestArgument.class);
         factory.create(
-                "-jdbcUrl", "jdbc:jtds:sybase://server:port/database",
+                "-jdbcUrl", "jdbc:sqlserver://server:port;database=database",
                 "-jdbcBrukernavn", "user",
                 "-jdbcPassordfil", "missing");
     }
