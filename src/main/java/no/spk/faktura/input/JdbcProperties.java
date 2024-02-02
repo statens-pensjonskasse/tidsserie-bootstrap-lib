@@ -25,9 +25,10 @@ public class JdbcProperties {
         requireNonNull(jdbcUrl, "jdbcUrl kan ikke være null");
         requireNonNull(brukernavn, "brukernavn kan ikke være null");
         requireNonNull(passord, "passord kan ikke være null");
-        this.url = jdbcUrl + ";appName=" + applikasjonsnavn;
+        this.url = jdbcUrl + ";encrypt=true;trustServerCertificate=true;ApplicationName=" + applikasjonsnavn;
         this.brukernavn = brukernavn;
         this.passord = passord;
+
         final Matcher urlMatcher = getMatcher(jdbcUrl);
         this.server = urlMatcher.group(1);
 
@@ -36,6 +37,7 @@ public class JdbcProperties {
         } else { // Angitt uten portnummer.
             this.port = "";
         }
+
         this.database = urlMatcher.group(4);
     }
 

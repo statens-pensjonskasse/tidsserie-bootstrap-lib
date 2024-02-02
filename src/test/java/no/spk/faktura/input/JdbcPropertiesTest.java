@@ -21,7 +21,7 @@ public class JdbcPropertiesTest {
         final String brukeravn = "brukeravn";
         final String passord = "passord";
         JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
-        assertThat(properties.url()).isEqualTo(url + ";appName=navn");
+        assertThat(properties.url()).isEqualTo(url + ";encrypt=true;trustServerCertificate=true;ApplicationName=navn");
         assertThat(properties.brukernavn()).isEqualTo(brukeravn);
         assertThat(properties.passord()).isEqualTo(passord);
         assertThat(properties.server()).isEqualTo("SERVER1");
@@ -36,7 +36,7 @@ public class JdbcPropertiesTest {
         final String brukeravn = "brukeravn";
         final String passord = "passord";
         JdbcProperties properties = new JdbcProperties(navn, url, brukeravn, passord);
-        assertThat(properties.url()).isEqualTo(url + ";appName=navn");
+        assertThat(properties.url()).isEqualTo(url + ";encrypt=true;trustServerCertificate=true;ApplicationName=navn");
         assertThat(properties.brukernavn()).isEqualTo(brukeravn);
         assertThat(properties.passord()).isEqualTo(passord);
         assertThat(properties.server()).isEqualTo("SERVER1");
