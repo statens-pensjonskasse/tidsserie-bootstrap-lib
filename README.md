@@ -32,12 +32,12 @@ recipeList:
       newVersion: 4.0.0
 
   - org.openrewrite.java.ChangePackage:
-      oldPackageName: no.spk.tidsserie.input
+      oldPackageName: no.spk.faktura.input
       newPackageName: no.spk.tidsserie.input
       recursive: true
       
   - org.openrewrite.java.ChangePackage:
-      oldPackageName: no.spk.tidsserie.timout
+      oldPackageName: no.spk.faktura.timout
       newPackageName: no.spk.tidsserie.timout
       recursive: true
       
