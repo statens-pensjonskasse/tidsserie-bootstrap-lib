@@ -6,13 +6,39 @@ Omfatter programparameter håndtering og batch-timeout.
 
 Dette repoet skal *ikke* benyttes som søppelfylling for alt som tilsynelatende kan gjenbrukes mellom batcher.
 
-## Ofte spurte spørsmål
+## Migreringsguide
 
-# 1. Korleis fiksar eg byggefeil generert av japicmp-maven-plugin?
+### 3.0.x -> 4.0.0
+Denne migreringen innebærer en endring av Maven-koordinater og pakkestruktur.
+For å gjøre migreringen enklere kan du bruke følgende OpenRewrite-oppskrift.
+Kopier den inn i `rewrite.yml` i rotmappen til prosjektet ditt. 
+Intellij IDEA har støtte for å kjøre OpenRewrite-oppskrifter så da kan du trykke på play-knappen for å kjøre migreringen.
 
-Viss ein har vore inne og gjort endringar bør ein i så stor grad som mulig, unngå å bryte bakoverkompatibilitet med tidligare versjonar. Dersom ein har vore
-inne og gjort endringar uten å tenke på dette kan ein derfor fort komme til å ha gjort ei endring som bryter bakoverkompatibiliteten fordi ein har renama,
-fjerna eller endra på metodeparameter og/eller synligheit.
+```
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: no.spk.premie.UpdateBootstrapLib
+displayName: Update bootstrap-lib coordinates and package structures
+description: Updates Maven coordinates and package structures for bootstrap-lib
+recipeList:
 
-Sjå [SPK Puma Faktura - Bakoverkompatibilitetspolicy](http://wiki/confluence/display/dok/SPK+Puma+Faktura+-+Bakoverkompatibilitetspolicy) for meir
-informasjon.
+  # Move     
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+      oldGroupId: no.spk.pensjon.faktura
+      oldArtifactId: faktura-bootstrap-lib
+      newGroupId: no.spk.tidsserie
+      newArtifactId: bootstrap-lib
+      overrideManagedVersion: true
+      newVersion: 4.0.0
+
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: no.spk.tidsserie.input
+      newPackageName: no.spk.tidsserie.input
+      recursive: true
+      
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: no.spk.tidsserie.timout
+      newPackageName: no.spk.tidsserie.timout
+      recursive: true
+      
+```
