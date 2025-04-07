@@ -23,7 +23,7 @@
         <picocli.version>4.7.6</picocli.version>
         <assertj-core.version>3.27.3</assertj-core.version>
         <junit.version>5.12.1</junit.version>
-        <mockito-core.version>5.16.1</mockito-core.version>
+        <mockito-core.version>5.17.0</mockito-core.version>
     </properties>
 
     <dependencies>
