@@ -23,17 +23,17 @@
         <assertj-core.version>3.27.3</assertj-core.version>
         <junit.version>5.13.1</junit.version>
         <mockito-core.version>5.18.0</mockito-core.version>
-        <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
-        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
-        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
-        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
-        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -180,7 +180,7 @@
             <plugin>
                 <groupId>com.github.siom79.japicmp</groupId>
                 <artifactId>japicmp-maven-plugin</artifactId>
-                <version>0.23.1</version>
+                <version>0.25.0</version>
                 <configuration>
                     <oldVersion>
                         <dependency>
@@ -241,12 +241,12 @@
                     <dependency>
                         <groupId>com.sun.xml.bind</groupId>
                         <artifactId>jaxb-core</artifactId>
-                        <version>4.0.5</version>
+                        <version>4.0.6</version>
                     </dependency>
                     <dependency>
                         <groupId>com.sun.xml.bind</groupId>
                         <artifactId>jaxb-impl</artifactId>
-                        <version>4.0.5</version>
+                        <version>4.0.6</version>
                     </dependency>
                 </dependencies>
             </plugin>
